@@ -26,19 +26,40 @@
         .sidebar-content { flex: 1; overflow-y: auto; padding: 1rem; scrollbar-width: thin; }
         .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 90; }
         .overlay.active { display: block; }
-        /* ══ VÍDEO: sem borda nenhuma, largura total, sem pinhas ══ */
-        .video-feed { width: 100%; height: 100vh; background: black; object-fit: cover; display: block; border: none !important; outline: none !important; box-shadow: none !important; }
-        video { border: none !important; outline: none !important; box-shadow: none !important; }
-        .video-wrapper { border: none !important; outline: none !important; box-shadow: none !important; }
-        /* Card que contém vídeo não deve ter borda lateral vermelha */
-        .post-card:has(.video-wrapper) { border-left: none !important; border: none !important; }
+        .video-feed { width: 100%; height: 100vh; background: black; object-fit: cover; display: block; }
         .hidden { display: none; }
-        .nav-rapida { display: flex; gap: 4px; padding: 7px 5px; background: #050a14; border-bottom: 1px solid #1d2d50; align-items: center; }
-        .btn-nav-item { background: #112240; border: 1px solid #1d2d50; padding: 7px 2px; border-radius: 50px; white-space: nowrap; font-size: 11px; font-weight: 800; text-transform: uppercase; transition: 0.3s; cursor: pointer; flex: 1; min-width: 0; text-align: center; overflow: hidden; text-overflow: ellipsis; }
+
+        .nav-rapida {
+            display: flex;
+            gap: 4px;
+            padding: 7px 5px;
+            background: #050a14;
+            border-bottom: 1px solid #1d2d50;
+            align-items: center;
+        }
+        .btn-nav-item {
+            background: #112240;
+            border: 1px solid #1d2d50;
+            padding: 7px 2px;
+            border-radius: 50px;
+            white-space: nowrap;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            transition: 0.3s;
+            cursor: pointer;
+            flex: 1;
+            min-width: 0;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .btn-nav-item:hover { border-color: #ff0000; color: #ff0000; }
+
         .tvsx-tv { color: #ffffff; font-weight: 900; }
         .tvsx-s  { color: #ff0000; font-weight: 900; }
         .tvsx-x  { color: #ffffff; font-weight: 900; }
+
         .btn-curtir { transition: transform 0.2s; cursor: pointer; color: #ff0000; }
         .btn-curtir:active { transform: scale(1.4); }
         .num-curtidas { color: white !important; font-weight: bold; }
@@ -86,97 +107,75 @@
         .alerta-email { display:none; background:#4a0000; border:1px solid #ff0000; color:#ff6060; border-radius:8px; padding:12px 16px; margin-bottom:12px; font-size:14px; font-weight:bold; text-align:center; }
         .alerta-email.visivel { display:block; }
         .input-erro { border-color:#ff0000 !important; }
-        .post-card { background: #112240; border-radius: 16px; border: none; margin-bottom: 24px; overflow: hidden; }
-        .post-card img, .post-card-ouro img.w-full, .post-card-prata img.w-full, .post-card-bronze img.w-full { border: none !important; outline: none !important; box-shadow: none !important; }
-        img.w-full { border: none !important; outline: none !important; box-shadow: none !important; }
+        .post-card { background: #112240; border-radius: 16px; border: 1px solid #1d2d50; border-left: 4px solid #ff0000; margin-bottom: 24px; overflow: hidden; }
         .post-card-header { padding: 16px 16px 0 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .post-card-texto { padding: 0 16px 12px 16px; color: #e5e7eb; font-size: 1rem; }
         .post-card-footer { padding: 16px; border-top: 1px solid #1f2f4d; }
-
-        /* ══ VIDEO WRAPPER: sem borda nenhuma, largura 100vw, sem gaps ══ */
-        .video-wrapper {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
-            overflow: hidden;
-            margin-left: calc(-50vw + 50%);
-            outline: none !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-        .video-wrapper video,
-        .video-wrapper video:focus,
-        .video-wrapper video:active {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
-        }
-
+        .video-feed { width: 100%; height: 100vh; background: black; object-fit: cover; display: block; }
+        .video-wrapper { position: relative; width: 100vw; height: 100vh; background: #000; overflow: hidden; margin-left: calc(-50vw + 50%); }
         .video-skeleton { position: absolute; inset: 0; background: linear-gradient(90deg, #112240 25%, #1d2d50 50%, #112240 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; display: flex; align-items: center; justify-content: center; z-index: 1; }
         .video-skeleton svg { opacity: 0.4; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* ══ MEDALHAS ══ */
-        .post-card-ouro {
-            position: relative; background: #112240; border-radius: 16px; margin-bottom: 24px; overflow: visible !important;
-            border: none !important;
-            box-shadow: none !important;
+        #area-tvsx {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            z-index: 9998;
+            background: #000;
         }
-        .post-card-prata {
-            position: relative; background: #112240; border-radius: 16px; margin-bottom: 24px; overflow: visible !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-        .post-card-bronze {
-            position: relative; background: #112240; border-radius: 16px; margin-bottom: 24px; overflow: visible !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-
-        /* ══ BANNER PREMIAÇÃO: letras maiores ══ */
-        .banner-premiacao {
-            width: 100%; padding: 14px 16px; font-size: 20px; font-weight: 900; text-align: center;
-            letter-spacing: 0.3px; display: flex; align-items: center; justify-content: center;
-            gap: 10px; border-radius: 12px 12px 0 0;
-        }
-        .banner-ouro {
-            background: linear-gradient(90deg,#7a5800,#FFD700,#b8860b,#FFD700,#7a5800);
-            background-size: 300% 100%; animation: moveGrad 3s linear infinite; color: #1a0e00;
-        }
-        .banner-prata {
-            background: linear-gradient(90deg,#555,#C0C0C0,#888,#C0C0C0,#555);
-            background-size: 300% 100%; animation: moveGrad 3s linear infinite; color: #111;
-        }
-        .banner-bronze {
-            background: linear-gradient(90deg,#5a2800,#CD7F32,#8B4513,#CD7F32,#5a2800);
-            background-size: 300% 100%; animation: moveGrad 3s linear infinite; color: #1a0800;
-        }
-        @keyframes moveGrad { 0%{background-position:0% 50%} 100%{background-position:300% 50%} }
-        .medalha-badge {
-            position: absolute; top: -20px; left: -10px; font-size: 2.8rem;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8)); z-index: 10; pointer-events: none;
-            animation: pulseMedalha 1.8s ease-in-out infinite;
-        }
-        @keyframes pulseMedalha {
-            0%,100% { transform: scale(1) rotate(-8deg); }
-            50%      { transform: scale(1.18) rotate(5deg); }
-        }
-
-        /* ══ TV SX ══ */
-        #area-tvsx { display: none; position: fixed; top: 0; left: 0; z-index: 9998; background: #000; }
         #area-tvsx.show { display: block; }
+
         @media screen and (orientation: landscape) {
-            #area-tvsx.show { width: 100vw; height: 100vh; transform: none; }
+            #area-tvsx.show {
+                width: 100vw;
+                height: 100vh;
+                transform: none;
+            }
+        }
+
+        @media screen and (orientation: portrait) {
+            #area-tvsx.show {
+                width: 100vh;
+                height: 100vw;
+                top: 0;
+                left: 0;
+                transform-origin: top left;
+                transform: rotate(90deg) translateX(0%) translateY(-100%);
+            }
+        }
+
+        #tvsx-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        #btn-fechar-tvsx {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            background: rgba(0,0,0,0.85);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            font-size: 17px;
+            font-weight: 900;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            line-height: 1;
+        }
+        #btn-fechar-tvsx.show { display: flex; }
+
+        @media screen and (orientation: landscape) {
+            #btn-fechar-tvsx.show { top: 12px; right: 12px; bottom: auto; left: auto; }
         }
         @media screen and (orientation: portrait) {
-            #area-tvsx.show { width: 100vh; height: 100vw; top: 0; left: 0; transform-origin: top left; transform: rotate(90deg) translateX(0%) translateY(-100%); }
+            #btn-fechar-tvsx.show { bottom: 12px; right: 12px; top: auto; left: auto; }
         }
-        #tvsx-iframe { width: 100%; height: 100%; border: none; display: block; }
-        #btn-fechar-tvsx { display: none; position: fixed; z-index: 9999; background: rgba(0,0,0,0.85); border: 2px solid #ff0000; color: #ff0000; font-size: 17px; font-weight: 900; width: 38px; height: 38px; border-radius: 50%; align-items: center; justify-content: center; cursor: pointer; line-height: 1; }
-        #btn-fechar-tvsx.show { display: flex; }
-        @media screen and (orientation: landscape) { #btn-fechar-tvsx.show { top: 12px; right: 12px; bottom: auto; left: auto; } }
-        @media screen and (orientation: portrait) { #btn-fechar-tvsx.show { bottom: 12px; right: 12px; top: auto; left: auto; } }
     </style>
 </head>
 <body>
@@ -184,7 +183,7 @@
     <div id="area-tvsx">
         <iframe id="tvsx-iframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
-    <button id="btn-fechar-tvsx" onclick="fecharTVSX()">&#x2715;</button>
+    <button id="btn-fechar-tvsx" onclick="fecharTVSX()">✕</button>
 
     <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
@@ -195,8 +194,8 @@
         </div>
         <div class="sidebar-content">
             <nav class="space-y-4">
-                <button onclick="voltarHome()" class="w-full text-left p-4 hover:bg-red-900 rounded-lg transition font-bold flex items-center gap-3">&#x1F3E0; Feed Global</button>
-                <button id="btn-me-perfil" class="w-full text-left p-4 hover:bg-red-900 rounded-lg transition font-bold flex items-center gap-3">&#x1F464; Minha P&#225;gina</button>
+                <button onclick="voltarHome()" class="w-full text-left p-4 hover:bg-red-900 rounded-lg transition font-bold flex items-center gap-3">🏠 Feed Global</button>
+                <button id="btn-me-perfil" class="w-full text-left p-4 hover:bg-red-900 rounded-lg transition font-bold flex items-center gap-3">👤 Minha Página</button>
                 <hr class="border-gray-800">
                 <p class="text-gray-500 text-xs uppercase px-4 mb-2">Comunidade SX</p>
                 <div id="lista-usuarios-menu" class="space-y-2"></div>
@@ -212,11 +211,11 @@
             <div id="formulario-cadastro">
                 <div style="background: linear-gradient(135deg, #0a192f, #112240); border: 1px solid #ff0000; border-radius: 12px; padding: 16px 18px; margin-bottom: 20px; text-align: center;">
                     <p style="color: #ffffff; font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Seja bem vindo(a) a SX</p>
-                    <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin: 0;">Ap&#243;s colocar suas informa&#231;&#245;es e clicar em <strong style="color: white;">SE CADASTRAR</strong>, espere por <strong style="color: #ffffff;">10 a 15 segundos</strong> sem sair da tela de cadastro que automaticamente voc&#234; entrar&#225; na <strong style="color: white;">REDE SOCIAL SX</strong>.</p>
+                    <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin: 0;">Após colocar suas informações e clicar em <strong style="color: white;">SE CADASTRAR</strong>, espere por <strong style="color: #ffffff;">10 a 15 segundos</strong> sem sair da tela de cadastro que automaticamente você entrará na <strong style="color: white;">REDE SOCIAL SX</strong>.</p>
                 </div>
                 <div id="alerta-email-duplicado" class="alerta-email">
-                    &#x26A0;&#xFE0F; Este e-mail j&#225; est&#225; cadastrado.<br>
-                    <span style="font-size:12px;color:#ffaaaa;">Cada e-mail s&#243; pode ter uma conta na SX.</span>
+                    ⚠️ Este e-mail já está cadastrado.<br>
+                    <span style="font-size:12px;color:#ffaaaa;">Cada e-mail só pode ter uma conta na SX.</span>
                 </div>
                 <input type="text" id="n" placeholder="Nome Completo" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white outline-none focus:border-red-600">
                 <input type="email" id="e" placeholder="Seu melhor E-mail" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white outline-none focus:border-red-600" oninput="limparErroEmail()">
@@ -230,16 +229,16 @@
                 <button onclick="cadastrar()" id="btn-cadastrar" class="w-full p-3 rounded font-bold transition" style="background:#ff0000;">CADASTRAR</button>
             </div>
             <div id="sucesso-cadastro" class="hidden text-center py-10">
-                <div class="text-6xl mb-4">&#x2705;</div>
+                <div class="text-6xl mb-4">✅</div>
                 <h2 class="text-2xl font-bold text-green-500">Cadastro Enviado!</h2>
-                <p class="text-gray-400 mt-2">Suas informa&#231;&#245;es foram enviadas ao monitor.<br>Voc&#234; entrar&#225; automaticamente assim que for liberado.</p>
+                <p class="text-gray-400 mt-2">Suas informações foram enviadas ao monitor.<br>Você entrará automaticamente assim que for liberado.</p>
             </div>
         </div>
     </div>
 
     <div id="main-box" class="hidden">
         <header class="bg-[#112240] p-4 flex justify-between items-center border-b border-red-900 sticky top-0 z-50">
-            <button onclick="toggleMenu()" class="text-3xl text-red-600">&#x2630;</button>
+            <button onclick="toggleMenu()" class="text-3xl text-red-600">☰</button>
             <div onclick="voltarHome()" class="cursor-pointer flex items-center">
                 <span class="text-red-600 font-black text-3xl">S</span><span class="text-white font-black text-3xl">X</span>
             </div>
@@ -248,20 +247,20 @@
 
         <div id="nav-feed-global" class="nav-rapida sticky top-[73px] z-40">
             <button onclick="voltarHome()" id="btn-nav-feed" class="btn-nav-item" style="border-color:#ff0000;color:#ff0000;">Postar</button>
-            <button onclick="abrirVeiculos()" id="btn-nav-veiculos" class="btn-nav-item">Ve&#237;culos</button>
+            <button onclick="abrirVeiculos()" id="btn-nav-veiculos" class="btn-nav-item">Veículos</button>
             <button onclick="abrirTVSX()" id="btn-nav-tvsx" class="btn-nav-item">
                 <span class="tvsx-tv">TV </span><span class="tvsx-s">S</span><span class="tvsx-x">X</span>
             </button>
             <button onclick="abrirVestir()" id="btn-nav-vestir" class="btn-nav-item">Vestir</button>
-            <button onclick="abrirLojasLook()" id="btn-nav-lojas" class="btn-nav-item">Domic&#237;lio</button>
+            <button onclick="abrirLojasLook()" id="btn-nav-lojas" class="btn-nav-item">Domicílio</button>
         </div>
 
         <div id="area-perfil" class="hidden w-full mb-6 relative">
-            <button id="btn-confirmar-capa" class="hidden" onclick="confirmarUploadCapa()">&#x2705; SALVAR PARA TODOS</button>
+            <button id="btn-confirmar-capa" class="hidden" onclick="confirmarUploadCapa()">✅ SALVAR PARA TODOS</button>
             <div class="capa-container">
                 <img id="img-capa-view" src="https://images.unsplash.com/photo-1557683316-973673baf926" class="capa-img">
                 <label id="label-capa" class="btn-editar-capa hidden">
-                    <span>&#x1F4F7; Mudar Capa</span>
+                    <span>📷 Mudar Capa</span>
                     <input type="file" id="input-capa" accept="image/*" class="hidden" onchange="previaCapa(this)">
                 </label>
             </div>
@@ -278,8 +277,8 @@
                 </div>
                 <div class="flex flex-col gap-3">
                     <label class="btn-upload-elegant cursor-pointer">
-                        <span id="file-name" class="flex items-center gap-2">&#x2728; ADICIONAR M&#205;DIA INCR&#205;VEL</span>
-                        <input type="file" id="midia" accept="image/*,video/*" class="hidden" onchange="document.getElementById('file-name').innerText = '&#x2713; ' + this.files[0].name">
+                        <span id="file-name" class="flex items-center gap-2">✨ ADICIONAR MÍDIA INCRÍVEL</span>
+                        <input type="file" id="midia" accept="image/*,video/*" class="hidden" onchange="document.getElementById('file-name').innerText = '✓ ' + this.files[0].name">
                     </label>
                     <button onclick="postar()" id="btn-post" class="w-full btn-vermelho py-3 rounded-xl font-black uppercase">Publicar</button>
                 </div>
@@ -288,26 +287,26 @@
         </main>
 
         <div id="area-veiculos">
-            <div class="cls-header">Classificados <span style="color:red;">S</span><span style="color:white;">X</span> &#8212; Ve&#237;culos</div>
+            <div class="cls-header">Classificados <span style="color:red;">S</span><span style="color:white;">X</span> — Veículos</div>
             <div class="cls-container">
-                <div id="cls-status" class="cls-status cls-status-ok">&#x23F3; Iniciando...</div>
-                <button id="btnNovo" class="cls-btn cls-btn-novo" onclick="clsAbrirForm()" disabled>&#x1F697; NOVO AN&#218;NCIO</button>
+                <div id="cls-status" class="cls-status cls-status-ok">⏳ Iniciando...</div>
+                <button id="btnNovo" class="cls-btn cls-btn-novo" onclick="clsAbrirForm()" disabled>🚗 NOVO ANÚNCIO</button>
                 <div class="form-box-cls" id="cls-formulario">
-                    <label class="cls-label">&#x1F4C2; Categoria:</label>
-                    <select id="cls-categoria" class="cls-select"><option value="">Selecione...</option><option value="Carro">&#x1F697; Carro</option><option value="Moto">&#x1F3CD;&#xFE0F; Moto</option></select>
-                    <label class="cls-label">&#x1F699; Nome do Ve&#237;culo:</label><input type="text" id="cls-nome" class="cls-input" placeholder="Honda Civic">
-                    <label class="cls-label">&#x1F4C5; Ano:</label><input type="number" id="cls-ano" class="cls-input" placeholder="2020">
-                    <label class="cls-label">&#x1F4CD; Bairro:</label><input type="text" id="cls-bairro" class="cls-input" placeholder="Copacabana">
-                    <label class="cls-label">&#x1F30E; Estado:</label><input type="text" id="cls-estado" class="cls-input" placeholder="RJ">
-                    <label class="cls-label">&#x1F4B0; Pre&#231;o (R$):</label><input type="number" id="cls-preco" class="cls-input" placeholder="85000">
-                    <label class="cls-label">&#x1F4F1; WhatsApp (sem 55):</label><input type="text" id="cls-whatsapp" class="cls-input" placeholder="21987654321">
-                    <label class="cls-label">&#x1F4DD; Descri&#231;&#227;o:</label><textarea id="cls-descricao" class="cls-textarea" rows="3" placeholder="Descreva seu ve&#237;culo..."></textarea>
-                    <label class="cls-label">&#x1F4F8; Fotos e V&#237;deos (1-6):</label>
+                    <label class="cls-label">📂 Categoria:</label>
+                    <select id="cls-categoria" class="cls-select"><option value="">Selecione...</option><option value="Carro">🚗 Carro</option><option value="Moto">🏍️ Moto</option></select>
+                    <label class="cls-label">🚙 Nome do Veículo:</label><input type="text" id="cls-nome" class="cls-input" placeholder="Honda Civic">
+                    <label class="cls-label">📅 Ano:</label><input type="number" id="cls-ano" class="cls-input" placeholder="2020">
+                    <label class="cls-label">📍 Bairro:</label><input type="text" id="cls-bairro" class="cls-input" placeholder="Copacabana">
+                    <label class="cls-label">🌎 Estado:</label><input type="text" id="cls-estado" class="cls-input" placeholder="RJ">
+                    <label class="cls-label">💰 Preço (R$):</label><input type="number" id="cls-preco" class="cls-input" placeholder="85000">
+                    <label class="cls-label">📱 WhatsApp (sem 55):</label><input type="text" id="cls-whatsapp" class="cls-input" placeholder="21987654321">
+                    <label class="cls-label">📝 Descrição:</label><textarea id="cls-descricao" class="cls-textarea" rows="3" placeholder="Descreva seu veículo..."></textarea>
+                    <label class="cls-label">📸 Fotos e Vídeos (1-6):</label>
                     <input type="file" id="cls-midia" multiple accept="image/*,video/*" style="display:none;">
-                    <label for="cls-midia" class="upload-btn-cls">&#x1F4E4; ESCOLHER FOTOS/V&#205;DEOS</label>
+                    <label for="cls-midia" class="upload-btn-cls">📤 ESCOLHER FOTOS/VÍDEOS</label>
                     <div class="preview-cls" id="cls-preview"></div>
                     <div id="cls-contador" style="color:#ddd;">0/6 arquivos</div>
-                    <button onclick="clsAnunciar()" id="cls-btnPublicar" class="cls-btn" disabled style="margin-top:12px;">&#x1F680; PUBLICAR AN&#218;NCIO</button>
+                    <button onclick="clsAnunciar()" id="cls-btnPublicar" class="cls-btn" disabled style="margin-top:12px;">🚀 PUBLICAR ANÚNCIO</button>
                 </div>
                 <div id="cls-listaAnuncios"></div>
             </div>
@@ -319,11 +318,11 @@
 
         <div id="area-lojas-look">
             <div class="marquee-container-lok">
-                <div class="marquee-text-lok">Cadastre-se e fa&#231;a parte da <span class="s-red">S</span><span class="x-white">X</span> &#224; domic&#237;lio, basta pagar uma taxa mensal de R$17,00 (Chave PIX: 21985492615). Ap&#243;s o cadastro, seus servi&#231;os estar&#227;o online para os usu&#225;rios da <span class="s-red">S</span><span class="x-white">X</span> contratarem seus servi&#231;os. Ap&#243;s o cadastro, espere aparecer seus dados de contrata&#231;&#227;o na p&#225;gina acessando o bot&#227;o profissionais; assim que aparecer, &#233; s&#243; voc&#234; fazer o PIX e estar&#225; liberado! --- Para mais informa&#231;&#245;es entre em contato pelo WhatsApp da <span class="s-red">S</span>X 21985492615.</div>
+                <div class="marquee-text-lok">Cadastre-se e faça parte da <span class="s-red">S</span><span class="x-white">X</span> à domicílio, basta pagar uma taxa mensal de R$17,00 (Chave PIX: 21985492615). Após o cadastro, seus serviços estarão online para os usuários da <span class="s-red">S</span><span class="x-white">X</span> contratarem seus serviços. Após o cadastro, espere aparecer seus dados de contratação na página acessando o botão profissionais; assim que aparecer, é só você fazer o PIX e estará liberado! --- Para mais informações entre em contato pelo WhatsApp da <span class="s-red">S</span>X 21985492615.</div>
             </div>
             <div class="p-4 md:p-8">
                 <div class="text-center mb-10">
-                    <button onclick="toggleCadastroLok()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-full shadow-lg transform hover:scale-105 transition-all text-lg border-2 border-white/20">&#x1F680; QUERO ME CADASTRAR AGORA</button>
+                    <button onclick="toggleCadastroLok()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-full shadow-lg transform hover:scale-105 transition-all text-lg border-2 border-white/20">🚀 QUERO ME CADASTRAR AGORA</button>
                 </div>
                 <div id="caixa-cadastro-lok" class="sx-card p-8 w-full max-w-md shadow-2xl mx-auto mb-20 hidden">
                     <div class="text-center mb-6">
@@ -334,22 +333,22 @@
                         <input type="text" id="lok-n" placeholder="Nome Completo" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white" required>
                         <input type="text" id="lok-cpf" maxlength="14" oninput="mascaraCPF(this)" placeholder="CPF (123.123.123-34)" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white" required>
                         <input type="tel" id="lok-t" placeholder="Telefone/WhatsApp (5511999999999)" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white" required>
-                        <input type="text" id="lok-end" placeholder="Rua, n&#250;mero, complemento, cidade, Estado" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white" required>
+                        <input type="text" id="lok-end" placeholder="Rua, número, complemento, cidade, Estado" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white" required>
                         <select id="lok-p" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white" required>
-                            <option value="">Selecione sua Profiss&#227;o</option>
-                            <optgroup label="Beleza e Est&#233;tica"><option value="Cabeleireiro">Cabeleireiro(a)</option><option value="Manicure">Manicure/Pedicure</option><option value="Maquiadora">Maquiadora</option><option value="Depiladora">Depiladora</option><option value="Esteticista">Esteticista</option><option value="Barbeiro">Barbeiro</option></optgroup>
-                            <optgroup label="Manuten&#231;&#227;o e Reformas"><option value="Eletricista">Eletricista</option><option value="Hidr&#225;ulico">Encanador/Hidr&#225;ulico</option><option value="Pintor">Pintor</option><option value="Marceneiro">Marceneiro</option><option value="Pedreiro">Pedreiro</option><option value="Serralheiro">Serralheiro</option><option value="T&#233;cnico de Ar Condicionado">T&#233;cnico de Ar Condicionado</option><option value="Marido de Aluguel">Marido de Aluguel</option></optgroup>
-                            <optgroup label="Servi&#231;os Dom&#233;sticos"><option value="Faxineira">Faxineira/Diarista</option><option value="Passadeira">Passadeira</option><option value="Cozinheira">Cozinheira</option><option value="Jardineiro">Jardineiro</option><option value="Piscineiro">Piscineiro</option></optgroup>
-                            <optgroup label="Outros"><option value="Bombeiro">Bombeiro Civil</option><option value="Cuidador de Idosos">Cuidador de Idosos</option><option value="Bab&#225;">Bab&#225;</option><option value="Pet Sitter">Pet Sitter (Cuidador de Pets)</option><option value="Massagista">Massagista/Massoterapeuta</option></optgroup>
+                            <option value="">Selecione sua Profissão</option>
+                            <optgroup label="Beleza e Estética"><option value="Cabeleireiro">Cabeleireiro(a)</option><option value="Manicure">Manicure/Pedicure</option><option value="Maquiadora">Maquiadora</option><option value="Depiladora">Depiladora</option><option value="Esteticista">Esteticista</option><option value="Barbeiro">Barbeiro</option></optgroup>
+                            <optgroup label="Manutenção e Reformas"><option value="Eletricista">Eletricista</option><option value="Hidráulico">Encanador/Hidráulico</option><option value="Pintor">Pintor</option><option value="Marceneiro">Marceneiro</option><option value="Pedreiro">Pedreiro</option><option value="Serralheiro">Serralheiro</option><option value="Técnico de Ar Condicionado">Técnico de Ar Condicionado</option><option value="Marido de Aluguel">Marido de Aluguel</option></optgroup>
+                            <optgroup label="Serviços Domésticos"><option value="Faxineira">Faxineira/Diarista</option><option value="Passadeira">Passadeira</option><option value="Cozinheira">Cozinheira</option><option value="Jardineiro">Jardineiro</option><option value="Piscineiro">Piscineiro</option></optgroup>
+                            <optgroup label="Outros"><option value="Bombeiro">Bombeiro Civil</option><option value="Cuidador de Idosos">Cuidador de Idosos</option><option value="Babá">Babá</option><option value="Pet Sitter">Pet Sitter (Cuidador de Pets)</option><option value="Massagista">Massagista/Massoterapeuta</option></optgroup>
                         </select>
                         <label class="text-xs text-gray-400 mb-1 block">Foto de Perfil:</label>
                         <input type="file" id="lok-f" accept="image/*" class="w-full mb-4 text-sm text-gray-400 file:bg-red-600 file:text-white file:rounded-full file:border-none file:px-4 file:py-1">
-                        <button onclick="cadastrarLok()" id="lok-btn" class="w-full bg-red-600 p-3 rounded font-bold hover:bg-red-700 transition">&#x1F4E4; ENVIAR PARA MONITOR</button>
+                        <button onclick="cadastrarLok()" id="lok-btn" class="w-full bg-red-600 p-3 rounded font-bold hover:bg-red-700 transition">📤 ENVIAR PARA MONITOR</button>
                     </div>
                     <div id="sucesso-lok" class="hidden text-center py-10">
-                        <div class="text-6xl mb-4">&#x2705;</div>
+                        <div class="text-6xl mb-4">✅</div>
                         <h2 class="text-2xl font-bold text-green-500">Cadastro Enviado!</h2>
-                        <p class="text-gray-400 mt-2">Aguardando aprova&#231;&#227;o no monitor...</p>
+                        <p class="text-gray-400 mt-2">Aguardando aprovação no monitor...</p>
                         <button onclick="fecharSucessoLok()" class="mt-6 text-red-500 underline">Fechar</button>
                     </div>
                 </div>
@@ -357,7 +356,7 @@
                 <div class="max-w-6xl mx-auto">
                     <div class="text-center mb-12">
                         <span class="text-red-600 font-bold text-5xl">S</span><span class="text-white font-bold text-5xl">X</span>
-                        <h1 class="text-3xl mt-4">Profissionais Dispon&#237;veis</h1>
+                        <h1 class="text-3xl mt-4">Profissionais Disponíveis</h1>
                         <div id="lok-totalAprovados" class="text-2xl mt-4 font-bold text-green-400">Conectando...</div>
                     </div>
                     <div id="lok-listaAprovados" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
@@ -366,7 +365,7 @@
         </div>
     </div>
 
-    <button id="btn-flutuante-admin" onclick="abrirMonitorAnuncios()">&#x1F4E2; An&#250;ncios</button>
+    <button id="btn-flutuante-admin" onclick="abrirMonitorAnuncios()">📢 Anúncios</button>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -393,51 +392,36 @@
         let userLogado=null, idLogado=null, unsubFeed=null, arquivoCapaPendente=null;
         let curtidasNestaSessao=new Set();
         let clsArquivos=[], clsIsSubmitting=false;
-        let isAdmin=false, anunciosAtivos=[], lokListaCarregada=false, intervaloVerificacao=null;
+        let isAdmin=false, anunciosAtivos=[], lokListaCarregada=false;
+        // intervaloVerificacao agora guarda a função de cancelamento do onSnapshot
+        let intervaloVerificacao=null;
 
+        // ── Vídeos do feed ──
         const videoCache=new Set();
-        const videosRegistrados=new WeakSet();
         let videoAtual=null;
-        let somDesbloqueado=false;
 
         const videoObserver=new IntersectionObserver(entries=>{
             entries.forEach(entry=>{
                 const video=entry.target;
                 if(document.getElementById('area-tvsx').classList.contains('show')) return;
                 if(entry.isIntersecting){
-                    // pausa todos os outros sem causar reflow
-                    document.querySelectorAll('video.video-feed').forEach(v=>{
-                        if(v!==video && !v.paused){v.pause();v.muted=true;}
-                    });
+                    document.querySelectorAll('video.video-feed').forEach(v=>{ if(v!==video){v.pause();v.muted=true;} });
                     videoAtual=video;
                     if(video.readyState<2){video.preload='auto';video.load();}
-                    // esconde skeleton assim que tiver dados suficientes
-                    const sk=video.parentElement?.querySelector('.video-skeleton');
-                    const esconderSk=()=>{
-                        if(sk){sk.style.opacity='0';setTimeout(()=>{if(sk)sk.style.display='none';},200);}
-                    };
-                    if(video.readyState>=2){
-                        esconderSk();
-                    } else {
-                        video.addEventListener('loadeddata',esconderSk,{once:true});
-                    }
-                    // tenta com som; se bloqueado pelo browser, toca mudo
                     video.muted=false;
-                    const tentarPlay=()=>{
-                        video.play().catch(()=>{
-                            video.muted=true;
-                            video.play().catch(()=>{});
-                        });
-                    };
-                    tentarPlay();
-                } else {
-                    if(!video.paused) video.pause();
-                    video.muted=true;
+                    video.play().catch(()=>{video.muted=true;video.play().catch(()=>{});});
                     const sk=video.parentElement?.querySelector('.video-skeleton');
-                    if(sk && video.readyState<2){sk.style.display='flex';sk.style.opacity='1';}
+                    if(sk){
+                        const hide=()=>{sk.style.opacity='0';setTimeout(()=>{if(sk)sk.style.display='none';},300);video.removeEventListener('canplay',hide);};
+                        video.readyState>=3?hide():video.addEventListener('canplay',hide);
+                    }
+                } else {
+                    video.pause(); video.muted=true;
+                    const sk=video.parentElement?.querySelector('.video-skeleton');
+                    if(sk&&video.readyState<2){sk.style.display='flex';sk.style.opacity='1';}
                 }
             });
-        },{threshold:0.5});
+        },{threshold:0.6});
 
         const preloadObserver=new IntersectionObserver(entries=>{
             entries.forEach(entry=>{
@@ -455,26 +439,16 @@
             });
         },{rootMargin:'1200px 0px',threshold:0});
 
-        // desbloqueia som no primeiro toque/clique do usuário
-        const desbloqueioSom=()=>{
-            if(somDesbloqueado) return;
-            somDesbloqueado=true;
-            if(videoAtual && videoAtual.paused===false){
-                videoAtual.muted=false;
-            }
-            document.querySelectorAll('video.video-feed').forEach(v=>{v.muted=false;});
-        };
+        const desbloqueioSom=()=>{ document.querySelectorAll('video.video-feed').forEach(v=>{v.muted=false;}); };
         document.addEventListener('click',desbloqueioSom,{once:true});
         document.addEventListener('touchstart',desbloqueioSom,{once:true});
 
         function registrarVideo(v){
-            // evita registrar o mesmo elemento duas vezes (evita tremida por re-observe)
-            if(videosRegistrados.has(v)) return;
-            videosRegistrados.add(v);
             v.preload='none'; v.muted=true;
             preloadObserver.observe(v); videoObserver.observe(v);
         }
 
+        // ── TV SX ──
         const TVSX_URL='https://sadministrador.github.io/tvsx/index10.html';
 
         window.abrirTVSX=()=>{
@@ -518,6 +492,10 @@
             document.getElementById('e').focus();
         }
 
+        // ══════════════════════════════════════════════════════
+        // CORREÇÃO: inicializar — sem alteração na lógica,
+        // só chama verificarAprovacao que agora usa onSnapshot
+        // ══════════════════════════════════════════════════════
         async function inicializar(){
             const emailSalvo=localStorage.getItem('sx_email');
             if(!emailSalvo){document.getElementById('login-box').classList.remove('hidden');return;}
@@ -527,30 +505,55 @@
                 if(!snap.empty){
                     const dados=snap.docs[0].data();
                     const liberado=dados.status==="aprovado"||dados.status==="ativo";
-                    if(liberado){idLogado=snap.docs[0].id;userLogado=dados;entrarNaPlataforma();}
-                    else{verificarAprovacao(emailSalvo);}
-                } else{localStorage.removeItem('sx_email');document.getElementById('login-box').classList.remove('hidden');}
-            }catch(e){document.getElementById('login-box').classList.remove('hidden');}
+                    if(liberado){
+                        idLogado=snap.docs[0].id;
+                        userLogado=dados;
+                        entrarNaPlataforma();
+                    } else {
+                        // usuário pendente: ouve em tempo real
+                        verificarAprovacao(emailSalvo);
+                    }
+                } else {
+                    localStorage.removeItem('sx_email');
+                    document.getElementById('login-box').classList.remove('hidden');
+                }
+            }catch(e){
+                document.getElementById('login-box').classList.remove('hidden');
+            }
         }
 
+        // ══════════════════════════════════════════════════════
+        // CORREÇÃO PRINCIPAL: onSnapshot em vez de setInterval
+        // Reage instantaneamente quando o monitor aprova
+        // ══════════════════════════════════════════════════════
         function verificarAprovacao(email){
-            if(intervaloVerificacao)clearInterval(intervaloVerificacao);
-            intervaloVerificacao=setInterval(async()=>{
-                try{
-                    const q=query(collection(fsdb,"usuariosAprovados"),where("email","==",email));
-                    const snap=await getDocs(q);
-                    if(!snap.empty){
-                        const dados=snap.docs[0].data();
-                        if(dados.status==="aprovado"||dados.status==="ativo"){
-                            clearInterval(intervaloVerificacao);idLogado=snap.docs[0].id;userLogado=dados;entrarNaPlataforma();
+            // Cancela listener anterior se existir
+            if(intervaloVerificacao){
+                intervaloVerificacao();
+                intervaloVerificacao=null;
+            }
+            const q=query(collection(fsdb,"usuariosAprovados"),where("email","==",email));
+            // onSnapshot retorna função de cancelamento — guardamos em intervaloVerificacao
+            intervaloVerificacao=onSnapshot(q, snap=>{
+                if(!snap.empty){
+                    const d=snap.docs[0];
+                    const dados=d.data();
+                    if(dados.status==="aprovado"||dados.status==="ativo"){
+                        // Cancela o listener assim que aprovado
+                        if(intervaloVerificacao){
+                            intervaloVerificacao();
+                            intervaloVerificacao=null;
                         }
+                        idLogado=d.id;
+                        userLogado=dados;
+                        entrarNaPlataforma();
                     }
-                }catch(e){}
-            },2000);
+                }
+            });
         }
 
         function entrarNaPlataforma(){
-            if(intervaloVerificacao)clearInterval(intervaloVerificacao);
+            if(intervaloVerificacao){intervaloVerificacao();intervaloVerificacao=null;}
             isAdmin=(userLogado.email==="admin@sx.com");
             document.getElementById('login-box').classList.add('hidden');
             document.getElementById('main-box').classList.remove('hidden');
@@ -595,6 +598,7 @@
                 localStorage.setItem('sx_email',email);
                 document.getElementById('formulario-cadastro').classList.add('hidden');
                 document.getElementById('sucesso-cadastro').classList.remove('hidden');
+                // Inicia escuta em tempo real imediatamente após cadastro
                 verificarAprovacao(email);
             }catch(e){alert("Erro ao enviar cadastro.");btn.disabled=false;btn.innerText="ENVIAR PARA O MONITOR";}
         };
@@ -670,40 +674,6 @@
             return`<div style="background:linear-gradient(135deg,#1a0a2e,#0d1f3c);border-radius:16px;border:2px solid #ff0000;margin-bottom:24px;overflow:hidden;box-shadow:0 0 20px rgba(255,0,0,0.2);"><div style="background:rgba(255,0,0,0.9);color:white;font-size:10px;font-weight:900;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;display:inline-block;margin:10px 10px 0 10px;">Patrocinado</div>${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">${logoHtml}<span style="font-size:13px;font-weight:900;color:#ff6060;text-transform:uppercase;">${ad.loja||''}</span></div><div style="font-size:18px;font-weight:900;color:#fff;text-transform:uppercase;margin-bottom:6px;">${ad.titulo||''}</div><div style="font-size:14px;color:#aac;line-height:1.5;">${ad.descricao||''}</div>${linkHtml}</div></div>`;
         }
 
-        // ══ CLASSIFICAR MEDALHAS por curtidas ══
-        function classificarMedalha(postsValidos) {
-            const sorted = [...postsValidos].sort((a,b)=>(b.dados.curtidas||0)-(a.dados.curtidas||0));
-            const medalhaMap = {};
-            if(sorted.length > 0 && (sorted[0].dados.curtidas||0) > 0) medalhaMap[sorted[0].id] = 'ouro';
-            if(sorted.length > 1 && (sorted[1].dados.curtidas||0) > 0) medalhaMap[sorted[1].id] = 'prata';
-            if(sorted.length > 2 && (sorted[2].dados.curtidas||0) > 0) medalhaMap[sorted[2].id] = 'bronze';
-            return medalhaMap;
-        }
-
-        function gerarCardComMedalha(id, p, midiaHtml, comentsHtml, medalha) {
-            const configs = {
-                ouro:   { classe:'post-card-ouro',   emoji:'&#x1F947;', banner:'banner-ouro',   valor:'R$ 50,00' },
-                prata:  { classe:'post-card-prata',  emoji:'&#x1F948;', banner:'banner-prata',  valor:'R$ 20,00' },
-                bronze: { classe:'post-card-bronze', emoji:'&#x1F949;', banner:'banner-bronze', valor:'R$ 10,00' },
-            };
-            const footerHtml = `<div class="post-card-footer"><div class="max-h-32 overflow-y-auto mb-3">${comentsHtml}</div><div class="flex gap-2"><input id="input-coment-${id}" placeholder="Escreva algo para este post..." class="flex-1 comment-box p-2 text-sm outline-none focus:border-red-600"><button onclick="salvarComentario('${id}')" class="bg-red-600 px-4 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-all">Salvar</button></div></div>`;
-            const headerHtml = `<div class="post-card-header"><div class="flex items-center gap-3"><img src="${p.foto}" class="w-12 h-12 rounded-full object-cover border-2 border-red-600"><span class="font-black text-red-600 text-sm uppercase">${p.nome}</span></div><div onclick="curtirPost('${id}',this)" class="btn-curtir text-2xl">&#x2764;&#xFE0F; <span class="num-curtidas text-xs ml-1">${p.curtidas||0}</span></div></div>`;
-            const textoHtml = p.texto ? `<p class="post-card-texto">${p.texto}</p>` : '';
-
-            const semBorda = midiaHtml.includes('video-wrapper') ? ' style="border:none!important;"' : '';
-            if (!medalha) {
-                return `<div class="post-card"${semBorda}>${headerHtml}${textoHtml}${midiaHtml}${footerHtml}</div>`;
-            }
-            const cfg = configs[medalha];
-            return `<div class="${cfg.classe}" style="margin-left:8px;margin-right:8px;">
-                <span class="medalha-badge">${cfg.emoji}</span>
-                <div class="banner-premiacao ${cfg.banner}">
-                    <span>Voc&#234; est&#225; ganhando <strong>${cfg.valor}</strong></span>
-                </div>
-                ${headerHtml}${textoHtml}${midiaHtml}${footerHtml}
-            </div>`;
-        }
-
         function carregarFeed(filtroNome=null){
             let q=query(collection(fsdb,"posts"),orderBy("data","desc"));
             if(filtroNome)q=query(collection(fsdb,"posts"),where("nome","==",filtroNome),orderBy("data","desc"));
@@ -712,22 +682,19 @@
                 const f=document.getElementById('feed');f.innerHTML="";
                 const postsValidos=[];
                 snap.forEach(d=>{const p=d.data();if(p.tipo!=='classificado')postsValidos.push({id:d.id,dados:p});});
-                const medalhaMap = classificarMedalha(postsValidos);
                 let idxAd=0;
                 postsValidos.forEach((item,i)=>{
                     const{id,dados:p}=item;
                     let midiaHtml="";
                     if(p.midia){
                         if(p.tipo==='video'){
-                            /* Vídeo: sem borda, sem outline, largura 100vw, sem piscada */
-                            midiaHtml=`<div class="video-wrapper"><div class="video-skeleton"><svg width="64" height="64" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div><video src="${p.midia}" loop playsinline preload="none" class="video-feed" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;border:none;outline:none;"></video></div>`;
+                            midiaHtml=`<div class="video-wrapper"><div class="video-skeleton"><svg width="64" height="64" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div><video src="${p.midia}" loop playsinline preload="none" class="video-feed" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;" oncanplay="this.previousElementSibling.style.opacity='0';setTimeout(()=>this.previousElementSibling.style.display='none',300);"></video></div>`;
                         } else {
                             midiaHtml=`<img src="${p.midia}" loading="lazy" class="w-full rounded-xl mt-4 object-cover">`;
                         }
                     }
                     const comentsHtml=(p.comentarios||[]).map(c=>`<div class="text-xs bg-black/30 p-2 rounded mb-1"><b class="text-red-500">${c.autor}:</b> ${c.texto}</div>`).join("");
-                    const medalha = medalhaMap[id] || null;
-                    f.innerHTML += gerarCardComMedalha(id, p, midiaHtml, comentsHtml, medalha);
+                    f.innerHTML+=`<div class="post-card"><div class="post-card-header"><div class="flex items-center gap-3"><img src="${p.foto}" class="w-12 h-12 rounded-full object-cover border-2 border-red-600"><span class="font-black text-red-600 text-sm uppercase">${p.nome}</span></div><div onclick="curtirPost('${id}',this)" class="btn-curtir text-2xl">❤️ <span class="num-curtidas text-xs ml-1">${p.curtidas||0}</span></div></div>${p.texto?`<p class="post-card-texto">${p.texto}</p>`:''}${midiaHtml}<div class="post-card-footer"><div class="max-h-32 overflow-y-auto mb-3">${comentsHtml}</div><div class="flex gap-2"><input id="input-coment-${id}" placeholder="Escreva algo para este post..." class="flex-1 comment-box p-2 text-sm outline-none focus:border-red-600"><button onclick="salvarComentario('${id}')" class="bg-red-600 px-4 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-all">Salvar</button></div></div></div>`;
                     if((i+1)%5===0&&anunciosAtivos.length>0){f.innerHTML+=gerarHtmlAnuncio(anunciosAtivos[idxAd%anunciosAtivos.length]);idxAd++;}
                 });
                 document.querySelectorAll('.video-feed').forEach(v=>{registrarVideo(v);});
@@ -771,7 +738,7 @@
             try{
                 const sr=stRef(storage,'capas/'+idLogado);await uploadBytes(sr,arquivoCapaPendente);
                 const url=await getDownloadURL(sr);await updateDoc(doc(fsdb,"usuariosAprovados",idLogado),{capa:url});
-                alert("SUCESSO! SUA CAPA AGORA E VISIVEL PARA TODOS.");btn.classList.add('hidden');btn.innerText="OK SALVAR PARA TODOS";
+                alert("SUCESSO! SUA CAPA AGORA É VISÍVEL PARA TODOS.");btn.classList.add('hidden');btn.innerText="✅ SALVAR PARA TODOS";
             }catch(err){alert("Erro ao salvar.");}
         };
 
@@ -782,14 +749,14 @@
             if(file){const sr=stRef(storage,'posts/'+Date.now());await uploadBytes(sr,file);url=await getDownloadURL(sr);tipo=file.type.includes('video')?'video':'foto';}
             await addDoc(collection(fsdb,"posts"),{nome:userLogado.nome,foto:userLogado.foto,texto:txt,midia:url,tipo:tipo,data:new Date(),curtidas:0,comentarios:[]});
             document.getElementById('txt').value="";document.getElementById('midia').value="";
-            document.getElementById('file-name').innerText="ADICIONAR MIDIA INCRIVEL";btn.disabled=false;btn.innerText="Publicar";
+            document.getElementById('file-name').innerText="✨ ADICIONAR MÍDIA INCRÍVEL";btn.disabled=false;btn.innerText="Publicar";
         };
 
         window.curtirPost=async(id,btn)=>{
             if(curtidasNestaSessao.has(id))return;
             const refDoc=doc(fsdb,"posts",id),snap=await getDoc(refDoc),total=(snap.data().curtidas||0)+1;
             await updateDoc(refDoc,{curtidas:total});curtidasNestaSessao.add(id);
-            btn.innerHTML=`&#x2764;&#xFE0F; <span class="num-curtidas text-xs ml-1">${total}</span>`;
+            btn.innerHTML=`❤️ <span class="num-curtidas text-xs ml-1">${total}</span>`;
         };
 
         window.salvarComentario=async(id)=>{
@@ -798,26 +765,29 @@
             input.value="";
         };
 
+        // ── Classificados ──
         function clsIniciar(){
-            clsUpdateStatus('CONECTADO! Pode anunciar.','ok');
+            clsUpdateStatus('✅ CONECTADO! Pode anunciar.','ok');
             document.getElementById('btnNovo').disabled=false;
             const q=query(collection(fsdb,'posts'),where('publicado','==',true),where('tipo','==','classificado'),orderBy('data','desc'));
             onSnapshot(q,snap=>{
                 const lista=document.getElementById('cls-listaAnuncios');
-                lista.innerHTML=snap.empty?'<p style="text-align:center;color:#ccc;padding:20px;">Nenhum anuncio publicado ainda...</p>':'';
+                lista.innerHTML=snap.empty?'<p style="text-align:center;color:#ccc;padding:20px;">Nenhum anúncio publicado ainda...</p>':'';
                 snap.forEach(ds=>{
                     const d=ds.data(),midias=d.midia||[];
                     const nomeVeiculo=(d.nome||'')+(d.ano?' '+d.ano:'')+(d.categoria?' ('+d.categoria+')':'');
-                    const msgVeiculo=encodeURIComponent('Ola! Vi seu anuncio no SX Classificados! Veiculo: '+nomeVeiculo+(d.preco?' Preco: R$ '+Number(d.preco).toLocaleString('pt-BR'):'')+(([d.bairro,d.estado].filter(Boolean).length?' Local: '+[d.bairro,d.estado].filter(Boolean).join(', '):'')+' O veiculo ainda esta disponivel?'));
-                    lista.innerHTML+=`<div class="anuncio-cls"><span class="badge-publicado">PUBLICADO</span><h3>${d.nome||''} (${d.ano||''}) - ${d.categoria||''}</h3><p>${d.descricao||''}</p><p><b>${d.bairro||''}, ${d.estado||''}</b> | <b>R$ ${Number(d.preco||0).toLocaleString('pt-br')}</b></p><a href="https://wa.me/55${d.whatsapp||''}?text=${msgVeiculo}" target="_blank"><button class="cls-btn" style="background:#25D366;padding:10px 20px;margin-top:10px;">WhatsApp</button></a><div class="midia-grid-cls">${midias.map(url=>{const isVid=url.includes('.mp4')||url.includes('.mov')||url.includes('.webm')||url.includes('video');return isVid?`<video src="${url}" loop playsinline preload="none" style="max-width:140px;height:110px;border-radius:8px;cursor:pointer;" onclick="this.muted=!this.muted;this.paused?this.play():this.pause()"></video>`:`<img src="${url}" loading="lazy" onclick="clsAbrirGaleria('${url}')" title="Clique para ampliar">`;}).join('')}</div></div>`;
+                    const msgVeiculo=encodeURIComponent('Olá! Vi seu anúncio no *SX Classificados*! 🚗\n*Veículo:* '+nomeVeiculo+'\n'+(d.preco?'*Preço:* R$ '+Number(d.preco).toLocaleString('pt-BR')+'\n':'')+([d.bairro,d.estado].filter(Boolean).length?'*Local:* '+[d.bairro,d.estado].filter(Boolean).join(', ')+'\n':'')+'\nO veículo ainda está disponível?');
+                    lista.innerHTML+=`<div class="anuncio-cls"><span class="badge-publicado">✅ PUBLICADO</span><h3>🚗 ${d.nome||''} (${d.ano||''}) — ${d.categoria||''}</h3><p>${d.descricao||''}</p><p><b>📍 ${d.bairro||''}, ${d.estado||''}</b> | <b>💰 R$ ${Number(d.preco||0).toLocaleString('pt-br')}</b></p><a href="https://wa.me/55${d.whatsapp||''}?text=${msgVeiculo}" target="_blank"><button class="cls-btn" style="background:#25D366;padding:10px 20px;margin-top:10px;">📱 WhatsApp</button></a><div class="midia-grid-cls">${midias.map(url=>{const isVid=url.includes('.mp4')||url.includes('.mov')||url.includes('.webm')||url.includes('video');return isVid?`<video src="${url}" loop playsinline preload="none" style="max-width:140px;height:110px;border-radius:8px;cursor:pointer;" onclick="this.muted=!this.muted;this.paused?this.play():this.pause()"></video>`:`<img src="${url}" loading="lazy" onclick="clsAbrirGaleria('${url}')" title="Clique para ampliar">`;}).join('')}</div></div>`;
                 });
             },()=>{
                 onSnapshot(query(collection(fsdb,'posts'),where('publicado','==',true),where('tipo','==','classificado')),snap2=>{
                     const lista=document.getElementById('cls-listaAnuncios');
-                    lista.innerHTML=snap2.empty?'<p style="text-align:center;color:#ccc;padding:20px;">Nenhum anuncio publicado ainda...</p>':'';
+                    lista.innerHTML=snap2.empty?'<p style="text-align:center;color:#ccc;padding:20px;">Nenhum anúncio publicado ainda...</p>':'';
                     snap2.forEach(ds=>{
                         const d=ds.data(),midias=d.midia||[];
-                        lista.innerHTML+=`<div class="anuncio-cls"><h3>${d.nome||''} (${d.ano||''}) - ${d.categoria||''}</h3><p>${d.descricao||''}</p><p><b>${d.bairro||''}, ${d.estado||''}</b> | <b>R$ ${Number(d.preco||0).toLocaleString('pt-br')}</b></p><a href="https://wa.me/55${d.whatsapp||''}" target="_blank"><button class="cls-btn" style="background:#25D366;padding:10px 20px;">WhatsApp</button></a><div class="midia-grid-cls">${midias.map(url=>`<img src="${url}" loading="lazy" onclick="clsAbrirGaleria('${url}')">`).join('')}</div></div>`;
+                        const nomeVeiculo=(d.nome||'')+(d.ano?' '+d.ano:'')+(d.categoria?' ('+d.categoria+')':'');
+                        const msgVeiculo=encodeURIComponent('Olá! Vi seu anúncio no *SX Classificados*! 🚗\n*Veículo:* '+nomeVeiculo+'\n'+(d.preco?'*Preço:* R$ '+Number(d.preco).toLocaleString('pt-BR')+'\n':'')+([d.bairro,d.estado].filter(Boolean).length?'*Local:* '+[d.bairro,d.estado].filter(Boolean).join(', ')+'\n':'')+'\nO veículo ainda está disponível?');
+                        lista.innerHTML+=`<div class="anuncio-cls"><h3>🚗 ${d.nome||''} (${d.ano||''}) — ${d.categoria||''}</h3><p>${d.descricao||''}</p><p><b>📍 ${d.bairro||''}, ${d.estado||''}</b> | <b>💰 R$ ${Number(d.preco||0).toLocaleString('pt-br')}</b></p><a href="https://wa.me/55${d.whatsapp||''}?text=${msgVeiculo}" target="_blank"><button class="cls-btn" style="background:#25D366;padding:10px 20px;">📱 WhatsApp</button></a><div class="midia-grid-cls">${midias.map(url=>`<img src="${url}" loading="lazy" onclick="clsAbrirGaleria('${url}')">`).join('')}</div></div>`;
                     });
                 });
             });
@@ -832,7 +802,7 @@
         window.clsAbrirForm=()=>{document.getElementById('cls-formulario').style.display='block';document.getElementById('cls-formulario').scrollIntoView({behavior:'smooth'});};
         document.getElementById('cls-midia').addEventListener('change',e=>{
             const novos=Array.from(e.target.files);
-            if(clsArquivos.length+novos.length>6)return alert('Maximo 6 arquivos!');
+            if(clsArquivos.length+novos.length>6)return alert('Máximo 6 arquivos!');
             clsArquivos=[...clsArquivos,...novos];clsShowPreview();
             document.getElementById('cls-contador').textContent=clsArquivos.length+'/6 arquivos';
             document.getElementById('cls-btnPublicar').disabled=false;e.target.value='';
@@ -843,7 +813,7 @@
                 const reader=new FileReader();
                 reader.onload=e=>{
                     const isVideo=file.type.startsWith('video/');
-                    preview.innerHTML+=`<div style="position:relative;">${isVideo?`<video src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;"></video>`:`<img src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;">`}<button onclick="clsRemoverArquivo(${i})" style="position:absolute;top:-5px;right:-5px;background:red;color:white;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:12px;">x</button></div>`;
+                    preview.innerHTML+=`<div style="position:relative;">${isVideo?`<video src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;"></video>`:`<img src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;">`}<button onclick="clsRemoverArquivo(${i})" style="position:absolute;top:-5px;right:-5px;background:red;color:white;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:12px;">×</button></div>`;
                 };
                 reader.readAsDataURL(file);
             });
@@ -855,16 +825,16 @@
         };
         window.clsAnunciar=async()=>{
             if(clsIsSubmitting)return;clsIsSubmitting=true;
-            const btn=document.getElementById('cls-btnPublicar');btn.textContent='Enviando...';btn.disabled=true;
+            const btn=document.getElementById('cls-btnPublicar');btn.textContent='⏳ Enviando...';btn.disabled=true;
             const dados={categoria:document.getElementById('cls-categoria').value,nome:document.getElementById('cls-nome').value.trim(),ano:document.getElementById('cls-ano').value,bairro:document.getElementById('cls-bairro').value.trim(),estado:document.getElementById('cls-estado').value.trim(),preco:document.getElementById('cls-preco').value,whatsapp:document.getElementById('cls-whatsapp').value.trim(),descricao:document.getElementById('cls-descricao').value.trim()};
-            if(!dados.categoria||!dados.nome||clsArquivos.length===0){alert('Preencha categoria, nome e adicione pelo menos 1 foto!');clsIsSubmitting=false;btn.textContent='PUBLICAR ANUNCIO';btn.disabled=false;return;}
+            if(!dados.categoria||!dados.nome||clsArquivos.length===0){alert('❌ Preencha categoria, nome e adicione pelo menos 1 foto!');clsIsSubmitting=false;btn.textContent='🚀 PUBLICAR ANÚNCIO';btn.disabled=false;return;}
             try{
                 const urls=[];
                 for(let i=0;i<clsArquivos.length;i++){const file=clsArquivos[i];const sr=stRef(storage,`anuncios/${Date.now()}_${i}_${file.name}`);await uploadBytes(sr,file);urls.push(await getDownloadURL(sr));}
                 await addDoc(collection(fsdb,'posts'),{...dados,midia:urls,tipo:'classificado',publicado:false,data:serverTimestamp()});
-                alert('ANUNCIO ENVIADO! Aguarde aprovacao.');clsFecharForm();
-            }catch(e){alert('Erro: '+e.message);}
-            finally{clsIsSubmitting=false;btn.textContent='PUBLICAR ANUNCIO';btn.disabled=false;}
+                alert('✅ ANÚNCIO ENVIADO! Aguarde aprovação.');clsFecharForm();
+            }catch(e){alert('❌ Erro: '+e.message);}
+            finally{clsIsSubmitting=false;btn.textContent='🚀 PUBLICAR ANÚNCIO';btn.disabled=false;}
         };
         function clsFecharForm(){
             document.getElementById('cls-formulario').style.display='none';
@@ -874,6 +844,7 @@
             document.getElementById('cls-btnPublicar').disabled=true;clsIsSubmitting=false;
         }
 
+        // ── Lojas Look ──
         window.mascaraCPF=(i)=>{
             let v=i.value;if(isNaN(v[v.length-1])){i.value=v.substring(0,v.length-1);return;}
             i.setAttribute("maxlength","14");
@@ -890,16 +861,16 @@
         };
         window.cadastrarLok=async()=>{
             const btn=document.getElementById('lok-btn'),file=document.getElementById('lok-f').files[0];
-            if(!file)return alert("Escolha sua foto!");
-            if(!document.getElementById('lok-p').value)return alert("Selecione sua profissao!");
-            btn.disabled=true;btn.innerText="PROCESSANDO...";
+            if(!file)return alert("📸 Escolha sua foto!");
+            if(!document.getElementById('lok-p').value)return alert("🔧 Selecione sua profissão!");
+            btn.disabled=true;btn.innerText="⏳ PROCESSANDO...";
             try{
                 const sRef=stRef(storage,'profissionais/'+Date.now()+"_"+file.name);
                 await uploadBytes(sRef,file);const url=await getDownloadURL(sRef);
                 await addDoc(collection(fsdb,"usuariosPendentes"),{nome:document.getElementById('lok-n').value,cpf:document.getElementById('lok-cpf').value,tel:document.getElementById('lok-t').value,endereco:document.getElementById('lok-end').value,profissao:document.getElementById('lok-p').value,foto:url,status:"pendente",dataCadastro:new Date()});
                 document.getElementById('formulario-lok').classList.add('hidden');
                 document.getElementById('sucesso-lok').classList.remove('hidden');
-            }catch(e){alert("Erro: "+e.message);btn.disabled=false;btn.innerText="TENTAR NOVAMENTE";}
+            }catch(e){alert("❌ Erro: "+e.message);btn.disabled=false;btn.innerText="TENTAR NOVAMENTE";}
         };
         function lokCarregarProfissionais(){
             const listaEl=document.getElementById('lok-listaAprovados'),totalEl=document.getElementById('lok-totalAprovados');
@@ -910,7 +881,7 @@
                     let telLimpo=prof.tel?prof.tel.replace(/\D/g,''):'';
                     if(telLimpo&&!telLimpo.startsWith('55'))telLimpo='55'+telLimpo;
                     const card=document.createElement('div');card.className='prof-card p-8 text-center hover:shadow-xl transition-all';
-                    card.innerHTML=`<img src="${prof.foto||'https://via.placeholder.com/150'}" class="w-32 h-32 mx-auto rounded-full object-cover mb-6 border-4 border-[#22c55e] shadow-[0_0_15px_rgba(34,197,94,0.3)]"><h3 class="font-bold text-2xl mb-3">${prof.nome||'Sem Nome'}</h3><div class="text-2xl text-yellow-400 font-semibold mb-6">${prof.profissao}</div><a href="https://wa.me/${telLimpo}?text=Ola ${encodeURIComponent(prof.nome)}! Vi seu perfil no SX Profissionais! Voce atende em domicilio? Preciso de servico" class="block bg-[#16a34a] text-white py-4 px-8 rounded-full font-bold text-lg mx-auto hover:bg-[#15803d] w-full max-w-[260px] shadow-lg shadow-green-900/20" target="_blank">Contratar no WhatsApp</a>`;
+                    card.innerHTML=`<img src="${prof.foto||'https://via.placeholder.com/150'}" class="w-32 h-32 mx-auto rounded-full object-cover mb-6 border-4 border-[#22c55e] shadow-[0_0_15px_rgba(34,197,94,0.3)]"><h3 class="font-bold text-2xl mb-3">${prof.nome||'Sem Nome'}</h3><div class="text-2xl text-yellow-400 font-semibold mb-6">${prof.profissao}</div><a href="https://wa.me/${telLimpo}?text=Olá ${encodeURIComponent(prof.nome)}!%0AVi seu perfil no *SX Profissionais*!%0AVocê atende em domicílio?%0APreciso de: [descreva o serviço]" class="block bg-[#16a34a] text-white py-4 px-8 rounded-full font-bold text-lg mx-auto hover:bg-[#15803d] w-full max-w-[260px] shadow-lg shadow-green-900/20" target="_blank">💬 Contratar no WhatsApp</a>`;
                     listaEl.appendChild(card);
                 });
                 totalEl.textContent=`${totalSX} Profissionais SX Aprovados`;
@@ -921,7 +892,9 @@
     </script>
 
     <script>
+    // ── PWA SX Network ──
     (function() {
+
         function gerarIcone(cb) {
             var c = document.createElement('canvas');
             c.width = 512; c.height = 512;
@@ -947,24 +920,44 @@
 
         gerarIcone(function(ICON) {
             document.getElementById('apple-touch-icon').href = ICON;
+
             var manifest = {
-                name: "SX Network", short_name: "SX", description: "SX - Network Social",
-                start_url: "./", display: "standalone", background_color: "#050a14",
-                theme_color: "#ff0000", orientation: "portrait",
-                icons: [{src: ICON, sizes: "192x192", type: "image/png", purpose: "any maskable"},{src: ICON, sizes: "512x512", type: "image/png", purpose: "any maskable"}]
+                name: "SX Network",
+                short_name: "SX",
+                description: "SX - Network Social",
+                start_url: "./",
+                display: "standalone",
+                background_color: "#050a14",
+                theme_color: "#ff0000",
+                orientation: "portrait",
+                icons: [
+                    {src: ICON, sizes: "192x192", type: "image/png", purpose: "any maskable"},
+                    {src: ICON, sizes: "512x512", type: "image/png", purpose: "any maskable"}
+                ]
             };
             var manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
             document.getElementById('pwa-manifest').href = URL.createObjectURL(manifestBlob);
+
             if ('serviceWorker' in navigator) {
-                var sw = ['self.addEventListener("install",function(e){self.skipWaiting();});','self.addEventListener("activate",function(e){e.waitUntil(clients.claim());});','self.addEventListener("fetch",function(e){});'].join('');
-                navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type: 'application/javascript'})),{scope: './'}).catch(function(){});
+                var sw = [
+                    'self.addEventListener("install",function(e){self.skipWaiting();});',
+                    'self.addEventListener("activate",function(e){e.waitUntil(clients.claim());});',
+                    'self.addEventListener("fetch",function(e){});'
+                ].join('');
+                navigator.serviceWorker.register(
+                    URL.createObjectURL(new Blob([sw], {type: 'application/javascript'})),
+                    {scope: './'}
+                ).catch(function(){});
             }
+
             var dp = null;
             var jaInstalou = localStorage.getItem('sx_pwa_instalado');
             if (jaInstalou) return;
+
             var style = document.createElement('style');
             style.textContent = '@keyframes sxp{0%,100%{box-shadow:0 4px 20px rgba(255,0,0,.5)}50%{box-shadow:0 6px 35px rgba(255,0,0,.9)}}';
             document.head.appendChild(style);
+
             var miniCanvas = document.createElement('canvas');
             miniCanvas.width = 36; miniCanvas.height = 36;
             var mctx = miniCanvas.getContext('2d');
@@ -977,6 +970,7 @@
             mctx.fillStyle='#ff0000'; mctx.fillText('S',10,19);
             mctx.fillStyle='#ffffff'; mctx.fillText('X',26,19);
             var miniIcon = miniCanvas.toDataURL('image/png');
+
             var b = document.createElement('button');
             b.id = 'btn-pwa-sx';
             b.innerHTML = '<img src="'+miniIcon+'" style="width:28px;height:28px;border-radius:5px;vertical-align:middle;margin-right:8px;">INSTALAR APP SX';
@@ -985,17 +979,29 @@
                 if (dp) {
                     dp.prompt();
                     dp.userChoice.then(function(r) {
-                        if (r.outcome === 'accepted') { localStorage.setItem('sx_pwa_instalado','1'); b.remove(); }
+                        if (r.outcome === 'accepted') {
+                            localStorage.setItem('sx_pwa_instalado','1');
+                            b.remove();
+                        }
                         dp = null;
                     });
                 } else {
-                    alert('Para instalar:\n\nAndroid: toque nos 3 pontinhos do Chrome -> Adicionar a tela inicial\n\niOS Safari: toque em Compartilhar -> Adicionar a Tela de Inicio');
+                    alert('Para instalar:\n\nAndroid: toque nos 3 pontinhos do Chrome → "Adicionar à tela inicial"\n\niOS Safari: toque em Compartilhar → "Adicionar à Tela de Início"');
                 }
             };
             document.body.appendChild(b);
-            window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); dp = e; });
-            window.addEventListener('appinstalled', function() { localStorage.setItem('sx_pwa_instalado','1'); b.remove(); });
+
+            window.addEventListener('beforeinstallprompt', function(e) {
+                e.preventDefault();
+                dp = e;
+            });
+
+            window.addEventListener('appinstalled', function() {
+                localStorage.setItem('sx_pwa_instalado','1');
+                b.remove();
+            });
         });
+
     })();
     </script>
 </body>
