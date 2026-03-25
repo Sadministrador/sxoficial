@@ -122,6 +122,8 @@
         /* ══════════════════════════════════════════
            TV SX — iframe fullscreen landscape
            ══════════════════════════════════════════ */
+
+        /* Overlay que cobre tudo */
         #area-tvsx {
             display: none;
             position: fixed;
@@ -131,6 +133,7 @@
         }
         #area-tvsx.show { display: block; }
 
+        /* Landscape nativo */
         @media screen and (orientation: landscape) {
             #area-tvsx.show {
                 width: 100vw;
@@ -139,6 +142,7 @@
             }
         }
 
+        /* Portrait: roda 90° para forçar landscape */
         @media screen and (orientation: portrait) {
             #area-tvsx.show {
                 width: 100vh;
@@ -157,6 +161,7 @@
             display: block;
         }
 
+        /* Botão fechar — sempre visível sobre o iframe */
         #btn-fechar-tvsx {
             display: none;
             position: fixed;
@@ -175,137 +180,15 @@
         }
         #btn-fechar-tvsx.show { display: flex; }
 
+        /* Posição do botão fechar:
+           - Landscape nativo: canto superior direito
+           - Portrait rotacionado: o canto superior direito da TV
+             fica no canto inferior direito da tela física */
         @media screen and (orientation: landscape) {
             #btn-fechar-tvsx.show { top: 12px; right: 12px; bottom: auto; left: auto; }
         }
         @media screen and (orientation: portrait) {
             #btn-fechar-tvsx.show { bottom: 12px; right: 12px; top: auto; left: auto; }
-        }
-
-        /* ══════════════════════════════════════════
-           RANKING DE CURTIDAS — Estilos novos
-           ══════════════════════════════════════════ */
-        #ranking-curtidas-box {
-            margin: 0 8px 24px 8px;
-            background: #0a192f;
-            border-radius: 16px;
-            border: 1px solid #1d2d50;
-            padding: 16px;
-            overflow: hidden;
-        }
-        #ranking-curtidas-box h3 {
-            text-align: center;
-            font-size: 13px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #9ca3af;
-            margin-bottom: 14px;
-        }
-        .rank-barra {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            border-radius: 12px;
-            padding: 10px 14px;
-            position: relative;
-            overflow: hidden;
-            min-height: 60px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .rank-barra:active { transform: scale(0.98); }
-        .rank-barra.ouro   { background: linear-gradient(90deg, #3d2a00, #7a5200, #c48400); border: 1.5px solid #ffd700; }
-        .rank-barra.prata  { background: linear-gradient(90deg, #1a1a2e, #2e3250, #5a6a8a); border: 1.5px solid #c0c0c0; }
-        .rank-barra.bronze { background: linear-gradient(90deg, #2a1200, #5a2e00, #8b5a00); border: 1.5px solid #cd7f32; }
-        .rank-medalha { font-size: 28px; flex-shrink: 0; }
-        .rank-thumb {
-            width: 44px; height: 44px;
-            border-radius: 8px;
-            object-fit: cover;
-            flex-shrink: 0;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        .rank-thumb-placeholder {
-            width: 44px; height: 44px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px;
-        }
-        .rank-info { flex: 1; min-width: 0; }
-        .rank-nome { font-size: 13px; font-weight: 900; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .rank-barra.ouro   .rank-nome { color: #ffe566; }
-        .rank-barra.prata  .rank-nome { color: #e8eaf6; }
-        .rank-barra.bronze .rank-nome { color: #ffcb8a; }
-        .rank-curtidas-num { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 2px; }
-        .rank-premio {
-            font-size: 12px;
-            font-weight: 900;
-            white-space: nowrap;
-            padding: 5px 10px;
-            border-radius: 20px;
-            letter-spacing: 0.5px;
-        }
-        .rank-barra.ouro   .rank-premio { background: #ffd700; color: #3d2a00; }
-        .rank-barra.prata  .rank-premio { background: #c0c0c0; color: #1a1a2e; }
-        .rank-barra.bronze .rank-premio { background: #cd7f32; color: #2a1200; }
-
-        /* ══ Aviso 15s tela de cadastro ══ */
-        #aviso-15s {
-            display: none;
-            background: linear-gradient(135deg, #0a192f, #0d2340);
-            border: 1.5px solid #ff0000;
-            border-radius: 12px;
-            padding: 18px 16px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        #aviso-15s.visivel { display: block; }
-        #aviso-15s .aviso-titulo {
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        #aviso-15s .aviso-sub {
-            color: #cbd5e1;
-            font-size: 0.82rem;
-            line-height: 1.6;
-            margin-bottom: 14px;
-        }
-        #aviso-15s .aviso-contador-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        #aviso-15s .aviso-circulo {
-            width: 52px; height: 52px;
-            border-radius: 50%;
-            border: 3px solid #ff0000;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; font-weight: 900; color: #ff4444;
-        }
-        #aviso-15s .aviso-texto-cont {
-            font-size: 13px; color: #9ca3af; text-align: left; line-height: 1.4;
-        }
-        #aviso-15s .aviso-barra-wrap {
-            margin-top: 12px;
-            background: #1d2d50;
-            border-radius: 20px;
-            height: 6px;
-            overflow: hidden;
-        }
-        #aviso-15s .aviso-barra-prog {
-            height: 6px;
-            border-radius: 20px;
-            background: linear-gradient(90deg, #ff0000, #ff6600);
-            transition: width 1s linear;
         }
     </style>
 </head>
@@ -342,30 +225,6 @@
                 <span class="logo-s">S</span><span class="logo-x">X</span>
             </div>
             <div id="formulario-cadastro">
-                <!-- ══ MENSAGEM DE BOAS-VINDAS ══ -->
-                <div style="background: linear-gradient(135deg, #0a192f, #112240); border: 1px solid #ff0000; border-radius: 12px; padding: 16px 18px; margin-bottom: 20px; text-align: center;">
-                    <p style="color: #ffffff; font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Seja bem vindo(a) a SX</p>
-                    <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin: 0;">Após colocar suas informações e clicar em <strong style="color: white;">SE CADASTRAR</strong>, espere por <strong style="color: #ffffff;">10 a 15 segundos</strong> sem sair da tela de cadastro que automaticamente você entrará na <strong style="color: white;">REDE SOCIAL SX</strong>.</p>
-                </div>
-                <!-- ════════════════════════════ -->
-
-                <!-- ══ NOVO: AVISO 15 SEGUNDOS (aparece após clicar em cadastrar) ══ -->
-                <div id="aviso-15s">
-                    <div class="aviso-titulo">⏳ Quase lá! Não saia desta tela</div>
-                    <div class="aviso-sub">Você entrará automaticamente no aplicativo <strong style="color:#fff;">SX</strong> em instantes!</div>
-                    <div class="aviso-contador-wrap">
-                        <div class="aviso-circulo" id="aviso-num">15</div>
-                        <div class="aviso-texto-cont">
-                            segundos<br>
-                            <span style="color:#ff4444;font-weight:700;">Aguarde na tela</span>
-                        </div>
-                    </div>
-                    <div class="aviso-barra-wrap">
-                        <div class="aviso-barra-prog" id="aviso-barra" style="width:100%;"></div>
-                    </div>
-                </div>
-                <!-- ════════════════════════════════════════════════════════════ -->
-
                 <div id="alerta-email-duplicado" class="alerta-email">
                     ⚠️ Este e-mail já está cadastrado.<br>
                     <span style="font-size:12px;color:#ffaaaa;">Cada e-mail só pode ter uma conta na SX.</span>
@@ -374,12 +233,8 @@
                 <input type="email" id="e" placeholder="Seu melhor E-mail" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white outline-none focus:border-red-600" oninput="limparErroEmail()">
                 <input type="tel" id="t" placeholder="Telefone com DDD" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white outline-none focus:border-red-600">
                 <label class="text-xs text-gray-400">Escolha sua Foto de Perfil:</label>
-                <label style="display:flex;align-items:center;gap:10px;margin:6px 0 16px 0;cursor:pointer;">
-                    <span id="label-foto-btn" style="background:#ff0000;color:white;font-weight:700;padding:7px 18px;border-radius:50px;font-size:13px;white-space:nowrap;">Sua Foto</span>
-                    <span id="label-foto-nome" style="color:#9ca3af;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Nenhum arquivo selecionado</span>
-                    <input type="file" id="f" accept="image/*" class="hidden" onchange="document.getElementById('label-foto-nome').innerText=this.files[0]?this.files[0].name:'Nenhum arquivo selecionado'">
-                </label>
-                <button onclick="cadastrar()" id="btn-cadastrar" class="w-full p-3 rounded font-bold transition" style="background:#ff0000;">CADASTRAR</button>
+                <input type="file" id="f" accept="image/*" class="w-full mb-4 mt-1 text-sm text-gray-400 file:bg-red-600 file:text-white file:rounded-full file:border-none file:px-4 file:py-1">
+                <button onclick="cadastrar()" id="btn-cadastrar" class="w-full bg-red-600 p-3 rounded font-bold hover:bg-red-700 transition">ENVIAR PARA O MONITOR</button>
             </div>
             <div id="sucesso-cadastro" class="hidden text-center py-10">
                 <div class="text-6xl mb-4">✅</div>
@@ -437,16 +292,6 @@
                     <button onclick="postar()" id="btn-post" class="w-full btn-vermelho py-3 rounded-xl font-black uppercase">Publicar</button>
                 </div>
             </div>
-
-            <!-- ══ NOVO: RANKING DE CURTIDAS DO MÊS ══ -->
-            <div id="ranking-curtidas-box">
-                <h3>🏆 Ranking do mês — Você está ganhando!</h3>
-                <div id="ranking-lista">
-                    <div style="text-align:center;color:#4a5568;font-size:13px;padding:10px;">Carregando ranking...</div>
-                </div>
-            </div>
-            <!-- ════════════════════════════════════ -->
-
             <div id="feed"></div>
         </main>
 
@@ -589,6 +434,7 @@
             entries.forEach(entry=>{
                 if(entry.isIntersecting){
                     const v=entry.target;
+                    // preload=auto para começar a baixar imediatamente
                     v.preload='auto';
                     if(!videoCache.has(v.src)){
                         videoCache.add(v.src);
@@ -599,6 +445,7 @@
                     preloadObserver.unobserve(v);
                 }
             });
+        // rootMargin grande: começa a baixar 1200px antes de aparecer na tela
         },{rootMargin:'1200px 0px',threshold:0});
 
         const desbloqueioSom=()=>{ document.querySelectorAll('video.video-feed').forEach(v=>{v.muted=false;}); };
@@ -615,12 +462,15 @@
 
         window.abrirTVSX=()=>{
             if(document.getElementById('sidebar').classList.contains('open')) toggleMenu();
+            // Isola áudio: para e muta todos os vídeos do feed
             document.querySelectorAll('video.video-feed').forEach(v=>{v.pause();v.muted=true;});
             videoAtual=null;
+            // Carrega iframe e abre overlay
             const iframe=document.getElementById('tvsx-iframe');
             if(iframe.src!==TVSX_URL) iframe.src=TVSX_URL;
             document.getElementById('area-tvsx').classList.add('show');
             document.getElementById('btn-fechar-tvsx').classList.add('show');
+            // Trava orientação landscape onde suportado
             if(screen.orientation&&screen.orientation.lock){
                 screen.orientation.lock('landscape').catch(()=>{});
             }
@@ -630,6 +480,7 @@
         };
 
         window.fecharTVSX=()=>{
+            // Limpa o src do iframe — para o áudio da TV imediatamente
             document.getElementById('tvsx-iframe').src='';
             document.getElementById('area-tvsx').classList.remove('show');
             document.getElementById('btn-fechar-tvsx').classList.remove('show');
@@ -654,32 +505,6 @@
             document.getElementById('e').classList.add('input-erro');
             document.getElementById('e').focus();
         }
-
-        // ══ NOVO: Contador regressivo 15s na tela de cadastro ══
-        let _contadorAtivo = false;
-        function iniciarContador15s() {
-            if (_contadorAtivo) return;
-            _contadorAtivo = true;
-            const aviso = document.getElementById('aviso-15s');
-            const numEl = document.getElementById('aviso-num');
-            const barraEl = document.getElementById('aviso-barra');
-            aviso.classList.add('visivel');
-            let seg = 15;
-            numEl.textContent = seg;
-            barraEl.style.width = '100%';
-            const tick = setInterval(() => {
-                seg--;
-                if (seg <= 0) {
-                    clearInterval(tick);
-                    numEl.textContent = '✓';
-                    barraEl.style.width = '0%';
-                } else {
-                    numEl.textContent = seg;
-                    barraEl.style.width = ((seg / 15) * 100) + '%';
-                }
-            }, 1000);
-        }
-        // ════════════════════════════════════════════════════
 
         async function inicializar(){
             const emailSalvo=localStorage.getItem('sx_email');
@@ -723,7 +548,6 @@
             if(isAdmin)document.getElementById('btn-flutuante-admin').style.display='flex';
             carregarUsuariosMenu();
             carregarAnunciosAtivos().then(()=>carregarFeed());
-            carregarRankingMes();
             try{signInAnonymously(auth);}catch(e){}
             clsIniciar();
             onSnapshot(doc(fsdb,"usuariosAprovados",idLogado),(snap)=>{
@@ -753,9 +577,6 @@
                 const snapExiste=await getDocs(qExiste);
                 if(!snapExiste.empty){mostrarErroEmail();btn.disabled=false;btn.innerText="ENVIAR PARA O MONITOR";return;}
                 btn.innerText="ENVIANDO...";
-                // ══ Inicia contador 15s após envio ══
-                iniciarContador15s();
-                // ════════════════════════════════════
                 const sRef=stRef(storage,'perfis/'+Date.now()+"_"+file.name);
                 await uploadBytes(sRef,file);const url=await getDownloadURL(sRef);
                 await addDoc(collection(fsdb,"usuariosAprovados"),{nome,email,tel,foto:url,status:"pendente"});
@@ -765,79 +586,6 @@
                 verificarAprovacao(email);
             }catch(e){alert("Erro ao enviar cadastro.");btn.disabled=false;btn.innerText="ENVIAR PARA O MONITOR";}
         };
-
-        // ══════════════════════════════════════════
-        // RANKING DE CURTIDAS DO MÊS
-        // ══════════════════════════════════════════
-        function carregarRankingMes() {
-            const agora = new Date();
-            const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
-            const fimMes = new Date(agora.getFullYear(), agora.getMonth() + 1, 0, 23, 59, 59);
-
-            const q = query(
-                collection(fsdb, "posts"),
-                where("data", ">=", inicioMes),
-                where("data", "<=", fimMes),
-                orderBy("data", "desc")
-            );
-
-            onSnapshot(q, snap => {
-                // Agrupa curtidas por nome de usuário (autor do post)
-                const totais = {};
-                const fotos = {};
-                const midias = {};
-                snap.forEach(d => {
-                    const p = d.data();
-                    if (p.tipo === 'classificado') return;
-                    const nome = p.nome || 'Anônimo';
-                    totais[nome] = (totais[nome] || 0) + (p.curtidas || 0);
-                    if (!fotos[nome] && p.foto) fotos[nome] = p.foto;
-                    // guarda a mídia do post mais curtido deste autor
-                    if (!midias[nome] && p.midia) midias[nome] = { src: p.midia, tipo: p.tipo };
-                    else if (midias[nome] && p.midia && (p.curtidas || 0) > (totais[nome] - (p.curtidas || 0))) {
-                        midias[nome] = { src: p.midia, tipo: p.tipo };
-                    }
-                });
-
-                const ranking = Object.entries(totais)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 3);
-
-                const config = [
-                    { cls: 'ouro',   medalha: '🥇', premio: 'Você está ganhando R$50,00' },
-                    { cls: 'prata',  medalha: '🥈', premio: 'Você está ganhando R$20,00' },
-                    { cls: 'bronze', medalha: '🥉', premio: 'Você está ganhando R$10,00' },
-                ];
-
-                const lista = document.getElementById('ranking-lista');
-                if (ranking.length === 0) {
-                    lista.innerHTML = '<div style="text-align:center;color:#4a5568;font-size:13px;padding:10px;">Nenhum post este mês ainda.</div>';
-                    return;
-                }
-
-                lista.innerHTML = '';
-                ranking.forEach(([nome, curtidas], i) => {
-                    const cfg = config[i];
-                    const foto = fotos[nome] || '';
-                    const thumbHtml = foto
-                        ? `<img src="${foto}" class="rank-thumb" alt="${nome}">`
-                        : `<div class="rank-thumb-placeholder">👤</div>`;
-
-                    lista.innerHTML += `
-                        <div class="rank-barra ${cfg.cls}">
-                            <span class="rank-medalha">${cfg.medalha}</span>
-                            ${thumbHtml}
-                            <div class="rank-info">
-                                <div class="rank-nome">${nome}</div>
-                                <div class="rank-curtidas-num">❤️ ${curtidas} curtidas no mês</div>
-                            </div>
-                            <span class="rank-premio">${cfg.premio}</span>
-                        </div>
-                    `;
-                });
-            });
-        }
-        // ══════════════════════════════════════════
 
         function resetNav(){
             ['btn-nav-feed','btn-nav-veiculos','btn-nav-tvsx','btn-nav-vestir','btn-nav-lojas'].forEach(id=>{
@@ -1131,32 +879,39 @@
     // ── PWA SX Network ──
     (function() {
 
+        // Gera ícone SX como PNG via Canvas (512x512, sem arquivo externo)
         function gerarIcone(cb) {
             var c = document.createElement('canvas');
             c.width = 512; c.height = 512;
             var ctx = c.getContext('2d');
+            // Fundo preto
             ctx.fillStyle = '#050a14';
             ctx.beginPath();
             ctx.roundRect(0, 0, 512, 512, 80);
             ctx.fill();
+            // Borda vermelha
             ctx.strokeStyle = '#ff0000';
             ctx.lineWidth = 18;
             ctx.beginPath();
             ctx.roundRect(9, 9, 494, 494, 74);
             ctx.stroke();
+            // Letra S vermelha
             ctx.fillStyle = '#ff0000';
             ctx.font = 'bold 320px Arial Black, Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('S', 145, 270);
+            // Letra X branca
             ctx.fillStyle = '#ffffff';
             ctx.fillText('X', 368, 270);
             cb(c.toDataURL('image/png'));
         }
 
         gerarIcone(function(ICON) {
+            // Apple touch icon
             document.getElementById('apple-touch-icon').href = ICON;
 
+            // Manifest com ícone válido
             var manifest = {
                 name: "SX Network",
                 short_name: "SX",
@@ -1174,6 +929,7 @@
             var manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
             document.getElementById('pwa-manifest').href = URL.createObjectURL(manifestBlob);
 
+            // Service Worker
             if ('serviceWorker' in navigator) {
                 var sw = [
                     'self.addEventListener("install",function(e){self.skipWaiting();});',
@@ -1186,14 +942,17 @@
                 ).catch(function(){});
             }
 
+            // Botão instalar — aparece imediatamente
+            // Se já instalou antes, não mostra mais
             var dp = null;
             var jaInstalou = localStorage.getItem('sx_pwa_instalado');
-            if (jaInstalou) return;
+            if (jaInstalou) return; // app já instalado, não mostra botão
 
             var style = document.createElement('style');
             style.textContent = '@keyframes sxp{0%,100%{box-shadow:0 4px 20px rgba(255,0,0,.5)}50%{box-shadow:0 6px 35px rgba(255,0,0,.9)}}';
             document.head.appendChild(style);
 
+            // Mini ícone SX ao lado do texto
             var miniCanvas = document.createElement('canvas');
             miniCanvas.width = 36; miniCanvas.height = 36;
             var mctx = miniCanvas.getContext('2d');
@@ -1210,7 +969,7 @@
             var b = document.createElement('button');
             b.id = 'btn-pwa-sx';
             b.innerHTML = '<img src="'+miniIcon+'" style="width:28px;height:28px;border-radius:5px;vertical-align:middle;margin-right:8px;">INSTALAR APP SX';
-            b.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#000000;color:#fff;font-size:14px;font-weight:900;padding:12px 24px;border-radius:50px;box-shadow:0 4px 20px rgba(255,0,0,.5);cursor:pointer;z-index:9999;border:2px solid rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;animation:sxp 2s infinite;display:flex;align-items:center;';
+            b.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(45deg,#ff0000,#cc0000);color:#fff;font-size:14px;font-weight:900;padding:12px 24px;border-radius:50px;box-shadow:0 4px 20px rgba(255,0,0,.5);cursor:pointer;z-index:9999;border:2px solid rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;animation:sxp 2s infinite;display:flex;align-items:center;';
             b.onclick = function() {
                 if (dp) {
                     dp.prompt();
@@ -1227,11 +986,13 @@
             };
             document.body.appendChild(b);
 
+            // Quando o Chrome liberar o prompt nativo, captura
             window.addEventListener('beforeinstallprompt', function(e) {
                 e.preventDefault();
                 dp = e;
             });
 
+            // Some após instalar e salva no localStorage
             window.addEventListener('appinstalled', function() {
                 localStorage.setItem('sx_pwa_instalado','1');
                 b.remove();
