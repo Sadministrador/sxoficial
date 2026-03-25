@@ -122,8 +122,6 @@
         /* ══════════════════════════════════════════
            TV SX — iframe fullscreen landscape
            ══════════════════════════════════════════ */
-
-        /* Overlay que cobre tudo */
         #area-tvsx {
             display: none;
             position: fixed;
@@ -133,7 +131,6 @@
         }
         #area-tvsx.show { display: block; }
 
-        /* Landscape nativo */
         @media screen and (orientation: landscape) {
             #area-tvsx.show {
                 width: 100vw;
@@ -142,7 +139,6 @@
             }
         }
 
-        /* Portrait: roda 90° para forçar landscape */
         @media screen and (orientation: portrait) {
             #area-tvsx.show {
                 width: 100vh;
@@ -161,7 +157,6 @@
             display: block;
         }
 
-        /* Botão fechar — sempre visível sobre o iframe */
         #btn-fechar-tvsx {
             display: none;
             position: fixed;
@@ -180,15 +175,137 @@
         }
         #btn-fechar-tvsx.show { display: flex; }
 
-        /* Posição do botão fechar:
-           - Landscape nativo: canto superior direito
-           - Portrait rotacionado: o canto superior direito da TV
-             fica no canto inferior direito da tela física */
         @media screen and (orientation: landscape) {
             #btn-fechar-tvsx.show { top: 12px; right: 12px; bottom: auto; left: auto; }
         }
         @media screen and (orientation: portrait) {
             #btn-fechar-tvsx.show { bottom: 12px; right: 12px; top: auto; left: auto; }
+        }
+
+        /* ══════════════════════════════════════════
+           RANKING DE CURTIDAS — Estilos novos
+           ══════════════════════════════════════════ */
+        #ranking-curtidas-box {
+            margin: 0 8px 24px 8px;
+            background: #0a192f;
+            border-radius: 16px;
+            border: 1px solid #1d2d50;
+            padding: 16px;
+            overflow: hidden;
+        }
+        #ranking-curtidas-box h3 {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #9ca3af;
+            margin-bottom: 14px;
+        }
+        .rank-barra {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            padding: 10px 14px;
+            position: relative;
+            overflow: hidden;
+            min-height: 60px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .rank-barra:active { transform: scale(0.98); }
+        .rank-barra.ouro   { background: linear-gradient(90deg, #3d2a00, #7a5200, #c48400); border: 1.5px solid #ffd700; }
+        .rank-barra.prata  { background: linear-gradient(90deg, #1a1a2e, #2e3250, #5a6a8a); border: 1.5px solid #c0c0c0; }
+        .rank-barra.bronze { background: linear-gradient(90deg, #2a1200, #5a2e00, #8b5a00); border: 1.5px solid #cd7f32; }
+        .rank-medalha { font-size: 28px; flex-shrink: 0; }
+        .rank-thumb {
+            width: 44px; height: 44px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .rank-thumb-placeholder {
+            width: 44px; height: 44px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+        .rank-info { flex: 1; min-width: 0; }
+        .rank-nome { font-size: 13px; font-weight: 900; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .rank-barra.ouro   .rank-nome { color: #ffe566; }
+        .rank-barra.prata  .rank-nome { color: #e8eaf6; }
+        .rank-barra.bronze .rank-nome { color: #ffcb8a; }
+        .rank-curtidas-num { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+        .rank-premio {
+            font-size: 12px;
+            font-weight: 900;
+            white-space: nowrap;
+            padding: 5px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+        .rank-barra.ouro   .rank-premio { background: #ffd700; color: #3d2a00; }
+        .rank-barra.prata  .rank-premio { background: #c0c0c0; color: #1a1a2e; }
+        .rank-barra.bronze .rank-premio { background: #cd7f32; color: #2a1200; }
+
+        /* ══ Aviso 15s tela de cadastro ══ */
+        #aviso-15s {
+            display: none;
+            background: linear-gradient(135deg, #0a192f, #0d2340);
+            border: 1.5px solid #ff0000;
+            border-radius: 12px;
+            padding: 18px 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #aviso-15s.visivel { display: block; }
+        #aviso-15s .aviso-titulo {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        #aviso-15s .aviso-sub {
+            color: #cbd5e1;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+        #aviso-15s .aviso-contador-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        #aviso-15s .aviso-circulo {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            border: 3px solid #ff0000;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: 900; color: #ff4444;
+        }
+        #aviso-15s .aviso-texto-cont {
+            font-size: 13px; color: #9ca3af; text-align: left; line-height: 1.4;
+        }
+        #aviso-15s .aviso-barra-wrap {
+            margin-top: 12px;
+            background: #1d2d50;
+            border-radius: 20px;
+            height: 6px;
+            overflow: hidden;
+        }
+        #aviso-15s .aviso-barra-prog {
+            height: 6px;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #ff0000, #ff6600);
+            transition: width 1s linear;
         }
     </style>
 </head>
@@ -231,6 +348,24 @@
                     <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin: 0;">Após colocar suas informações e clicar em <strong style="color: white;">SE CADASTRAR</strong>, espere por <strong style="color: #ffffff;">10 a 15 segundos</strong> sem sair da tela de cadastro que automaticamente você entrará na <strong style="color: white;">REDE SOCIAL SX</strong>.</p>
                 </div>
                 <!-- ════════════════════════════ -->
+
+                <!-- ══ NOVO: AVISO 15 SEGUNDOS (aparece após clicar em cadastrar) ══ -->
+                <div id="aviso-15s">
+                    <div class="aviso-titulo">⏳ Quase lá! Não saia desta tela</div>
+                    <div class="aviso-sub">Você entrará automaticamente no aplicativo <strong style="color:#fff;">SX</strong> em instantes!</div>
+                    <div class="aviso-contador-wrap">
+                        <div class="aviso-circulo" id="aviso-num">15</div>
+                        <div class="aviso-texto-cont">
+                            segundos<br>
+                            <span style="color:#ff4444;font-weight:700;">Aguarde na tela</span>
+                        </div>
+                    </div>
+                    <div class="aviso-barra-wrap">
+                        <div class="aviso-barra-prog" id="aviso-barra" style="width:100%;"></div>
+                    </div>
+                </div>
+                <!-- ════════════════════════════════════════════════════════════ -->
+
                 <div id="alerta-email-duplicado" class="alerta-email">
                     ⚠️ Este e-mail já está cadastrado.<br>
                     <span style="font-size:12px;color:#ffaaaa;">Cada e-mail só pode ter uma conta na SX.</span>
@@ -302,6 +437,16 @@
                     <button onclick="postar()" id="btn-post" class="w-full btn-vermelho py-3 rounded-xl font-black uppercase">Publicar</button>
                 </div>
             </div>
+
+            <!-- ══ NOVO: RANKING DE CURTIDAS DO MÊS ══ -->
+            <div id="ranking-curtidas-box">
+                <h3>🏆 Ranking do mês — Você está ganhando!</h3>
+                <div id="ranking-lista">
+                    <div style="text-align:center;color:#4a5568;font-size:13px;padding:10px;">Carregando ranking...</div>
+                </div>
+            </div>
+            <!-- ════════════════════════════════════ -->
+
             <div id="feed"></div>
         </main>
 
@@ -510,6 +655,32 @@
             document.getElementById('e').focus();
         }
 
+        // ══ NOVO: Contador regressivo 15s na tela de cadastro ══
+        let _contadorAtivo = false;
+        function iniciarContador15s() {
+            if (_contadorAtivo) return;
+            _contadorAtivo = true;
+            const aviso = document.getElementById('aviso-15s');
+            const numEl = document.getElementById('aviso-num');
+            const barraEl = document.getElementById('aviso-barra');
+            aviso.classList.add('visivel');
+            let seg = 15;
+            numEl.textContent = seg;
+            barraEl.style.width = '100%';
+            const tick = setInterval(() => {
+                seg--;
+                if (seg <= 0) {
+                    clearInterval(tick);
+                    numEl.textContent = '✓';
+                    barraEl.style.width = '0%';
+                } else {
+                    numEl.textContent = seg;
+                    barraEl.style.width = ((seg / 15) * 100) + '%';
+                }
+            }, 1000);
+        }
+        // ════════════════════════════════════════════════════
+
         async function inicializar(){
             const emailSalvo=localStorage.getItem('sx_email');
             if(!emailSalvo){document.getElementById('login-box').classList.remove('hidden');return;}
@@ -552,6 +723,7 @@
             if(isAdmin)document.getElementById('btn-flutuante-admin').style.display='flex';
             carregarUsuariosMenu();
             carregarAnunciosAtivos().then(()=>carregarFeed());
+            carregarRankingMes();
             try{signInAnonymously(auth);}catch(e){}
             clsIniciar();
             onSnapshot(doc(fsdb,"usuariosAprovados",idLogado),(snap)=>{
@@ -581,6 +753,9 @@
                 const snapExiste=await getDocs(qExiste);
                 if(!snapExiste.empty){mostrarErroEmail();btn.disabled=false;btn.innerText="ENVIAR PARA O MONITOR";return;}
                 btn.innerText="ENVIANDO...";
+                // ══ Inicia contador 15s após envio ══
+                iniciarContador15s();
+                // ════════════════════════════════════
                 const sRef=stRef(storage,'perfis/'+Date.now()+"_"+file.name);
                 await uploadBytes(sRef,file);const url=await getDownloadURL(sRef);
                 await addDoc(collection(fsdb,"usuariosAprovados"),{nome,email,tel,foto:url,status:"pendente"});
@@ -590,6 +765,79 @@
                 verificarAprovacao(email);
             }catch(e){alert("Erro ao enviar cadastro.");btn.disabled=false;btn.innerText="ENVIAR PARA O MONITOR";}
         };
+
+        // ══════════════════════════════════════════
+        // RANKING DE CURTIDAS DO MÊS
+        // ══════════════════════════════════════════
+        function carregarRankingMes() {
+            const agora = new Date();
+            const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
+            const fimMes = new Date(agora.getFullYear(), agora.getMonth() + 1, 0, 23, 59, 59);
+
+            const q = query(
+                collection(fsdb, "posts"),
+                where("data", ">=", inicioMes),
+                where("data", "<=", fimMes),
+                orderBy("data", "desc")
+            );
+
+            onSnapshot(q, snap => {
+                // Agrupa curtidas por nome de usuário (autor do post)
+                const totais = {};
+                const fotos = {};
+                const midias = {};
+                snap.forEach(d => {
+                    const p = d.data();
+                    if (p.tipo === 'classificado') return;
+                    const nome = p.nome || 'Anônimo';
+                    totais[nome] = (totais[nome] || 0) + (p.curtidas || 0);
+                    if (!fotos[nome] && p.foto) fotos[nome] = p.foto;
+                    // guarda a mídia do post mais curtido deste autor
+                    if (!midias[nome] && p.midia) midias[nome] = { src: p.midia, tipo: p.tipo };
+                    else if (midias[nome] && p.midia && (p.curtidas || 0) > (totais[nome] - (p.curtidas || 0))) {
+                        midias[nome] = { src: p.midia, tipo: p.tipo };
+                    }
+                });
+
+                const ranking = Object.entries(totais)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 3);
+
+                const config = [
+                    { cls: 'ouro',   medalha: '🥇', premio: 'Você está ganhando R$50,00' },
+                    { cls: 'prata',  medalha: '🥈', premio: 'Você está ganhando R$20,00' },
+                    { cls: 'bronze', medalha: '🥉', premio: 'Você está ganhando R$10,00' },
+                ];
+
+                const lista = document.getElementById('ranking-lista');
+                if (ranking.length === 0) {
+                    lista.innerHTML = '<div style="text-align:center;color:#4a5568;font-size:13px;padding:10px;">Nenhum post este mês ainda.</div>';
+                    return;
+                }
+
+                lista.innerHTML = '';
+                ranking.forEach(([nome, curtidas], i) => {
+                    const cfg = config[i];
+                    const foto = fotos[nome] || '';
+                    const thumbHtml = foto
+                        ? `<img src="${foto}" class="rank-thumb" alt="${nome}">`
+                        : `<div class="rank-thumb-placeholder">👤</div>`;
+
+                    lista.innerHTML += `
+                        <div class="rank-barra ${cfg.cls}">
+                            <span class="rank-medalha">${cfg.medalha}</span>
+                            ${thumbHtml}
+                            <div class="rank-info">
+                                <div class="rank-nome">${nome}</div>
+                                <div class="rank-curtidas-num">❤️ ${curtidas} curtidas no mês</div>
+                            </div>
+                            <span class="rank-premio">${cfg.premio}</span>
+                        </div>
+                    `;
+                });
+            });
+        }
+        // ══════════════════════════════════════════
 
         function resetNav(){
             ['btn-nav-feed','btn-nav-veiculos','btn-nav-tvsx','btn-nav-vestir','btn-nav-lojas'].forEach(id=>{
