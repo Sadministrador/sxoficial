@@ -823,14 +823,20 @@
             clsUpdateStatus('✅ CONECTADO! Pode anunciar.','ok');
             document.getElementById('btnNovo').disabled=false;
             const q=query(collection(fsdb,'posts'),where('publicado','==',true),where('tipo','==','classificado'),orderBy('data','desc'));
-            onSnapshot(q,snap=>{
-                const lista=document.getElementById('cls-listaAnuncios');
+            const renderLista=(snap,lista)=>{
                 lista.innerHTML=snap.empty?'<p style="text-align:center;color:#ccc;padding:20px;">Nenhum anúncio publicado ainda...</p>':'';
                 snap.forEach(ds=>{
                     const d=ds.data(),midias=d.midia||[];
                     const nomeVeiculo=(d.nome||'')+(d.ano?' '+d.ano:'')+(d.categoria?' ('+d.categoria+')':'');
                     const msgVeiculo=encodeURIComponent('Olá! Vi seu anúncio no *SX Classificados*! 🚗\n*Veículo:* '+nomeVeiculo+'\n'+(d.preco?'*Preço:* R$ '+Number(d.preco).toLocaleString('pt-BR')+'\n':'')+([d.bairro,d.estado].filter(Boolean).length?'*Local:* '+[d.bairro,d.estado].filter(Boolean).join(', ')+'\n':'')+'\nO veículo ainda está disponível?');
                     lista.innerHTML+=`<div class="anuncio-cls"><span class="badge-publicado">✅ PUBLICADO</span><h3>🚗 ${d.nome||''} (${d.ano||''}) — ${d.categoria||''}</h3><p>${d.descricao||''}</p><p><b>📍 ${d.bairro||''}, ${d.estado||''}</b> | <b>💰 R$ ${Number(d.preco||0).toLocaleString('pt-br')}</b></p><a href="https://wa.me/55${d.whatsapp||''}?text=${msgVeiculo}" target="_blank"><button class="cls-btn" style="background:#25D366;padding:10px 20px;margin-top:10px;">📱 WhatsApp</button></a><div class="midia-grid-cls">${midias.map(url=>{const isVid=url.includes('.mp4')||url.includes('.mov')||url.includes('.webm')||url.includes('video');return isVid?`<video src="${url}" loop playsinline preload="none" style="max-width:140px;height:110px;border-radius:8px;cursor:pointer;" onclick="this.muted=!this.muted;this.paused?this.play():this.pause()"></video>`:`<img src="${url}" loading="lazy" onclick="clsAbrirGaleria('${url}')" title="Clique para ampliar">`;}).join('')}</div></div>`;
+                });
+            };
+            onSnapshot(q,snap=>{
+                renderLista(snap,document.getElementById('cls-listaAnuncios'));
+            },()=>{
+                onSnapshot(query(collection(fsdb,'posts'),where('publicado','==',true),where('tipo','==','classificado')),snap2=>{
+                    renderLista(snap2,document.getElementById('cls-listaAnuncios'));
                 });
             });
         }
