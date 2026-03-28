@@ -537,18 +537,9 @@
                 const q=query(collection(fsdb,"usuariosAprovados"),where("email","==",emailSalvo));
                 const snap=await getDocs(q);
                 if(!snap.empty){
-                    const dados=snap.docs[0].data();
-                    const liberado=dados.status==="aprovado"||dados.status==="ativo";
-                    if(liberado){
-                        idLogado=snap.docs[0].id;
-                        userLogado=dados;
-                        entrarNaPlataforma();
-                    } else {
-                        // Cadastro já enviado mas ainda pendente — mostra tela de aguardo
-                        // e começa a ouvir em tempo real
-                        mostrarTelaAguardando();
-                        ouvirAprovacaoEmTempoReal(emailSalvo);
-                    }
+                    idLogado=snap.docs[0].id;
+                    userLogado=snap.docs[0].data();
+                    entrarNaPlataforma();
                 } else {
                     localStorage.removeItem('sx_email');
                     document.getElementById('login-box').classList.remove('hidden');
@@ -620,15 +611,16 @@
                 const sRef=stRef(storage,'perfis/'+Date.now()+"_"+file.name);
                 await uploadBytes(sRef,file);
                 const url=await getDownloadURL(sRef);
-                // Salva como "pendente" — monitor auto-aprova na hora
-                await addDoc(collection(fsdb,"usuariosAprovados"),{
-                    nome, email, tel, foto:url, status:"pendente"
+                // Salva JÁ como "aprovado" — entra na hora sem esperar
+                const docRef=await addDoc(collection(fsdb,"usuariosAprovados"),{
+                    nome, email, tel, foto:url, status:"aprovado"
                 });
                 localStorage.setItem('sx_email',email);
 
-                // Mostra tela de aguardando e começa a ouvir em tempo real
-                mostrarTelaAguardando();
-                ouvirAprovacaoEmTempoReal(email);
+                // Entra imediatamente
+                idLogado=docRef.id;
+                userLogado={nome,email,tel,foto:url,status:"aprovado"};
+                entrarNaPlataforma();
 
             }catch(e){
                 alert("Erro ao enviar cadastro.");
