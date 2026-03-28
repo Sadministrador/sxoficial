@@ -29,7 +29,45 @@
         .video-feed { width: 100%; height: 100vh; background: black; object-fit: cover; display: block; }
         .hidden { display: none; }
 
-        /* ══ NAV: 5 botões sempre visíveis sem scroll ══ */
+        /* ══ AGUARDANDO APROVAÇÃO ══ */
+        #tela-aguardando {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #050a14;
+            z-index: 200;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        #tela-aguardando.show { display: flex; }
+
+        .spinner-sx {
+            width: 80px;
+            height: 80px;
+            border: 6px solid #1d2d50;
+            border-top: 6px solid #ff0000;
+            border-radius: 50%;
+            animation: spin-sx 0.8s linear infinite;
+            margin-bottom: 2rem;
+        }
+        @keyframes spin-sx { to { transform: rotate(360deg); } }
+
+        .dots-anim::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        @keyframes dots {
+            0%   { content: ''; }
+            25%  { content: '.'; }
+            50%  { content: '..'; }
+            75%  { content: '...'; }
+            100% { content: ''; }
+        }
+
+        /* ══ NAV ══ */
         .nav-rapida {
             display: flex;
             gap: 4px;
@@ -57,7 +95,6 @@
         }
         .btn-nav-item:hover { border-color: #ff0000; color: #ff0000; }
 
-        /* Cores TV SX: TV=branco, S=vermelho, X=branco */
         .tvsx-tv { color: #ffffff; font-weight: 900; }
         .tvsx-s  { color: #ff0000; font-weight: 900; }
         .tvsx-x  { color: #ffffff; font-weight: 900; }
@@ -113,17 +150,12 @@
         .post-card-header { padding: 16px 16px 0 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .post-card-texto { padding: 0 16px 12px 16px; color: #e5e7eb; font-size: 1rem; }
         .post-card-footer { padding: 16px; border-top: 1px solid #1f2f4d; }
-        .video-feed { width: 100%; height: 100vh; background: black; object-fit: cover; display: block; }
         .video-wrapper { position: relative; width: 100vw; height: 100vh; background: #000; overflow: hidden; margin-left: calc(-50vw + 50%); }
         .video-skeleton { position: absolute; inset: 0; background: linear-gradient(90deg, #112240 25%, #1d2d50 50%, #112240 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; display: flex; align-items: center; justify-content: center; z-index: 1; }
         .video-skeleton svg { opacity: 0.4; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* ══════════════════════════════════════════
-           TV SX — iframe fullscreen landscape
-           ══════════════════════════════════════════ */
-
-        /* Overlay que cobre tudo */
+        /* ══ TV SX ══ */
         #area-tvsx {
             display: none;
             position: fixed;
@@ -133,35 +165,15 @@
         }
         #area-tvsx.show { display: block; }
 
-        /* Landscape nativo */
         @media screen and (orientation: landscape) {
-            #area-tvsx.show {
-                width: 100vw;
-                height: 100vh;
-                transform: none;
-            }
+            #area-tvsx.show { width: 100vw; height: 100vh; transform: none; }
         }
-
-        /* Portrait: roda 90° para forçar landscape */
         @media screen and (orientation: portrait) {
-            #area-tvsx.show {
-                width: 100vh;
-                height: 100vw;
-                top: 0;
-                left: 0;
-                transform-origin: top left;
-                transform: rotate(90deg) translateX(0%) translateY(-100%);
-            }
+            #area-tvsx.show { width: 100vh; height: 100vw; top: 0; left: 0; transform-origin: top left; transform: rotate(90deg) translateX(0%) translateY(-100%); }
         }
 
-        #tvsx-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
+        #tvsx-iframe { width: 100%; height: 100%; border: none; display: block; }
 
-        /* Botão fechar — sempre visível sobre o iframe */
         #btn-fechar-tvsx {
             display: none;
             position: fixed;
@@ -180,10 +192,6 @@
         }
         #btn-fechar-tvsx.show { display: flex; }
 
-        /* Posição do botão fechar:
-           - Landscape nativo: canto superior direito
-           - Portrait rotacionado: o canto superior direito da TV
-             fica no canto inferior direito da tela física */
         @media screen and (orientation: landscape) {
             #btn-fechar-tvsx.show { top: 12px; right: 12px; bottom: auto; left: auto; }
         }
@@ -194,12 +202,25 @@
 </head>
 <body>
 
+    <!-- ══ TELA DE AGUARDANDO APROVAÇÃO (nova) ══ -->
+    <div id="tela-aguardando">
+        <div class="spinner-sx"></div>
+        <div class="flex items-center mb-4">
+            <span class="logo-s" style="font-size:2.5rem;">S</span>
+            <span class="logo-x" style="font-size:2.5rem;">X</span>
+        </div>
+        <h2 style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:10px;">Cadastro enviado com sucesso! ✅</h2>
+        <p style="color:#94a3b8;font-size:0.95rem;line-height:1.7;max-width:320px;">
+            Você será liberado e entrará na <strong style="color:white;">SX Network</strong> automaticamente<span class="dots-anim"></span>
+        </p>
+        <p style="color:#475569;font-size:0.8rem;margin-top:24px;">Aguardando aprovação do monitor</p>
+    </div>
+
     <!-- ══ TV SX overlay ══ -->
     <div id="area-tvsx">
         <iframe id="tvsx-iframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
     <button id="btn-fechar-tvsx" onclick="fecharTVSX()">✕</button>
-    <!-- ══════════════════ -->
 
     <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
@@ -219,12 +240,17 @@
         </div>
     </aside>
 
+    <!-- LOGIN / CADASTRO -->
     <div id="login-box" class="hidden min-h-screen flex items-center justify-center p-4">
         <div class="sx-card-cadastro p-8 w-full max-w-md shadow-2xl border-t-4 border-red-600">
             <div class="mb-6 flex justify-center items-center">
                 <span class="logo-s">S</span><span class="logo-x">X</span>
             </div>
             <div id="formulario-cadastro">
+                <div style="background: linear-gradient(135deg, #0a192f, #112240); border: 1px solid #ff0000; border-radius: 12px; padding: 16px 18px; margin-bottom: 20px; text-align: center;">
+                    <p style="color: #ffffff; font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Seja bem vindo(a) a SX</p>
+                    <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin: 0;">Preencha seus dados e clique em <strong style="color: white;">SE CADASTRAR</strong>. Você entrará na <strong style="color: white;">REDE SOCIAL SX</strong> automaticamente assim que for aprovado!</p>
+                </div>
                 <div id="alerta-email-duplicado" class="alerta-email">
                     ⚠️ Este e-mail já está cadastrado.<br>
                     <span style="font-size:12px;color:#ffaaaa;">Cada e-mail só pode ter uma conta na SX.</span>
@@ -233,17 +259,17 @@
                 <input type="email" id="e" placeholder="Seu melhor E-mail" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white outline-none focus:border-red-600" oninput="limparErroEmail()">
                 <input type="tel" id="t" placeholder="Telefone com DDD" class="w-full p-3 mb-3 rounded bg-[#0a192f] border border-gray-700 text-white outline-none focus:border-red-600">
                 <label class="text-xs text-gray-400">Escolha sua Foto de Perfil:</label>
-                <input type="file" id="f" accept="image/*" class="w-full mb-4 mt-1 text-sm text-gray-400 file:bg-red-600 file:text-white file:rounded-full file:border-none file:px-4 file:py-1">
-                <button onclick="cadastrar()" id="btn-cadastrar" class="w-full bg-red-600 p-3 rounded font-bold hover:bg-red-700 transition">ENVIAR PARA O MONITOR</button>
-            </div>
-            <div id="sucesso-cadastro" class="hidden text-center py-10">
-                <div class="text-6xl mb-4">✅</div>
-                <h2 class="text-2xl font-bold text-green-500">Cadastro Enviado!</h2>
-                <p class="text-gray-400 mt-2">Suas informações foram enviadas ao monitor.<br>Você entrará automaticamente assim que for liberado.</p>
+                <label style="display:flex;align-items:center;gap:10px;margin:6px 0 16px 0;cursor:pointer;">
+                    <span id="label-foto-btn" style="background:#ff0000;color:white;font-weight:700;padding:7px 18px;border-radius:50px;font-size:13px;white-space:nowrap;">Sua Foto</span>
+                    <span id="label-foto-nome" style="color:#9ca3af;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Nenhum arquivo selecionado</span>
+                    <input type="file" id="f" accept="image/*" class="hidden" onchange="document.getElementById('label-foto-nome').innerText=this.files[0]?this.files[0].name:'Nenhum arquivo selecionado'">
+                </label>
+                <button onclick="cadastrar()" id="btn-cadastrar" class="w-full p-3 rounded font-bold transition" style="background:#ff0000;">CADASTRAR</button>
             </div>
         </div>
     </div>
 
+    <!-- PLATAFORMA PRINCIPAL -->
     <div id="main-box" class="hidden">
         <header class="bg-[#112240] p-4 flex justify-between items-center border-b border-red-900 sticky top-0 z-50">
             <button onclick="toggleMenu()" class="text-3xl text-red-600">☰</button>
@@ -253,7 +279,6 @@
             <div id="perfil-status"></div>
         </header>
 
-        <!-- 5 botões — todos visíveis, sem overflow -->
         <div id="nav-feed-global" class="nav-rapida sticky top-[73px] z-40">
             <button onclick="voltarHome()" id="btn-nav-feed" class="btn-nav-item" style="border-color:#ff0000;color:#ff0000;">Postar</button>
             <button onclick="abrirVeiculos()" id="btn-nav-veiculos" class="btn-nav-item">Veículos</button>
@@ -295,6 +320,7 @@
             <div id="feed"></div>
         </main>
 
+        <!-- VEÍCULOS -->
         <div id="area-veiculos">
             <div class="cls-header">Classificados <span style="color:red;">S</span><span style="color:white;">X</span> — Veículos</div>
             <div class="cls-container">
@@ -401,7 +427,8 @@
         let userLogado=null, idLogado=null, unsubFeed=null, arquivoCapaPendente=null;
         let curtidasNestaSessao=new Set();
         let clsArquivos=[], clsIsSubmitting=false;
-        let isAdmin=false, anunciosAtivos=[], lokListaCarregada=false, intervaloVerificacao=null;
+        let isAdmin=false, anunciosAtivos=[], lokListaCarregada=false;
+        let unsubAprovacao=null; // listener em tempo real para aprovação
 
         // ── Vídeos do feed ──
         const videoCache=new Set();
@@ -434,7 +461,6 @@
             entries.forEach(entry=>{
                 if(entry.isIntersecting){
                     const v=entry.target;
-                    // preload=auto para começar a baixar imediatamente
                     v.preload='auto';
                     if(!videoCache.has(v.src)){
                         videoCache.add(v.src);
@@ -445,7 +471,6 @@
                     preloadObserver.unobserve(v);
                 }
             });
-        // rootMargin grande: começa a baixar 1200px antes de aparecer na tela
         },{rootMargin:'1200px 0px',threshold:0});
 
         const desbloqueioSom=()=>{ document.querySelectorAll('video.video-feed').forEach(v=>{v.muted=false;}); };
@@ -459,18 +484,14 @@
 
         // ── TV SX ──
         const TVSX_URL='https://sadministrador.github.io/tvsx/index10.html';
-
         window.abrirTVSX=()=>{
             if(document.getElementById('sidebar').classList.contains('open')) toggleMenu();
-            // Isola áudio: para e muta todos os vídeos do feed
             document.querySelectorAll('video.video-feed').forEach(v=>{v.pause();v.muted=true;});
             videoAtual=null;
-            // Carrega iframe e abre overlay
             const iframe=document.getElementById('tvsx-iframe');
             if(iframe.src!==TVSX_URL) iframe.src=TVSX_URL;
             document.getElementById('area-tvsx').classList.add('show');
             document.getElementById('btn-fechar-tvsx').classList.add('show');
-            // Trava orientação landscape onde suportado
             if(screen.orientation&&screen.orientation.lock){
                 screen.orientation.lock('landscape').catch(()=>{});
             }
@@ -478,9 +499,7 @@
             document.getElementById('btn-nav-tvsx').style.borderColor='#ff0000';
             document.getElementById('btn-nav-tvsx').style.color='#ff0000';
         };
-
         window.fecharTVSX=()=>{
-            // Limpa o src do iframe — para o áudio da TV imediatamente
             document.getElementById('tvsx-iframe').src='';
             document.getElementById('area-tvsx').classList.remove('show');
             document.getElementById('btn-fechar-tvsx').classList.remove('show');
@@ -492,7 +511,6 @@
             document.getElementById('btn-nav-feed').style.color='#ff0000';
         };
 
-        // ── Restante original ──
         const MONITOR_URL='sx-monitor.html';
         const PV_URL='https://sadministrador.github.io/sx/sx.html?id=loja01';
 
@@ -506,61 +524,77 @@
             document.getElementById('e').focus();
         }
 
+        // ══════════════════════════════════════════
+        // INICIALIZAÇÃO — verifica se já tem email salvo
+        // ══════════════════════════════════════════
         async function inicializar(){
             const emailSalvo=localStorage.getItem('sx_email');
-            if(!emailSalvo){document.getElementById('login-box').classList.remove('hidden');return;}
+            if(!emailSalvo){
+                document.getElementById('login-box').classList.remove('hidden');
+                return;
+            }
             try{
                 const q=query(collection(fsdb,"usuariosAprovados"),where("email","==",emailSalvo));
                 const snap=await getDocs(q);
                 if(!snap.empty){
                     const dados=snap.docs[0].data();
                     const liberado=dados.status==="aprovado"||dados.status==="ativo";
-                    if(liberado){idLogado=snap.docs[0].id;userLogado=dados;entrarNaPlataforma();}
-                    else{verificarAprovacao(emailSalvo);}
-                } else{localStorage.removeItem('sx_email');document.getElementById('login-box').classList.remove('hidden');}
-            }catch(e){document.getElementById('login-box').classList.remove('hidden');}
-        }
-
-        function verificarAprovacao(email){
-            if(intervaloVerificacao)clearInterval(intervaloVerificacao);
-            intervaloVerificacao=setInterval(async()=>{
-                try{
-                    const q=query(collection(fsdb,"usuariosAprovados"),where("email","==",email));
-                    const snap=await getDocs(q);
-                    if(!snap.empty){
-                        const dados=snap.docs[0].data();
-                        if(dados.status==="aprovado"||dados.status==="ativo"){
-                            clearInterval(intervaloVerificacao);idLogado=snap.docs[0].id;userLogado=dados;entrarNaPlataforma();
-                        }
+                    if(liberado){
+                        idLogado=snap.docs[0].id;
+                        userLogado=dados;
+                        entrarNaPlataforma();
+                    } else {
+                        // Cadastro já enviado mas ainda pendente — mostra tela de aguardo
+                        // e começa a ouvir em tempo real
+                        mostrarTelaAguardando();
+                        ouvirAprovacaoEmTempoReal(emailSalvo);
                     }
-                }catch(e){}
-            },8000);
+                } else {
+                    localStorage.removeItem('sx_email');
+                    document.getElementById('login-box').classList.remove('hidden');
+                }
+            }catch(e){
+                document.getElementById('login-box').classList.remove('hidden');
+            }
         }
 
-        function entrarNaPlataforma(){
-            if(intervaloVerificacao)clearInterval(intervaloVerificacao);
-            isAdmin=(userLogado.email==="admin@sx.com");
+        // ══════════════════════════════════════════
+        // TELA DE AGUARDANDO
+        // ══════════════════════════════════════════
+        function mostrarTelaAguardando(){
             document.getElementById('login-box').classList.add('hidden');
-            document.getElementById('main-box').classList.remove('hidden');
-            document.getElementById('perfil-status').innerHTML=`<img src="${userLogado.foto}" class="w-10 h-10 rounded-full object-cover border-2 border-red-600">`;
-            document.getElementById('mini-foto-post').innerHTML=`<img src="${userLogado.foto}" class="w-12 h-12 rounded-full object-cover border-2 border-red-600">`;
-            document.getElementById('btn-me-perfil').onclick=()=>verPerfil(idLogado);
-            if(isAdmin)document.getElementById('btn-flutuante-admin').style.display='flex';
-            carregarUsuariosMenu();
-            carregarAnunciosAtivos().then(()=>carregarFeed());
-            try{signInAnonymously(auth);}catch(e){}
-            clsIniciar();
-            onSnapshot(doc(fsdb,"usuariosAprovados",idLogado),(snap)=>{
-                if(!snap.exists()||snap.data().status==="excluido"||snap.data().status==="bloqueado"){
-                    localStorage.removeItem('sx_email');
-                    document.getElementById('main-box').classList.add('hidden');
-                    document.getElementById('formulario-cadastro').classList.remove('hidden');
-                    document.getElementById('sucesso-cadastro').classList.add('hidden');
-                    document.getElementById('login-box').classList.remove('hidden');
+            document.getElementById('main-box').classList.add('hidden');
+            document.getElementById('tela-aguardando').classList.add('show');
+        }
+        function esconderTelaAguardando(){
+            document.getElementById('tela-aguardando').classList.remove('show');
+        }
+
+        // ══════════════════════════════════════════
+        // OUVIR APROVAÇÃO EM TEMPO REAL (onSnapshot)
+        // — Substitui o setInterval, reage em < 1 segundo
+        // ══════════════════════════════════════════
+        function ouvirAprovacaoEmTempoReal(email){
+            if(unsubAprovacao) unsubAprovacao(); // cancela listener anterior se existir
+            const q=query(collection(fsdb,"usuariosAprovados"),where("email","==",email));
+            unsubAprovacao=onSnapshot(q, snap=>{
+                if(snap.empty) return;
+                const d=snap.docs[0];
+                const dados=d.data();
+                const liberado=dados.status==="aprovado"||dados.status==="ativo";
+                if(liberado){
+                    if(unsubAprovacao){ unsubAprovacao(); unsubAprovacao=null; }
+                    idLogado=d.id;
+                    userLogado=dados;
+                    esconderTelaAguardando();
+                    entrarNaPlataforma();
                 }
             });
         }
 
+        // ══════════════════════════════════════════
+        // CADASTRO — envia e IMEDIATAMENTE ouve aprovação
+        // ══════════════════════════════════════════
         window.cadastrar=async()=>{
             const nome=document.getElementById('n').value.trim();
             const email=document.getElementById('e').value.trim().toLowerCase();
@@ -571,21 +605,64 @@
             if(!email)return alert("Digite seu e-mail!");
             if(!tel)return alert("Digite seu telefone!");
             if(!file)return alert("Por favor, suba sua foto de perfil!");
-            btn.disabled=true;btn.innerText="VERIFICANDO...";
+            btn.disabled=true; btn.innerText="VERIFICANDO...";
             try{
+                // Verifica email duplicado
                 const qExiste=query(collection(fsdb,"usuariosAprovados"),where("email","==",email));
                 const snapExiste=await getDocs(qExiste);
-                if(!snapExiste.empty){mostrarErroEmail();btn.disabled=false;btn.innerText="ENVIAR PARA O MONITOR";return;}
+                if(!snapExiste.empty){
+                    mostrarErroEmail();
+                    btn.disabled=false; btn.innerText="CADASTRAR";
+                    return;
+                }
                 btn.innerText="ENVIANDO...";
+                // Upload foto
                 const sRef=stRef(storage,'perfis/'+Date.now()+"_"+file.name);
-                await uploadBytes(sRef,file);const url=await getDownloadURL(sRef);
-                await addDoc(collection(fsdb,"usuariosAprovados"),{nome,email,tel,foto:url,status:"pendente"});
+                await uploadBytes(sRef,file);
+                const url=await getDownloadURL(sRef);
+                // Salva como "pendente" — monitor auto-aprova na hora
+                await addDoc(collection(fsdb,"usuariosAprovados"),{
+                    nome, email, tel, foto:url, status:"pendente"
+                });
                 localStorage.setItem('sx_email',email);
-                document.getElementById('formulario-cadastro').classList.add('hidden');
-                document.getElementById('sucesso-cadastro').classList.remove('hidden');
-                verificarAprovacao(email);
-            }catch(e){alert("Erro ao enviar cadastro.");btn.disabled=false;btn.innerText="ENVIAR PARA O MONITOR";}
+
+                // Mostra tela de aguardando e começa a ouvir em tempo real
+                mostrarTelaAguardando();
+                ouvirAprovacaoEmTempoReal(email);
+
+            }catch(e){
+                alert("Erro ao enviar cadastro.");
+                btn.disabled=false; btn.innerText="CADASTRAR";
+            }
         };
+
+        // ══════════════════════════════════════════
+        // ENTRA NA PLATAFORMA
+        // ══════════════════════════════════════════
+        function entrarNaPlataforma(){
+            if(unsubAprovacao){ unsubAprovacao(); unsubAprovacao=null; }
+            isAdmin=(userLogado.email==="admin@sx.com");
+            document.getElementById('login-box').classList.add('hidden');
+            document.getElementById('tela-aguardando').classList.remove('show');
+            document.getElementById('main-box').classList.remove('hidden');
+            document.getElementById('perfil-status').innerHTML=`<img src="${userLogado.foto}" class="w-10 h-10 rounded-full object-cover border-2 border-red-600">`;
+            document.getElementById('mini-foto-post').innerHTML=`<img src="${userLogado.foto}" class="w-12 h-12 rounded-full object-cover border-2 border-red-600">`;
+            document.getElementById('btn-me-perfil').onclick=()=>verPerfil(idLogado);
+            if(isAdmin)document.getElementById('btn-flutuante-admin').style.display='flex';
+            carregarUsuariosMenu();
+            carregarAnunciosAtivos().then(()=>carregarFeed());
+            try{signInAnonymously(auth);}catch(e){}
+            clsIniciar();
+            // Monitora bloqueio/exclusão em tempo real
+            onSnapshot(doc(fsdb,"usuariosAprovados",idLogado),(snap)=>{
+                if(!snap.exists()||snap.data().status==="excluido"||snap.data().status==="bloqueado"){
+                    localStorage.removeItem('sx_email');
+                    document.getElementById('main-box').classList.add('hidden');
+                    document.getElementById('formulario-cadastro').classList.remove('hidden');
+                    document.getElementById('login-box').classList.remove('hidden');
+                }
+            });
+        }
 
         function resetNav(){
             ['btn-nav-feed','btn-nav-veiculos','btn-nav-tvsx','btn-nav-vestir','btn-nav-lojas'].forEach(id=>{
@@ -763,17 +840,6 @@
                     const msgVeiculo=encodeURIComponent('Olá! Vi seu anúncio no *SX Classificados*! 🚗\n*Veículo:* '+nomeVeiculo+'\n'+(d.preco?'*Preço:* R$ '+Number(d.preco).toLocaleString('pt-BR')+'\n':'')+([d.bairro,d.estado].filter(Boolean).length?'*Local:* '+[d.bairro,d.estado].filter(Boolean).join(', ')+'\n':'')+'\nO veículo ainda está disponível?');
                     lista.innerHTML+=`<div class="anuncio-cls"><span class="badge-publicado">✅ PUBLICADO</span><h3>🚗 ${d.nome||''} (${d.ano||''}) — ${d.categoria||''}</h3><p>${d.descricao||''}</p><p><b>📍 ${d.bairro||''}, ${d.estado||''}</b> | <b>💰 R$ ${Number(d.preco||0).toLocaleString('pt-br')}</b></p><a href="https://wa.me/55${d.whatsapp||''}?text=${msgVeiculo}" target="_blank"><button class="cls-btn" style="background:#25D366;padding:10px 20px;margin-top:10px;">📱 WhatsApp</button></a><div class="midia-grid-cls">${midias.map(url=>{const isVid=url.includes('.mp4')||url.includes('.mov')||url.includes('.webm')||url.includes('video');return isVid?`<video src="${url}" loop playsinline preload="none" style="max-width:140px;height:110px;border-radius:8px;cursor:pointer;" onclick="this.muted=!this.muted;this.paused?this.play():this.pause()"></video>`:`<img src="${url}" loading="lazy" onclick="clsAbrirGaleria('${url}')" title="Clique para ampliar">`;}).join('')}</div></div>`;
                 });
-            },()=>{
-                onSnapshot(query(collection(fsdb,'posts'),where('publicado','==',true),where('tipo','==','classificado')),snap2=>{
-                    const lista=document.getElementById('cls-listaAnuncios');
-                    lista.innerHTML=snap2.empty?'<p style="text-align:center;color:#ccc;padding:20px;">Nenhum anúncio publicado ainda...</p>':'';
-                    snap2.forEach(ds=>{
-                        const d=ds.data(),midias=d.midia||[];
-                        const nomeVeiculo=(d.nome||'')+(d.ano?' '+d.ano:'')+(d.categoria?' ('+d.categoria+')':'');
-                        const msgVeiculo=encodeURIComponent('Olá! Vi seu anúncio no *SX Classificados*! 🚗\n*Veículo:* '+nomeVeiculo+'\n'+(d.preco?'*Preço:* R$ '+Number(d.preco).toLocaleString('pt-BR')+'\n':'')+([d.bairro,d.estado].filter(Boolean).length?'*Local:* '+[d.bairro,d.estado].filter(Boolean).join(', ')+'\n':'')+'\nO veículo ainda está disponível?');
-                        lista.innerHTML+=`<div class="anuncio-cls"><h3>🚗 ${d.nome||''} (${d.ano||''}) — ${d.categoria||''}</h3><p>${d.descricao||''}</p><p><b>📍 ${d.bairro||''}, ${d.estado||''}</b> | <b>💰 R$ ${Number(d.preco||0).toLocaleString('pt-br')}</b></p><a href="https://wa.me/55${d.whatsapp||''}?text=${msgVeiculo}" target="_blank"><button class="cls-btn" style="background:#25D366;padding:10px 20px;">📱 WhatsApp</button></a><div class="midia-grid-cls">${midias.map(url=>`<img src="${url}" loading="lazy" onclick="clsAbrirGaleria('${url}')">`).join('')}</div></div>`;
-                    });
-                });
             });
         }
         function clsUpdateStatus(msg,type){const el=document.getElementById('cls-status');el.textContent=msg;el.className='cls-status cls-status-'+(type||'ok');}
@@ -875,52 +941,38 @@
         inicializar();
     </script>
 
+    <!-- ── PWA SX Network ── -->
     <script>
-    // ── PWA SX Network ──
     (function() {
-
-        // Gera ícone SX como PNG via Canvas (512x512, sem arquivo externo)
         function gerarIcone(cb) {
             var c = document.createElement('canvas');
             c.width = 512; c.height = 512;
             var ctx = c.getContext('2d');
-            // Fundo preto
             ctx.fillStyle = '#050a14';
             ctx.beginPath();
             ctx.roundRect(0, 0, 512, 512, 80);
             ctx.fill();
-            // Borda vermelha
             ctx.strokeStyle = '#ff0000';
             ctx.lineWidth = 18;
             ctx.beginPath();
             ctx.roundRect(9, 9, 494, 494, 74);
             ctx.stroke();
-            // Letra S vermelha
             ctx.fillStyle = '#ff0000';
             ctx.font = 'bold 320px Arial Black, Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('S', 145, 270);
-            // Letra X branca
             ctx.fillStyle = '#ffffff';
             ctx.fillText('X', 368, 270);
             cb(c.toDataURL('image/png'));
         }
 
         gerarIcone(function(ICON) {
-            // Apple touch icon
             document.getElementById('apple-touch-icon').href = ICON;
-
-            // Manifest com ícone válido
             var manifest = {
-                name: "SX Network",
-                short_name: "SX",
-                description: "SX - Network Social",
-                start_url: "./",
-                display: "standalone",
-                background_color: "#050a14",
-                theme_color: "#ff0000",
-                orientation: "portrait",
+                name: "SX Network", short_name: "SX", description: "SX - Network Social",
+                start_url: "./", display: "standalone", background_color: "#050a14",
+                theme_color: "#ff0000", orientation: "portrait",
                 icons: [
                     {src: ICON, sizes: "192x192", type: "image/png", purpose: "any maskable"},
                     {src: ICON, sizes: "512x512", type: "image/png", purpose: "any maskable"}
@@ -929,30 +981,19 @@
             var manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
             document.getElementById('pwa-manifest').href = URL.createObjectURL(manifestBlob);
 
-            // Service Worker
             if ('serviceWorker' in navigator) {
-                var sw = [
-                    'self.addEventListener("install",function(e){self.skipWaiting();});',
-                    'self.addEventListener("activate",function(e){e.waitUntil(clients.claim());});',
-                    'self.addEventListener("fetch",function(e){});'
-                ].join('');
-                navigator.serviceWorker.register(
-                    URL.createObjectURL(new Blob([sw], {type: 'application/javascript'})),
-                    {scope: './'}
-                ).catch(function(){});
+                var sw = ['self.addEventListener("install",function(e){self.skipWaiting();});','self.addEventListener("activate",function(e){e.waitUntil(clients.claim());});','self.addEventListener("fetch",function(e){});'].join('');
+                navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type: 'application/javascript'})), {scope: './'}).catch(function(){});
             }
 
-            // Botão instalar — aparece imediatamente
-            // Se já instalou antes, não mostra mais
             var dp = null;
             var jaInstalou = localStorage.getItem('sx_pwa_instalado');
-            if (jaInstalou) return; // app já instalado, não mostra botão
+            if (jaInstalou) return;
 
             var style = document.createElement('style');
             style.textContent = '@keyframes sxp{0%,100%{box-shadow:0 4px 20px rgba(255,0,0,.5)}50%{box-shadow:0 6px 35px rgba(255,0,0,.9)}}';
             document.head.appendChild(style);
 
-            // Mini ícone SX ao lado do texto
             var miniCanvas = document.createElement('canvas');
             miniCanvas.width = 36; miniCanvas.height = 36;
             var mctx = miniCanvas.getContext('2d');
@@ -960,8 +1001,7 @@
             mctx.beginPath(); mctx.roundRect(0,0,36,36,6); mctx.fill();
             mctx.strokeStyle='#ff0000'; mctx.lineWidth=2;
             mctx.beginPath(); mctx.roundRect(1,1,34,34,5); mctx.stroke();
-            mctx.font='bold 20px Arial Black,Arial';
-            mctx.textAlign='center'; mctx.textBaseline='middle';
+            mctx.font='bold 20px Arial Black,Arial'; mctx.textAlign='center'; mctx.textBaseline='middle';
             mctx.fillStyle='#ff0000'; mctx.fillText('S',10,19);
             mctx.fillStyle='#ffffff'; mctx.fillText('X',26,19);
             var miniIcon = miniCanvas.toDataURL('image/png');
@@ -969,15 +1009,12 @@
             var b = document.createElement('button');
             b.id = 'btn-pwa-sx';
             b.innerHTML = '<img src="'+miniIcon+'" style="width:28px;height:28px;border-radius:5px;vertical-align:middle;margin-right:8px;">INSTALAR APP SX';
-            b.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(45deg,#ff0000,#cc0000);color:#fff;font-size:14px;font-weight:900;padding:12px 24px;border-radius:50px;box-shadow:0 4px 20px rgba(255,0,0,.5);cursor:pointer;z-index:9999;border:2px solid rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;animation:sxp 2s infinite;display:flex;align-items:center;';
+            b.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#000000;color:#fff;font-size:14px;font-weight:900;padding:12px 24px;border-radius:50px;box-shadow:0 4px 20px rgba(255,0,0,.5);cursor:pointer;z-index:9999;border:2px solid rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;animation:sxp 2s infinite;display:flex;align-items:center;';
             b.onclick = function() {
                 if (dp) {
                     dp.prompt();
                     dp.userChoice.then(function(r) {
-                        if (r.outcome === 'accepted') {
-                            localStorage.setItem('sx_pwa_instalado','1');
-                            b.remove();
-                        }
+                        if (r.outcome === 'accepted') { localStorage.setItem('sx_pwa_instalado','1'); b.remove(); }
                         dp = null;
                     });
                 } else {
@@ -985,20 +1022,9 @@
                 }
             };
             document.body.appendChild(b);
-
-            // Quando o Chrome liberar o prompt nativo, captura
-            window.addEventListener('beforeinstallprompt', function(e) {
-                e.preventDefault();
-                dp = e;
-            });
-
-            // Some após instalar e salva no localStorage
-            window.addEventListener('appinstalled', function() {
-                localStorage.setItem('sx_pwa_instalado','1');
-                b.remove();
-            });
+            window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); dp = e; });
+            window.addEventListener('appinstalled', function() { localStorage.setItem('sx_pwa_instalado','1'); b.remove(); });
         });
-
     })();
     </script>
 </body>
