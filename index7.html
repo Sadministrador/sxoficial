@@ -352,12 +352,37 @@
         const videoCache=new Set();
         let videoAtual=null;
 
+        // ══════════════════════════════════════════════════════
+        // SESSÃO PERMANENTE — cookies de 10 anos como backup
+        // Resolve o problema de logout após 4-6 horas no PWA
+        // ══════════════════════════════════════════════════════
+        function setCookie(name, value, days) {
+            try {
+                const d = new Date();
+                d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+            } catch(e) {}
+        }
+        function getCookie(name) {
+            try {
+                const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+                return match ? decodeURIComponent(match[1]) : null;
+            } catch(e) { return null; }
+        }
+        function deleteCookie(name) {
+            try {
+                document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax';
+            } catch(e) {}
+        }
+
         function salvarEmailLocal(email) {
             try {
                 localStorage.setItem('sx_email', email);
                 localStorage.setItem('sx_email_backup', email);
                 localStorage.setItem('sx_logado', '1');
                 sessionStorage.setItem('sx_email', email);
+                setCookie('sx_email', email, 3650);      // cookie de 10 anos
+                setCookie('sx_email_bk', email, 3650);   // cookie backup de 10 anos
             } catch(e) {}
         }
         function lerEmailLocal() {
@@ -365,6 +390,8 @@
                 return localStorage.getItem('sx_email')
                     || localStorage.getItem('sx_email_backup')
                     || sessionStorage.getItem('sx_email')
+                    || getCookie('sx_email')
+                    || getCookie('sx_email_bk')
                     || null;
             } catch(e) { return null; }
         }
@@ -374,8 +401,11 @@
                 localStorage.removeItem('sx_email_backup');
                 localStorage.removeItem('sx_logado');
                 sessionStorage.removeItem('sx_email');
+                deleteCookie('sx_email');
+                deleteCookie('sx_email_bk');
             } catch(e) {}
         }
+        // ══════════════════════════════════════════════════════
 
         let somDesbloqueado = false;
         function desbloquearSom() {
@@ -795,8 +825,6 @@
             }
         }
 
-        // ══ CORREÇÃO DO SOM: event.stopPropagation() impede que o clique no coração
-        //    chegue ao document e acione desbloquearSom, que mutava o vídeo ══
         window.curtirPost=async(id,btn,evento)=>{
             if(evento) evento.stopPropagation();
             if(curtidasNestaSessao.has(id))return;
