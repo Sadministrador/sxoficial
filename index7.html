@@ -352,13 +352,11 @@
         const videoCache=new Set();
         let videoAtual=null;
 
-        // ══ PERSISTÊNCIA: salva email de forma robusta em múltiplas chaves ══
         function salvarEmailLocal(email) {
             try {
                 localStorage.setItem('sx_email', email);
                 localStorage.setItem('sx_email_backup', email);
                 localStorage.setItem('sx_logado', '1');
-                // sessionStorage como camada extra durante a sessão
                 sessionStorage.setItem('sx_email', email);
             } catch(e) {}
         }
@@ -379,7 +377,6 @@
             } catch(e) {}
         }
 
-        // ══ SOM: desbloqueia silenciosamente na 1ª interação, sem botão visível ══
         let somDesbloqueado = false;
         function desbloquearSom() {
             if (somDesbloqueado) return;
@@ -479,7 +476,6 @@
         }
 
         async function inicializar(){
-            // ══ CORREÇÃO PRINCIPAL: usa função robusta de leitura ══
             const emailSalvo = lerEmailLocal();
             if(!emailSalvo){ document.getElementById('login-box').classList.remove('hidden'); return; }
             try{
@@ -491,11 +487,9 @@
                     if(liberado){
                         idLogado=snap.docs[0].id;
                         userLogado=dados;
-                        // ══ Re-salva sempre que logar com sucesso para garantir persistência ══
                         salvarEmailLocal(emailSalvo);
                         entrarNaPlataforma();
                     } else {
-                        // Conta existe mas não está ativa ainda
                         mostrarTelaAguardando();
                         ouvirAprovacaoEmTempoReal(emailSalvo);
                     }
@@ -523,7 +517,6 @@
                 if(liberado){
                     if(unsubAprovacao){unsubAprovacao();unsubAprovacao=null;}
                     idLogado=d.id; userLogado=dados;
-                    // ══ CORREÇÃO: salva o email ao ser aprovado em tempo real ══
                     salvarEmailLocal(email);
                     esconderTelaAguardando(); entrarNaPlataforma();
                 }
@@ -552,7 +545,6 @@
                 const docRef=await addDoc(collection(fsdb,"usuariosAprovados"),{
                     nome, email, tel, foto:url, status:"aprovado"
                 });
-                // ══ CORREÇÃO: salva com função robusta ANTES de entrar ══
                 salvarEmailLocal(email);
                 idLogado=docRef.id;
                 userLogado={nome,email,tel,foto:url,status:"aprovado"};
@@ -577,7 +569,6 @@
             carregarAnunciosAtivos().then(()=>carregarFeed());
             try{signInAnonymously(auth);}catch(e){}
             clsIniciar();
-            // ══ Monitora bloqueio/exclusão da conta ══
             onSnapshot(doc(fsdb,"usuariosAprovados",idLogado),(snap)=>{
                 if(!snap.exists()||snap.data().status==="excluido"||snap.data().status==="bloqueado"){
                     limparEmailLocal();
@@ -720,7 +711,7 @@
                                     <span style="font-weight:900;color:#ff0000;font-size:11px;text-transform:uppercase;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nome}</span>
                                 </div>
                                 <div class="post-card-header-badge" id="badge-slot-${id}"></div>
-                                <div onclick="curtirPost('${id}',this)" class="btn-curtir" data-post-id="${id}">❤️ <span class="num-curtidas">${p.curtidas||0}</span></div>
+                                <div onclick="curtirPost('${id}',this,event)" class="btn-curtir" data-post-id="${id}">❤️ <span class="num-curtidas">${p.curtidas||0}</span></div>
                             </div>
                         </div>
                         ${p.texto?`<p class="post-card-texto">${p.texto}</p>`:''}
@@ -804,12 +795,14 @@
             }
         }
 
-        window.curtirPost=async(id,btn)=>{
+        // ══ CORREÇÃO DO SOM: event.stopPropagation() impede que o clique no coração
+        //    chegue ao document e acione desbloquearSom, que mutava o vídeo ══
+        window.curtirPost=async(id,btn,evento)=>{
+            if(evento) evento.stopPropagation();
             if(curtidasNestaSessao.has(id))return;
             dispararCoracoes(btn);
             const refDoc=doc(fsdb,"posts",id),snap=await getDoc(refDoc),total=(snap.data().curtidas||0)+1;
             await updateDoc(refDoc,{curtidas:total});curtidasNestaSessao.add(id);
-            // ══ CORREÇÃO: atualiza só o número, sem reescrever o innerHTML do botão ══
             const numEl=btn.querySelector('.num-curtidas');
             if(numEl) numEl.textContent=total;
             aplicarRankingCoracoes();
