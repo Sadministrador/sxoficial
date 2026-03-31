@@ -621,8 +621,17 @@
             carregarAnunciosAtivos().then(()=>carregarFeed());
             try{signInAnonymously(auth);}catch(e){}
             clsIniciar();
+
+            // ══════════════════════════════════════════════════════
+            // CORREÇÃO: só desloga se o status for explicitamente
+            // "excluido" ou "bloqueado". Ignora erros e dados nulos.
+            // ══════════════════════════════════════════════════════
             onSnapshot(doc(fsdb,"usuariosAprovados",idLogado),(snap)=>{
-                if(!snap.exists()||snap.data().status==="excluido"||snap.data().status==="bloqueado"){
+                if(!snap.exists()) return;
+                const dados = snap.data();
+                if(!dados) return;
+                const status = dados.status || "";
+                if(status === "excluido" || status === "bloqueado"){
                     limparEmailLocal();
                     document.getElementById('main-box').classList.add('hidden');
                     document.getElementById('formulario-cadastro').classList.remove('hidden');
