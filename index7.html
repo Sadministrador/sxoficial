@@ -352,10 +352,6 @@
         const videoCache=new Set();
         let videoAtual=null;
 
-        // ══════════════════════════════════════════════════════
-        // SESSÃO PERMANENTE — cookies de 10 anos como backup
-        // Resolve o problema de logout após 4-6 horas no PWA
-        // ══════════════════════════════════════════════════════
         function setCookie(name, value, days) {
             try {
                 const d = new Date();
@@ -381,8 +377,8 @@
                 localStorage.setItem('sx_email_backup', email);
                 localStorage.setItem('sx_logado', '1');
                 sessionStorage.setItem('sx_email', email);
-                setCookie('sx_email', email, 3650);      // cookie de 10 anos
-                setCookie('sx_email_bk', email, 3650);   // cookie backup de 10 anos
+                setCookie('sx_email', email, 3650);
+                setCookie('sx_email_bk', email, 3650);
             } catch(e) {}
         }
         function lerEmailLocal() {
@@ -405,7 +401,6 @@
                 deleteCookie('sx_email_bk');
             } catch(e) {}
         }
-        // ══════════════════════════════════════════════════════
 
         let somDesbloqueado = false;
         function desbloquearSom() {
@@ -622,10 +617,6 @@
             try{signInAnonymously(auth);}catch(e){}
             clsIniciar();
 
-            // ══════════════════════════════════════════════════════
-            // CORREÇÃO: só desloga se o status for explicitamente
-            // "excluido" ou "bloqueado". Ignora erros e dados nulos.
-            // ══════════════════════════════════════════════════════
             onSnapshot(doc(fsdb,"usuariosAprovados",idLogado),(snap)=>{
                 if(!snap.exists()) return;
                 const dados = snap.data();
@@ -702,13 +693,51 @@
             });
         }
 
+        // ══════════════════════════════════════════════════════════════
+        // CORREÇÃO PRINCIPAL: gerarHtmlAnuncio agora usa corFundo e
+        // corTexto salvos no Firestore pelo monitor, em vez do gradiente
+        // roxo fixo. "Patrocinado" → "Patrocinador" com fonte maior.
+        // ══════════════════════════════════════════════════════════════
         function gerarHtmlAnuncio(ad){
-            if(!ad)return"";
-            const bannerUrl=ad.imagemUrl||ad.imagem||"",isVideo=ad.isVideo||false;
-            const logoHtml=ad.logoUrl?`<img src="${ad.logoUrl}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #ff0000;flex-shrink:0;">`:`<div style="width:42px;height:42px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex-shrink:0;">${(ad.loja||'?')[0]}</div>`;
-            const bannerHtml=bannerUrl?(isVideo?`<video src="${bannerUrl}" muted loop playsinline preload="none" data-anuncio="true" style="width:100%;height:220px;object-fit:cover;display:block;cursor:pointer;" onclick="this.muted=!this.muted"></video>`:`<img src="${bannerUrl}" loading="lazy" style="width:100%;height:220px;object-fit:cover;display:block;" alt="${ad.titulo||''}">`): '';
-            const linkHtml=ad.link?`<a href="${ad.link}" target="_blank" rel="noopener" style="display:block;width:100%;background:linear-gradient(45deg,#ff0000,#cc0000);color:white;font-weight:900;font-size:15px;padding:13px;border-radius:10px;text-align:center;text-decoration:none;text-transform:uppercase;letter-spacing:1px;margin-top:12px;">${ad.cta||'SAIBA MAIS'}</a>`:'';
-            return`<div style="background:linear-gradient(135deg,#1a0a2e,#0d1f3c);border-radius:16px;border:2px solid #ff0000;margin-bottom:24px;overflow:hidden;box-shadow:0 0 20px rgba(255,0,0,0.2);"><div style="background:rgba(255,0,0,0.9);color:white;font-size:10px;font-weight:900;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;display:inline-block;margin:10px 10px 0 10px;">Patrocinado</div>${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">${logoHtml}<span style="font-size:13px;font-weight:900;color:#ff6060;text-transform:uppercase;">${ad.loja||''}</span></div><div style="font-size:18px;font-weight:900;color:#fff;text-transform:uppercase;margin-bottom:6px;">${ad.titulo||''}</div><div style="font-size:14px;color:#aac;line-height:1.5;">${ad.descricao||''}</div>${linkHtml}</div></div>`;
+            if(!ad) return "";
+
+            // Pega as cores salvas pelo monitor (ou usa padrão roxo escuro)
+            const corFundo = ad.corFundo || '#1a0a2e';
+            const corTexto = ad.corTexto || '#ffffff';
+
+            const bannerUrl = ad.imagemUrl || ad.imagem || "";
+            const isVideo   = ad.isVideo || false;
+
+            const logoHtml = ad.logoUrl
+                ? `<img src="${ad.logoUrl}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;">`
+                : `<div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex-shrink:0;color:${corTexto};">${(ad.loja||'?')[0]}</div>`;
+
+            const bannerHtml = bannerUrl
+                ? (isVideo
+                    ? `<video src="${bannerUrl}" muted loop playsinline preload="none" data-anuncio="true" style="width:100%;height:220px;object-fit:cover;display:block;cursor:pointer;" onclick="this.muted=!this.muted"></video>`
+                    : `<img src="${bannerUrl}" loading="lazy" style="width:100%;height:220px;object-fit:cover;display:block;" alt="${ad.titulo||''}">`)
+                : '';
+
+            const linkHtml = ad.link
+                ? `<a href="${ad.link}" target="_blank" rel="noopener" style="display:block;width:100%;background:rgba(255,255,255,0.18);color:${corTexto};font-weight:900;font-size:15px;padding:13px;border-radius:10px;text-align:center;text-decoration:none;text-transform:uppercase;letter-spacing:1px;margin-top:12px;border:1px solid rgba(255,255,255,0.25);">${ad.cta||'SAIBA MAIS'}</a>`
+                : '';
+
+            return `
+            <div style="background:${corFundo};border-radius:16px;border:2px solid rgba(255,255,255,0.12);margin-bottom:24px;overflow:hidden;box-shadow:0 0 24px rgba(0,0,0,0.4);">
+                <div style="padding:8px 12px 0 12px;">
+                    <span style="background:rgba(255,255,255,0.15);color:${corTexto};font-size:12px;font-weight:900;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:2px;display:inline-block;">Patrocinador</span>
+                </div>
+                ${bannerHtml}
+                <div style="padding:16px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                        ${logoHtml}
+                        <span style="font-size:13px;font-weight:900;color:${corTexto};text-transform:uppercase;opacity:0.8;">${ad.loja||''}</span>
+                    </div>
+                    <div style="font-size:18px;font-weight:900;color:${corTexto};text-transform:uppercase;margin-bottom:6px;">${ad.titulo||''}</div>
+                    <div style="font-size:14px;color:${corTexto};opacity:0.75;line-height:1.5;">${ad.descricao||''}</div>
+                    ${linkHtml}
+                </div>
+            </div>`;
         }
 
         function aplicarRankingCoracoes(){
