@@ -88,8 +88,107 @@
         .anuncio-cls { background:#10264d; padding:20px; border-radius:12px; margin:20px 0; }
         .anuncio-cls h3 { margin:0 0 10px 0; }
         .badge-publicado { background:#004400; color:#00ff88; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:bold; display:inline-block; margin-bottom:8px; }
-        #area-vestir { display: none; width: 100%; background: #000; }
-        #pv-iframe { width: 100%; height: calc(100vh - 73px - 49px); border: none; display: block; }
+        /* ===== ÁREA CALCULADORA ===== */
+        #area-vestir { display: none; width: 100%; background: #050a14; }
+        .calc-wrapper {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        .calc-header {
+            background: #112240;
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+            border-bottom: 2px solid #ff0000;
+        }
+        .calc-header h1 {
+            margin: 0;
+            color: #ff0000;
+            font-size: 1.3rem;
+        }
+        .calc-main {
+            background: #112240;
+            padding: 20px;
+        }
+        .calc-display {
+            background: linear-gradient(135deg, #004d00, #003300);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .calc-display-label {
+            color: #00FF00;
+            text-align: center;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .calc-display-valor {
+            color: #00FF00;
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            font-family: monospace;
+        }
+        .calc-numpad {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 10px;
+        }
+        .calc-numpad button {
+            padding: 18px;
+            font-size: 28px;
+            border-radius: 12px;
+            border: none;
+            background: #1d2d50;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .calc-numpad button:active { background: #ff0000; }
+        .calc-btn-limpar {
+            margin-top: 12px;
+            background: linear-gradient(135deg, #CC0000, #8B0000);
+            color: white;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 12px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .calc-btn-adicionar {
+            margin-top: 12px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 18px;
+            font-size: 22px;
+            border-radius: 12px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .calc-total {
+            background: linear-gradient(135deg, #764ba2, #4B0082);
+            color: white;
+            padding: 22px;
+            font-size: 28px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .calc-lista-section {
+            background: #112240;
+            padding: 20px;
+            border-radius: 0 0 20px 20px;
+            border-top: 1px solid #1d2d50;
+        }
+        .calc-lista-section h3 {
+            color: white;
+            margin: 0 0 12px 0;
+        }
+        /* ============================= */
         .sx-card-cadastro { background: #112240; border-radius: 15px; border: 1px solid #1d2d50; }
         #btn-flutuante-admin { display: none; position: fixed; bottom: 24px; right: 20px; background: linear-gradient(45deg, #ff0000, #8800cc); color: white; font-size: 13px; font-weight: 900; padding: 14px 18px; border-radius: 50px; box-shadow: 0 4px 20px rgba(255,0,0,0.5); cursor: pointer; z-index: 80; border: 2px solid rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
         #btn-flutuante-admin:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(255,0,0,0.7); }
@@ -205,7 +304,8 @@
             <button onclick="abrirTVSX()" id="btn-nav-tvsx" class="btn-nav-item">
                 <span class="tvsx-tv">TV </span><span class="tvsx-s">S</span><span class="tvsx-x">X</span>
             </button>
-            <button onclick="abrirVestir()" id="btn-nav-vestir" class="btn-nav-item">Vestir</button>
+            <!-- ✅ ALTERAÇÃO 1: ícone 🛒 substituído pela palavra Compras -->
+            <button onclick="abrirVestir()" id="btn-nav-vestir" class="btn-nav-item">Compras</button>
             <button onclick="abrirLojasLook()" id="btn-nav-lojas" class="btn-nav-item">Domicílio</button>
         </div>
 
@@ -266,8 +366,40 @@
             </div>
         </div>
 
+        <!-- ÁREA DA CALCULADORA DE COMPRAS -->
         <div id="area-vestir">
-            <iframe id="pv-iframe" src="" allow="camera; microphone" allowfullscreen></iframe>
+            <div class="calc-wrapper">
+                <div class="calc-header">
+                    <h1>🛒 Calculadora de Compras</h1>
+                </div>
+                <div class="calc-main">
+                    <div class="calc-display">
+                        <div class="calc-display-label">VALOR DIGITADO</div>
+                        <div class="calc-display-valor" id="calc-display">R$ 0,00</div>
+                    </div>
+                    <div class="calc-numpad">
+                        <button onclick="calcDigitar('1')">1</button>
+                        <button onclick="calcDigitar('2')">2</button>
+                        <button onclick="calcDigitar('3')">3</button>
+                        <button onclick="calcDigitar('4')">4</button>
+                        <button onclick="calcDigitar('5')">5</button>
+                        <button onclick="calcDigitar('6')">6</button>
+                        <button onclick="calcDigitar('7')">7</button>
+                        <button onclick="calcDigitar('8')">8</button>
+                        <button onclick="calcDigitar('9')">9</button>
+                        <button onclick="calcDigitar('00')">00</button>
+                        <button onclick="calcDigitar('0')">0</button>
+                        <button onclick="calcApagarUltimo()">⌫</button>
+                    </div>
+                    <button class="calc-btn-limpar" onclick="calcLimparTudo()">🗑️ LIMPAR TUDO</button>
+                    <button class="calc-btn-adicionar" onclick="calcAdicionarPreco()">✓ ADICIONAR</button>
+                </div>
+                <div class="calc-total" id="calc-total">TOTAL: R$ 0,00</div>
+                <div class="calc-lista-section">
+                    <h3>🛍️ Carrinho (<span id="calc-count">0</span>)</h3>
+                    <div id="calc-lista"></div>
+                </div>
+            </div>
         </div>
 
         <div id="area-lojas-look">
@@ -320,6 +452,47 @@
     </div>
 
     <button id="btn-flutuante-admin" onclick="abrirMonitorAnuncios()">📢 Anúncios</button>
+
+    <!-- SCRIPT DA CALCULADORA -->
+    <script>
+        let calcValorAtual = "", calcTotal = 0, calcItens = [];
+
+        function calcDigitar(n) {
+            calcValorAtual += n;
+            calcAtualizar();
+        }
+        function calcApagarUltimo() {
+            calcValorAtual = calcValorAtual.slice(0, -1);
+            calcAtualizar();
+        }
+        function calcAtualizar() {
+            document.getElementById("calc-display").innerText =
+                "R$ " + ((parseInt(calcValorAtual) || 0) / 100).toFixed(2).replace(".", ",");
+        }
+        function calcAdicionarPreco() {
+            if (!calcValorAtual) return;
+            let p = parseInt(calcValorAtual) / 100;
+            calcTotal += p;
+            calcItens.push(p);
+            calcValorAtual = "";
+            calcAtualizar();
+            document.getElementById("calc-total").innerText =
+                "TOTAL: R$ " + calcTotal.toFixed(2).replace(".", ",");
+            document.getElementById("calc-count").innerText = calcItens.length;
+            let listaEl = document.getElementById("calc-lista");
+            let item = document.createElement("div");
+            item.style.cssText = "padding:6px 0;border-bottom:1px solid #1d2d50;color:#e5e7eb;font-size:15px;";
+            item.innerText = "Item " + calcItens.length + ": R$ " + p.toFixed(2).replace(".", ",");
+            listaEl.appendChild(item);
+        }
+        function calcLimparTudo() {
+            calcValorAtual = ""; calcTotal = 0; calcItens = [];
+            calcAtualizar();
+            document.getElementById("calc-total").innerText = "TOTAL: R$ 0,00";
+            document.getElementById("calc-count").innerText = 0;
+            document.getElementById("calc-lista").innerHTML = "";
+        }
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -423,7 +596,8 @@
                 if(entry.isIntersecting){
                     document.querySelectorAll('video.video-feed').forEach(v=>{ if(v!==video){v.pause();} });
                     videoAtual=video;
-                    if(video.readyState<2){video.preload='auto';video.load();}
+                    // ✅ ALTERAÇÃO 2a: readyState<4 para forçar load sempre que não estiver 100% pronto
+                    if(video.readyState<4){video.preload='auto';video.load();}
                     video.muted = false;
                     video.play().catch(()=>{ video.muted=true; video.play().catch(()=>{}); });
                     const sk=video.parentElement?.querySelector('.video-skeleton');
@@ -439,24 +613,21 @@
             });
         },{threshold:0.4});
 
+        // ✅ ALTERAÇÃO 2b: margem 3000px (era 2000px) + preload='auto' direto (era 'metadata' + nearObserver)
         const preloadObserver=new IntersectionObserver(entries=>{
             entries.forEach(entry=>{
                 if(entry.isIntersecting){
                     const v=entry.target;
-                    v.preload='metadata'; v.load();
+                    v.preload='auto'; v.load();
                     if(!videoCache.has(v.src)){
                         videoCache.add(v.src);
                         const l=document.createElement('link'); l.rel='preload';l.as='video';l.href=v.src;
                         document.head.appendChild(l);
                     }
                     preloadObserver.unobserve(v);
-                    const nearObserver=new IntersectionObserver(en=>{
-                        if(en[0].isIntersecting){v.preload='auto';nearObserver.disconnect();}
-                    },{rootMargin:'500px 0px',threshold:0});
-                    nearObserver.observe(v);
                 }
             });
-        },{rootMargin:'2000px 0px',threshold:0});
+        },{rootMargin:'3000px 0px',threshold:0});
 
         function registrarVideo(v){
             v.preload='none'; v.muted=false;
@@ -488,7 +659,6 @@
         };
 
         const MONITOR_URL='sx-monitor.html';
-        const PV_URL='https://sadministrador.github.io/sx/sx.html?id=loja01';
 
         window.limparErroEmail=()=>{
             document.getElementById('alerta-email-duplicado').classList.remove('visivel');
@@ -646,7 +816,7 @@
         window.toggleMenu=()=>{document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('active');};
         window.voltarHome=()=>{
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
-            esconderTudo();document.getElementById('pv-iframe').src='';
+            esconderTudo();
             document.getElementById('area-perfil').classList.add('hidden');
             document.getElementById('caixa-post').classList.remove('hidden');
             resetNav();document.getElementById('btn-nav-feed').style.borderColor='#ff0000';document.getElementById('btn-nav-feed').style.color='#ff0000';
@@ -656,7 +826,7 @@
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
             document.getElementById('area-perfil').classList.add('hidden');document.getElementById('caixa-post').classList.add('hidden');
             document.getElementById('feed').style.display='none';document.getElementById('area-vestir').style.display='none';
-            document.getElementById('area-lojas-look').style.display='none';document.getElementById('pv-iframe').src='';
+            document.getElementById('area-lojas-look').style.display='none';
             document.getElementById('area-veiculos').style.display='block';
             resetNav();document.getElementById('btn-nav-veiculos').style.borderColor='#ff0000';document.getElementById('btn-nav-veiculos').style.color='#ff0000';
             window.scrollTo({top:0,behavior:'smooth'});
@@ -665,8 +835,8 @@
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
             document.getElementById('area-perfil').classList.add('hidden');document.getElementById('caixa-post').classList.add('hidden');
             document.getElementById('feed').style.display='none';document.getElementById('area-veiculos').style.display='none';
-            document.getElementById('area-lojas-look').style.display='none';document.getElementById('area-vestir').style.display='block';
-            const iframe=document.getElementById('pv-iframe');if(iframe.src!==PV_URL)iframe.src=PV_URL;
+            document.getElementById('area-lojas-look').style.display='none';
+            document.getElementById('area-vestir').style.display='block';
             resetNav();document.getElementById('btn-nav-vestir').style.borderColor='#ff0000';document.getElementById('btn-nav-vestir').style.color='#ff0000';
             window.scrollTo({top:0,behavior:'smooth'});
         };
@@ -674,7 +844,7 @@
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
             document.getElementById('area-perfil').classList.add('hidden');document.getElementById('caixa-post').classList.add('hidden');
             document.getElementById('feed').style.display='none';document.getElementById('area-veiculos').style.display='none';
-            document.getElementById('area-vestir').style.display='none';document.getElementById('pv-iframe').src='';
+            document.getElementById('area-vestir').style.display='none';
             document.getElementById('area-lojas-look').style.display='block';
             resetNav();document.getElementById('btn-nav-lojas').style.borderColor='#ff0000';document.getElementById('btn-nav-lojas').style.color='#ff0000';
             if(!lokListaCarregada){lokCarregarProfissionais();lokListaCarregada=true;}
@@ -693,35 +863,23 @@
             });
         }
 
-        // ══════════════════════════════════════════════════════════════
-        // CORREÇÃO PRINCIPAL: gerarHtmlAnuncio agora usa corFundo e
-        // corTexto salvos no Firestore pelo monitor, em vez do gradiente
-        // roxo fixo. "Patrocinado" → "Patrocinador" com fonte maior.
-        // ══════════════════════════════════════════════════════════════
         function gerarHtmlAnuncio(ad){
             if(!ad) return "";
-
-            // Pega as cores salvas pelo monitor (ou usa padrão roxo escuro)
             const corFundo = ad.corFundo || '#1a0a2e';
             const corTexto = ad.corTexto || '#ffffff';
-
             const bannerUrl = ad.imagemUrl || ad.imagem || "";
             const isVideo   = ad.isVideo || false;
-
             const logoHtml = ad.logoUrl
                 ? `<img src="${ad.logoUrl}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;">`
                 : `<div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex-shrink:0;color:${corTexto};">${(ad.loja||'?')[0]}</div>`;
-
             const bannerHtml = bannerUrl
                 ? (isVideo
                     ? `<video src="${bannerUrl}" muted loop playsinline preload="none" data-anuncio="true" style="width:100%;height:220px;object-fit:cover;display:block;cursor:pointer;" onclick="this.muted=!this.muted"></video>`
                     : `<img src="${bannerUrl}" loading="lazy" style="width:100%;height:220px;object-fit:cover;display:block;" alt="${ad.titulo||''}">`)
                 : '';
-
             const linkHtml = ad.link
                 ? `<a href="${ad.link}" target="_blank" rel="noopener" style="display:block;width:100%;background:rgba(255,255,255,0.18);color:${corTexto};font-weight:900;font-size:15px;padding:13px;border-radius:10px;text-align:center;text-decoration:none;text-transform:uppercase;letter-spacing:1px;margin-top:12px;border:1px solid rgba(255,255,255,0.25);">${ad.cta||'SAIBA MAIS'}</a>`
                 : '';
-
             return `
             <div style="background:${corFundo};border-radius:16px;border:2px solid rgba(255,255,255,0.12);margin-bottom:24px;overflow:hidden;box-shadow:0 0 24px rgba(0,0,0,0.4);">
                 <div style="padding:8px 12px 0 12px;">
@@ -837,7 +995,7 @@
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
             const docSnap=await getDoc(doc(fsdb,"usuariosAprovados",idPerfil));
             if(docSnap.exists()){
-                const p=docSnap.data();esconderTudo();document.getElementById('pv-iframe').src='';
+                const p=docSnap.data();esconderTudo();
                 document.getElementById('area-perfil').classList.remove('hidden');document.getElementById('caixa-post').classList.add('hidden');
                 document.getElementById('nome-perfil-view').innerText=p.nome;
                 document.getElementById('img-capa-view').src=p.capa||"https://images.unsplash.com/photo-1557683316-973673baf926";
