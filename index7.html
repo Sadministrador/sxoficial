@@ -136,8 +136,6 @@
         #btn-fechar-tvsx.show { display: flex; }
         @media screen and (orientation: landscape) { #btn-fechar-tvsx.show { top: 12px; right: 12px; bottom: auto; left: auto; } }
         @media screen and (orientation: portrait) { #btn-fechar-tvsx.show { bottom: 12px; right: 12px; top: auto; left: auto; } }
-
-        /* ── SLIDESHOW DO ANÚNCIO NO FEED ── */
         .ad-slideshow { position: relative; width: 100%; overflow: hidden; }
         .ad-slideshow-track { display: flex; transition: transform 0.5s ease; }
         .ad-slideshow-track img { width: 100%; flex-shrink: 0; object-fit: cover; display: block; }
@@ -293,27 +291,17 @@
 
         <div id="area-vestir">
             <div class="calc-wrapper">
-                <div class="calc-header">
-                    <h1>🛒 Calculadora de Compras</h1>
-                </div>
+                <div class="calc-header"><h1>🛒 Calculadora de Compras</h1></div>
                 <div class="calc-main">
                     <div class="calc-display">
                         <div class="calc-display-label">VALOR DIGITADO</div>
                         <div class="calc-display-valor" id="calc-display">R$ 0,00</div>
                     </div>
                     <div class="calc-numpad">
-                        <button onclick="calcDigitar('1')">1</button>
-                        <button onclick="calcDigitar('2')">2</button>
-                        <button onclick="calcDigitar('3')">3</button>
-                        <button onclick="calcDigitar('4')">4</button>
-                        <button onclick="calcDigitar('5')">5</button>
-                        <button onclick="calcDigitar('6')">6</button>
-                        <button onclick="calcDigitar('7')">7</button>
-                        <button onclick="calcDigitar('8')">8</button>
-                        <button onclick="calcDigitar('9')">9</button>
-                        <button onclick="calcDigitar('00')">00</button>
-                        <button onclick="calcDigitar('0')">0</button>
-                        <button onclick="calcApagarUltimo()">⌫</button>
+                        <button onclick="calcDigitar('1')">1</button><button onclick="calcDigitar('2')">2</button><button onclick="calcDigitar('3')">3</button>
+                        <button onclick="calcDigitar('4')">4</button><button onclick="calcDigitar('5')">5</button><button onclick="calcDigitar('6')">6</button>
+                        <button onclick="calcDigitar('7')">7</button><button onclick="calcDigitar('8')">8</button><button onclick="calcDigitar('9')">9</button>
+                        <button onclick="calcDigitar('00')">00</button><button onclick="calcDigitar('0')">0</button><button onclick="calcApagarUltimo()">⌫</button>
                     </div>
                     <button class="calc-btn-limpar" onclick="calcLimparTudo()">🗑️ LIMPAR TUDO</button>
                     <button class="calc-btn-adicionar" onclick="calcAdicionarPreco()">✓ ADICIONAR</button>
@@ -378,47 +366,18 @@
     <button id="btn-flutuante-admin" onclick="abrirMonitorAnuncios()">📢 Anúncios</button>
 
     <script>
-        let calcValorAtual = "", calcTotal = 0, calcItens = [];
-        function calcDigitar(n) { calcValorAtual += n; calcAtualizar(); }
-        function calcApagarUltimo() { calcValorAtual = calcValorAtual.slice(0, -1); calcAtualizar(); }
-        function calcAtualizar() { document.getElementById("calc-display").innerText = "R$ " + ((parseInt(calcValorAtual) || 0) / 100).toFixed(2).replace(".", ","); }
-        function calcAdicionarPreco() {
-            if (!calcValorAtual) return;
-            let p = parseInt(calcValorAtual) / 100; calcTotal += p; calcItens.push(p); calcValorAtual = ""; calcAtualizar();
-            document.getElementById("calc-total").innerText = "TOTAL: R$ " + calcTotal.toFixed(2).replace(".", ",");
-            document.getElementById("calc-count").innerText = calcItens.length;
-            let listaEl = document.getElementById("calc-lista");
-            let item = document.createElement("div"); item.style.cssText = "padding:6px 0;border-bottom:1px solid #1d2d50;color:#e5e7eb;font-size:15px;";
-            item.innerText = "Item " + calcItens.length + ": R$ " + p.toFixed(2).replace(".", ","); listaEl.appendChild(item);
-        }
-        function calcLimparTudo() {
-            calcValorAtual = ""; calcTotal = 0; calcItens = []; calcAtualizar();
-            document.getElementById("calc-total").innerText = "TOTAL: R$ 0,00";
-            document.getElementById("calc-count").innerText = 0;
-            document.getElementById("calc-lista").innerHTML = "";
-        }
+        let calcValorAtual="",calcTotal=0,calcItens=[];
+        function calcDigitar(n){calcValorAtual+=n;calcAtualizar();}
+        function calcApagarUltimo(){calcValorAtual=calcValorAtual.slice(0,-1);calcAtualizar();}
+        function calcAtualizar(){document.getElementById("calc-display").innerText="R$ "+((parseInt(calcValorAtual)||0)/100).toFixed(2).replace(".",",");}
+        function calcAdicionarPreco(){if(!calcValorAtual)return;let p=parseInt(calcValorAtual)/100;calcTotal+=p;calcItens.push(p);calcValorAtual="";calcAtualizar();document.getElementById("calc-total").innerText="TOTAL: R$ "+calcTotal.toFixed(2).replace(".",",");document.getElementById("calc-count").innerText=calcItens.length;let listaEl=document.getElementById("calc-lista");let item=document.createElement("div");item.style.cssText="padding:6px 0;border-bottom:1px solid #1d2d50;color:#e5e7eb;font-size:15px;";item.innerText="Item "+calcItens.length+": R$ "+p.toFixed(2).replace(".",",");listaEl.appendChild(item);}
+        function calcLimparTudo(){calcValorAtual="";calcTotal=0;calcItens=[];calcAtualizar();document.getElementById("calc-total").innerText="TOTAL: R$ 0,00";document.getElementById("calc-count").innerText=0;document.getElementById("calc-lista").innerHTML="";}
 
-        // ── SLIDESHOW DOS ANÚNCIOS NO FEED ──
-        const _adSlides = {}; // { uid: { idx, srcs, timer } }
-
-        window._adGoSlide = function(uid, i) {
-            const s = _adSlides[uid]; if (!s) return;
-            s.idx = i;
-            const track = document.getElementById('adtrack-' + uid);
-            if (track) track.style.transform = 'translateX(-' + (i * 100) + '%)';
-            const dots = document.querySelectorAll('#addots-' + uid + ' .ad-slide-dot');
-            dots.forEach((d, j) => d.classList.toggle('active', j === i));
-        };
-        window._adPrev = function(uid) { const s = _adSlides[uid]; if (!s) return; _adGoSlide(uid, (s.idx - 1 + s.srcs.length) % s.srcs.length); };
-        window._adNext = function(uid) { const s = _adSlides[uid]; if (!s) return; _adGoSlide(uid, (s.idx + 1) % s.srcs.length); };
-
-        function iniciarSlideshowAd(uid, srcs, intervalo) {
-            if (_adSlides[uid] && _adSlides[uid].timer) clearInterval(_adSlides[uid].timer);
-            if (!document.getElementById('adtrack-' + uid)) return;
-            const timer = setInterval(() => _adNext(uid), intervalo || 3000);
-            _adSlides[uid] = { idx: 0, srcs, timer };
-            _adGoSlide(uid, 0);
-        }
+        const _adSlides={};
+        window._adGoSlide=function(uid,i){const s=_adSlides[uid];if(!s)return;s.idx=i;const track=document.getElementById('adtrack-'+uid);if(track)track.style.transform='translateX(-'+(i*100)+'%)';const dots=document.querySelectorAll('#addots-'+uid+' .ad-slide-dot');dots.forEach((d,j)=>d.classList.toggle('active',j===i));};
+        window._adPrev=function(uid){const s=_adSlides[uid];if(!s)return;_adGoSlide(uid,(s.idx-1+s.srcs.length)%s.srcs.length);};
+        window._adNext=function(uid){const s=_adSlides[uid];if(!s)return;_adGoSlide(uid,(s.idx+1)%s.srcs.length);};
+        function iniciarSlideshowAd(uid,srcs,intervalo){if(_adSlides[uid]&&_adSlides[uid].timer)clearInterval(_adSlides[uid].timer);if(!document.getElementById('adtrack-'+uid))return;const timer=setInterval(()=>_adNext(uid),intervalo||3000);_adSlides[uid]={idx:0,srcs,timer};_adGoSlide(uid,0);}
     </script>
 
     <script type="module">
@@ -438,28 +397,28 @@
             messagingSenderId: "81306033578",
             appId: "1:81306033578:web:0c3688bc455a51b972dfd3"
         };
-        const app = initializeApp(firebaseConfig);
-        const fsdb = getFirestore(app, "cadastro");
-        const storage = getStorage(app);
-        const auth = getAuth(app);
+        const app=initializeApp(firebaseConfig);
+        const fsdb=getFirestore(app,"cadastro");
+        const storage=getStorage(app);
+        const auth=getAuth(app);
 
-        let userLogado=null, idLogado=null, unsubFeed=null, arquivoCapaPendente=null;
+        let userLogado=null,idLogado=null,unsubFeed=null,arquivoCapaPendente=null;
         let curtidasNestaSessao=new Set();
-        let clsArquivos=[], clsIsSubmitting=false;
-        let isAdmin=false, anunciosAtivos=[], lokListaCarregada=false;
+        let clsArquivos=[],clsIsSubmitting=false;
+        let isAdmin=false,anunciosAtivos=[],lokListaCarregada=false;
         let unsubAprovacao=null;
         const videoCache=new Set();
         let videoAtual=null;
 
-        function setCookie(name, value, days) { try { const d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000)); document.cookie = name+'='+encodeURIComponent(value)+';expires='+d.toUTCString()+';path=/;SameSite=Lax'; } catch(e) {} }
-        function getCookie(name) { try { const match = document.cookie.match(new RegExp('(?:^|; )'+name+'=([^;]*)')); return match ? decodeURIComponent(match[1]) : null; } catch(e) { return null; } }
-        function deleteCookie(name) { try { document.cookie = name+'=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax'; } catch(e) {} }
-        function salvarEmailLocal(email) { try { localStorage.setItem('sx_email',email); localStorage.setItem('sx_email_backup',email); localStorage.setItem('sx_logado','1'); sessionStorage.setItem('sx_email',email); setCookie('sx_email',email,3650); setCookie('sx_email_bk',email,3650); } catch(e) {} }
-        function lerEmailLocal() { try { return localStorage.getItem('sx_email')||localStorage.getItem('sx_email_backup')||sessionStorage.getItem('sx_email')||getCookie('sx_email')||getCookie('sx_email_bk')||null; } catch(e) { return null; } }
-        function limparEmailLocal() { try { localStorage.removeItem('sx_email'); localStorage.removeItem('sx_email_backup'); localStorage.removeItem('sx_logado'); sessionStorage.removeItem('sx_email'); deleteCookie('sx_email'); deleteCookie('sx_email_bk'); } catch(e) {} }
+        function setCookie(name,value,days){try{const d=new Date();d.setTime(d.getTime()+(days*24*60*60*1000));document.cookie=name+'='+encodeURIComponent(value)+';expires='+d.toUTCString()+';path=/;SameSite=Lax';}catch(e){}}
+        function getCookie(name){try{const match=document.cookie.match(new RegExp('(?:^|; )'+name+'=([^;]*)'));return match?decodeURIComponent(match[1]):null;}catch(e){return null;}}
+        function deleteCookie(name){try{document.cookie=name+'=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax';}catch(e){}}
+        function salvarEmailLocal(email){try{localStorage.setItem('sx_email',email);localStorage.setItem('sx_email_backup',email);localStorage.setItem('sx_logado','1');sessionStorage.setItem('sx_email',email);setCookie('sx_email',email,3650);setCookie('sx_email_bk',email,3650);}catch(e){}}
+        function lerEmailLocal(){try{return localStorage.getItem('sx_email')||localStorage.getItem('sx_email_backup')||sessionStorage.getItem('sx_email')||getCookie('sx_email')||getCookie('sx_email_bk')||null;}catch(e){return null;}}
+        function limparEmailLocal(){try{localStorage.removeItem('sx_email');localStorage.removeItem('sx_email_backup');localStorage.removeItem('sx_logado');sessionStorage.removeItem('sx_email');deleteCookie('sx_email');deleteCookie('sx_email_bk');}catch(e){}}
 
-        let somDesbloqueado = false;
-        function desbloquearSom() { if(somDesbloqueado)return; somDesbloqueado=true; document.querySelectorAll('video.video-feed').forEach(v=>{v.muted=false;if(!v.paused)v.play().catch(()=>{})}); }
+        let somDesbloqueado=false;
+        function desbloquearSom(){if(somDesbloqueado)return;somDesbloqueado=true;document.querySelectorAll('video.video-feed').forEach(v=>{v.muted=false;if(!v.paused)v.play().catch(()=>{});});}
         document.addEventListener('click',desbloquearSom,{passive:true});
         document.addEventListener('touchstart',desbloquearSom,{passive:true});
         document.addEventListener('touchend',desbloquearSom,{passive:true});
@@ -477,7 +436,7 @@
                     video.play().catch(()=>{video.muted=true;video.play().catch(()=>{});});
                     const sk=video.parentElement?.querySelector('.video-skeleton');
                     if(sk){const hide=()=>{sk.style.opacity='0';setTimeout(()=>{if(sk)sk.style.display='none';},300);video.removeEventListener('canplay',hide);};video.readyState>=2?hide():video.addEventListener('canplay',hide);}
-                } else {
+                }else{
                     video.pause();
                     const sk=video.parentElement?.querySelector('.video-skeleton');
                     if(sk&&video.readyState<1){sk.style.display='flex';sk.style.opacity='1';}
@@ -495,24 +454,15 @@
             });
         },{rootMargin:'3000px 0px',threshold:0});
 
-        // ── Observer para vídeos de anúncio (autoplay mudo — compatível mobile) ──
         const adVideoObserver=new IntersectionObserver(entries=>{
             entries.forEach(entry=>{
                 const v=entry.target;
                 if(entry.isIntersecting){
-                    // Garante muted antes do play (obrigatório iOS Safari e Android Chrome)
-                    v.muted=true;
-                    v.playsInline=true;
+                    v.muted=true;v.playsInline=true;
                     if(v.readyState===0){v.load();}
-                    const tentarPlay=()=>{
-                        const p=v.play();
-                        if(p!==undefined){p.catch(()=>{v.muted=true;v.play().catch(()=>{});});}
-                    };
-                    if(v.readyState>=2){tentarPlay();}
-                    else{v.addEventListener('canplay',tentarPlay,{once:true});}
-                } else {
-                    v.pause();
-                }
+                    const tentarPlay=()=>{const p=v.play();if(p!==undefined){p.catch(()=>{v.muted=true;v.play().catch(()=>{});});}};
+                    if(v.readyState>=2){tentarPlay();}else{v.addEventListener('canplay',tentarPlay,{once:true});}
+                }else{v.pause();}
             });
         },{threshold:0.2,rootMargin:'100px 0px'});
 
@@ -535,8 +485,8 @@
 
         const MONITOR_URL='sx-monitor.html';
 
-        window.limparErroEmail=()=>{ document.getElementById('alerta-email-duplicado').classList.remove('visivel'); document.getElementById('e').classList.remove('input-erro'); };
-        function mostrarErroEmail(){ document.getElementById('alerta-email-duplicado').classList.add('visivel'); document.getElementById('e').classList.add('input-erro'); document.getElementById('e').focus(); }
+        window.limparErroEmail=()=>{document.getElementById('alerta-email-duplicado').classList.remove('visivel');document.getElementById('e').classList.remove('input-erro');};
+        function mostrarErroEmail(){document.getElementById('alerta-email-duplicado').classList.add('visivel');document.getElementById('e').classList.add('input-erro');document.getElementById('e').focus();}
 
         async function inicializar(){
             const emailSalvo=lerEmailLocal();
@@ -549,7 +499,7 @@
                     const liberado=dados.status==="aprovado"||dados.status==="ativo";
                     if(liberado){idLogado=snap.docs[0].id;userLogado=dados;salvarEmailLocal(emailSalvo);entrarNaPlataforma();}
                     else{mostrarTelaAguardando();ouvirAprovacaoEmTempoReal(emailSalvo);}
-                } else {limparEmailLocal();document.getElementById('login-box').classList.remove('hidden');}
+                }else{limparEmailLocal();document.getElementById('login-box').classList.remove('hidden');}
             }catch(e){document.getElementById('login-box').classList.remove('hidden');}
         }
 
@@ -582,17 +532,37 @@
             });
         }
 
+        // ✅ FUNÇÃO CADASTRAR CORRIGIDA — signInAnonymously antes do addDoc
         window.cadastrar=async()=>{
-            const nome=document.getElementById('n').value.trim(),email=document.getElementById('e').value.trim().toLowerCase(),tel=document.getElementById('t').value.trim(),file=document.getElementById('f').files[0],btn=document.getElementById('btn-cadastrar');
-            if(!nome)return alert("Digite seu nome completo!");if(!email)return alert("Digite seu e-mail!");if(!tel)return alert("Digite seu telefone!");if(!file)return alert("Por favor, suba sua foto de perfil!");
+            const nome=document.getElementById('n').value.trim(),
+                  email=document.getElementById('e').value.trim().toLowerCase(),
+                  tel=document.getElementById('t').value.trim(),
+                  file=document.getElementById('f').files[0],
+                  btn=document.getElementById('btn-cadastrar');
+            if(!nome)return alert("Digite seu nome completo!");
+            if(!email)return alert("Digite seu e-mail!");
+            if(!tel)return alert("Digite seu telefone!");
+            if(!file)return alert("Por favor, suba sua foto de perfil!");
             btn.disabled=true;btn.innerText="CADASTRANDO...";
             try{
-                const [snapExiste,fotoComprimida]=await Promise.all([getDocs(query(collection(fsdb,"usuariosAprovados"),where("email","==",email))),comprimirFoto(file)]);
+                // ✅ CORREÇÃO: autentica anonimamente antes de qualquer escrita no Firestore
+                await signInAnonymously(auth);
+
+                const [snapExiste,fotoComprimida]=await Promise.all([
+                    getDocs(query(collection(fsdb,"usuariosAprovados"),where("email","==",email))),
+                    comprimirFoto(file)
+                ]);
                 if(!snapExiste.empty){mostrarErroEmail();btn.disabled=false;btn.innerText="CADASTRAR";return;}
-                const sRef=stRef(storage,'perfis/'+Date.now()+'.jpg');await uploadBytes(sRef,fotoComprimida);const url=await getDownloadURL(sRef);
+                const sRef=stRef(storage,'perfis/'+Date.now()+'.jpg');
+                await uploadBytes(sRef,fotoComprimida);
+                const url=await getDownloadURL(sRef);
                 const docRef=await addDoc(collection(fsdb,"usuariosAprovados"),{nome,email,tel,foto:url,status:"aprovado"});
-                salvarEmailLocal(email);idLogado=docRef.id;userLogado={nome,email,tel,foto:url,status:"aprovado"};entrarNaPlataforma();
-            }catch(e){alert("Erro ao enviar cadastro.");btn.disabled=false;btn.innerText="CADASTRAR";}
+                salvarEmailLocal(email);idLogado=docRef.id;userLogado={nome,email,tel,foto:url,status:"aprovado"};
+                entrarNaPlataforma();
+            }catch(e){
+                alert("Erro ao enviar cadastro. Verifique sua conexão e tente novamente.");
+                btn.disabled=false;btn.innerText="CADASTRAR";
+            }
         };
 
         function entrarNaPlataforma(){
@@ -612,7 +582,7 @@
             });
         }
 
-        function resetNav(){['btn-nav-feed','btn-nav-veiculos','btn-nav-tvsx','btn-nav-vestir','btn-nav-lojas'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.borderColor='';el.style.color='';}}); }
+        function resetNav(){['btn-nav-feed','btn-nav-veiculos','btn-nav-tvsx','btn-nav-vestir','btn-nav-lojas'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.borderColor='';el.style.color='';}});}
         function esconderTudo(){document.getElementById('area-veiculos').style.display='none';document.getElementById('area-vestir').style.display='none';document.getElementById('area-lojas-look').style.display='none';document.getElementById('feed').style.display='';}
         window.toggleMenu=()=>{document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('active');};
         window.voltarHome=()=>{
@@ -647,81 +617,30 @@
             });
         }
 
-        // ══════════════════════════════════════════════════════════════════
-        // gerarHtmlAnuncio
-        // ══════════════════════════════════════════════════════════════════
-        function gerarHtmlAnuncio(ad, slideshowsPendentes) {
-            if (!ad) return "";
-            const corFundo     = ad.corFundo     || '#1a0a2e';
-            const corTexto     = ad.corTexto     || '#ffffff';
-            const corDescFundo = ad.corDescFundo || 'transparent';
-            const corDescTexto = ad.corDescTexto || corTexto;
-            const tipoMidia    = ad.tipoMidia    || 'unico';
-            const imagensSlide = ad.imagensSlide && ad.imagensSlide.length > 0 ? ad.imagensSlide : null;
-            const bannerUrl    = ad.imagemUrl    || ad.imagem || "";
-            const isVideo      = ad.isVideo      || false;
-            const intervalo    = ad.intervaloSlide || 3000;
-            const uid          = 'ad_' + ad.id;
-
-            const logoHtml = ad.logoUrl
-                ? `<img src="${ad.logoUrl}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;">`
-                : `<div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex-shrink:0;color:${corTexto};">${(ad.loja||'?')[0]}</div>`;
-
-            // ── BANNER HTML ──
-            let bannerHtml = '';
-            if (tipoMidia === 'slide' && imagensSlide && imagensSlide.length > 1) {
-                // SLIDESHOW — sem loading="lazy" para garantir animação imediata
-                const dots  = imagensSlide.map((_,i) => `<div class="ad-slide-dot ${i===0?'active':''}" onclick="_adGoSlide('${uid}',${i})"></div>`).join('');
-                const imgs  = imagensSlide.map(src => `<img src="${src}" style="width:100%;height:320px;flex-shrink:0;object-fit:cover;">`).join('');
-                const navs  = imagensSlide.length > 1
-                    ? `<button class="ad-slide-nav prev" onclick="_adPrev('${uid}')">&#8249;</button><button class="ad-slide-nav next" onclick="_adNext('${uid}')">&#8250;</button>`
-                    : '';
-                bannerHtml = `
-                <div class="ad-slideshow" style="height:320px;">
-                    <div class="ad-slideshow-track" id="adtrack-${uid}" style="height:320px;">${imgs}</div>
-                    ${navs}
-                    <div class="ad-slide-dots" id="addots-${uid}">${dots}</div>
-                </div>`;
-                if (slideshowsPendentes) {
-                    slideshowsPendentes.push({ uid, srcs: imagensSlide, intervalo });
-                }
-            } else if (tipoMidia === 'slide' && imagensSlide && imagensSlide.length === 1) {
-                // Slide com 1 imagem — sem loading="lazy"
-                bannerHtml = `<img src="${imagensSlide[0]}" style="width:100%;height:320px;object-fit:cover;display:block;" alt="">`;
-            } else if (isVideo && bannerUrl) {
-                // ── FIX VÍDEO: autoplay muted loop playsinline — compatível mobile ──
-                bannerHtml = `<video src="${bannerUrl}" autoplay muted loop playsinline preload="auto" data-ad-video="true" webkit-playsinline x-webkit-airplay="allow" style="width:100%;height:320px;object-fit:cover;display:block;cursor:pointer;" onclick="if(this.muted){this.muted=false;}else{this.muted=true;}"></video>`;
-            } else if (bannerUrl) {
-                // Imagem única ou GIF — sem loading="lazy" para garantir animação do GIF
-                bannerHtml = `<img src="${bannerUrl}" style="width:100%;height:320px;object-fit:cover;display:block;" alt="${ad.titulo||''}">`;
+        function gerarHtmlAnuncio(ad,slideshowsPendentes){
+            if(!ad)return"";
+            const corFundo=ad.corFundo||'#1a0a2e',corTexto=ad.corTexto||'#ffffff',corDescFundo=ad.corDescFundo||'transparent',corDescTexto=ad.corDescTexto||corTexto;
+            const tipoMidia=ad.tipoMidia||'unico',imagensSlide=ad.imagensSlide&&ad.imagensSlide.length>0?ad.imagensSlide:null;
+            const bannerUrl=ad.imagemUrl||ad.imagem||"",isVideo=ad.isVideo||false,intervalo=ad.intervaloSlide||3000,uid='ad_'+ad.id;
+            const logoHtml=ad.logoUrl?`<img src="${ad.logoUrl}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;">`:`<div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex-shrink:0;color:${corTexto};">${(ad.loja||'?')[0]}</div>`;
+            let bannerHtml='';
+            if(tipoMidia==='slide'&&imagensSlide&&imagensSlide.length>1){
+                const dots=imagensSlide.map((_,i)=>`<div class="ad-slide-dot ${i===0?'active':''}" onclick="_adGoSlide('${uid}',${i})"></div>`).join('');
+                const imgs=imagensSlide.map(src=>`<img src="${src}" style="width:100%;height:320px;flex-shrink:0;object-fit:cover;">`).join('');
+                const navs=imagensSlide.length>1?`<button class="ad-slide-nav prev" onclick="_adPrev('${uid}')">&#8249;</button><button class="ad-slide-nav next" onclick="_adNext('${uid}')">&#8250;</button>`:'';
+                bannerHtml=`<div class="ad-slideshow" style="height:320px;"><div class="ad-slideshow-track" id="adtrack-${uid}" style="height:320px;">${imgs}</div>${navs}<div class="ad-slide-dots" id="addots-${uid}">${dots}</div></div>`;
+                if(slideshowsPendentes)slideshowsPendentes.push({uid,srcs:imagensSlide,intervalo});
+            }else if(tipoMidia==='slide'&&imagensSlide&&imagensSlide.length===1){
+                bannerHtml=`<img src="${imagensSlide[0]}" style="width:100%;height:320px;object-fit:cover;display:block;" alt="">`;
+            }else if(isVideo&&bannerUrl){
+                bannerHtml=`<video src="${bannerUrl}" autoplay muted loop playsinline preload="auto" data-ad-video="true" webkit-playsinline style="width:100%;height:320px;object-fit:cover;display:block;cursor:pointer;" onclick="if(this.muted){this.muted=false;}else{this.muted=true;}"></video>`;
+            }else if(bannerUrl){
+                bannerHtml=`<img src="${bannerUrl}" style="width:100%;height:320px;object-fit:cover;display:block;" alt="${ad.titulo||''}">`;
             }
-
-            const descHtml = ad.descricao
-                ? `<div style="font-size:15px;font-weight:700;color:${corDescTexto};background:${corDescFundo};line-height:1.5;border-radius:6px;padding:${corDescFundo==='transparent'?'0':'8px 10px'};margin-top:6px;">${ad.descricao}</div>`
-                : '';
-
-            const linkHtml = ad.link
-                ? `<a href="${ad.link}" target="_blank" rel="noopener" style="display:block;width:100%;background:rgba(255,255,255,0.18);color:${corTexto};font-weight:900;font-size:15px;padding:13px;border-radius:10px;text-align:center;text-decoration:none;text-transform:uppercase;letter-spacing:1px;margin-top:12px;border:1px solid rgba(255,255,255,0.25);">${ad.cta||'SAIBA MAIS'}</a>`
-                : '';
-
-            return `
-            <div style="background:${corFundo};border-radius:16px;border:2px solid rgba(255,255,255,0.12);margin-bottom:24px;overflow:hidden;box-shadow:0 0 24px rgba(0,0,0,0.4);">
-                <div style="padding:8px 12px 0 12px;">
-                    <span style="background:rgba(255,255,255,0.15);color:${corTexto};font-size:12px;font-weight:900;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:2px;display:inline-block;">Patrocinador</span>
-                </div>
-                ${bannerHtml}
-                <div style="padding:16px;">
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                        ${logoHtml}
-                        <span style="font-size:13px;font-weight:900;color:${corTexto};text-transform:uppercase;opacity:0.8;">${ad.loja||''}</span>
-                    </div>
-                    <div style="font-size:20px;font-weight:900;color:${corTexto};text-transform:uppercase;margin-bottom:4px;">${ad.titulo||''}</div>
-                    ${descHtml}
-                    ${linkHtml}
-                </div>
-            </div>`;
+            const descHtml=ad.descricao?`<div style="font-size:15px;font-weight:700;color:${corDescTexto};background:${corDescFundo};line-height:1.5;border-radius:6px;padding:${corDescFundo==='transparent'?'0':'8px 10px'};margin-top:6px;">${ad.descricao}</div>`:'';
+            const linkHtml=ad.link?`<a href="${ad.link}" target="_blank" rel="noopener" style="display:block;width:100%;background:rgba(255,255,255,0.18);color:${corTexto};font-weight:900;font-size:15px;padding:13px;border-radius:10px;text-align:center;text-decoration:none;text-transform:uppercase;letter-spacing:1px;margin-top:12px;border:1px solid rgba(255,255,255,0.25);">${ad.cta||'SAIBA MAIS'}</a>`:'';
+            return`<div style="background:${corFundo};border-radius:16px;border:2px solid rgba(255,255,255,0.12);margin-bottom:24px;overflow:hidden;box-shadow:0 0 24px rgba(0,0,0,0.4);"><div style="padding:8px 12px 0 12px;"><span style="background:rgba(255,255,255,0.15);color:${corTexto};font-size:12px;font-weight:900;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:2px;display:inline-block;">Patrocinador</span></div>${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">${logoHtml}<span style="font-size:13px;font-weight:900;color:${corTexto};text-transform:uppercase;opacity:0.8;">${ad.loja||''}</span></div><div style="font-size:20px;font-weight:900;color:${corTexto};text-transform:uppercase;margin-bottom:4px;">${ad.titulo||''}</div>${descHtml}${linkHtml}</div></div>`;
         }
-        // ══════════════════════════════════════════════════════════════════
 
         function aplicarRankingCoracoes(){
             const allBtns=document.querySelectorAll('.btn-curtir[data-post-id]');
@@ -743,68 +662,22 @@
                 const f=document.getElementById('feed');
                 const postsValidos=[];
                 snap.forEach(d=>{const p=d.data();if(p.tipo!=='classificado')postsValidos.push({id:d.id,dados:p});});
-
-                let htmlCompleto = '';
-                const slideshowsPendentes = [];
-                let idxAd = 0;
-
-                postsValidos.forEach((item, i) => {
-                    const {id, dados: p} = item;
-                    let midiaHtml = "";
+                let htmlCompleto='';const slideshowsPendentes=[];let idxAd=0;
+                postsValidos.forEach((item,i)=>{
+                    const{id,dados:p}=item;
+                    let midiaHtml="";
                     if(p.midia){
                         if(p.tipo==='video'){midiaHtml=`<div class="video-wrapper"><div class="video-skeleton"><svg width="64" height="64" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div><video src="${p.midia}" loop playsinline preload="none" class="video-feed" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:2;" oncanplay="this.previousElementSibling.style.opacity='0';setTimeout(()=>this.previousElementSibling.style.display='none',300);"></video></div>`;}
                         else{midiaHtml=`<img src="${p.midia}" loading="lazy" style="width:100%;display:block;object-fit:cover;" class="mt-2">`;}
                     }
                     const comentsHtml=(p.comentarios||[]).map(c=>`<div class="text-xs bg-black/30 p-2 rounded mb-1"><b class="text-red-500">${c.autor}:</b> ${c.texto}</div>`).join("");
-                    htmlCompleto += `
-                    <div class="post-card">
-                        <div class="post-card-header">
-                            <div class="post-card-header-inner">
-                                <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-                                    <img src="${p.foto}" class="w-11 h-11 rounded-full object-cover border-2 border-red-600" style="flex-shrink:0;">
-                                    <span style="font-weight:900;color:#ff0000;font-size:11px;text-transform:uppercase;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nome}</span>
-                                </div>
-                                <div class="post-card-header-badge" id="badge-slot-${id}"></div>
-                                <div onclick="curtirPost('${id}',this,event)" class="btn-curtir" data-post-id="${id}">❤️ <span class="num-curtidas">${p.curtidas||0}</span></div>
-                            </div>
-                        </div>
-                        ${p.texto?`<p class="post-card-texto">${p.texto}</p>`:''}
-                        ${midiaHtml}
-                        <div class="post-card-footer">
-                            <div class="max-h-32 overflow-y-auto mb-3">${comentsHtml}</div>
-                            <div class="flex gap-2">
-                                <input id="input-coment-${id}" placeholder="Escreva algo para este post..." class="flex-1 comment-box p-2 text-sm outline-none focus:border-red-600">
-                                <button onclick="salvarComentario('${id}')" class="bg-red-600 px-4 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-all">Salvar</button>
-                            </div>
-                        </div>
-                    </div>`;
-
-                    if((i+1)%5===0 && anunciosAtivos.length>0){
-                        htmlCompleto += gerarHtmlAnuncio(anunciosAtivos[idxAd % anunciosAtivos.length], slideshowsPendentes);
-                        idxAd++;
-                    }
+                    htmlCompleto+=`<div class="post-card"><div class="post-card-header"><div class="post-card-header-inner"><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><img src="${p.foto}" class="w-11 h-11 rounded-full object-cover border-2 border-red-600" style="flex-shrink:0;"><span style="font-weight:900;color:#ff0000;font-size:11px;text-transform:uppercase;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nome}</span></div><div class="post-card-header-badge" id="badge-slot-${id}"></div><div onclick="curtirPost('${id}',this,event)" class="btn-curtir" data-post-id="${id}">❤️ <span class="num-curtidas">${p.curtidas||0}</span></div></div></div>${p.texto?`<p class="post-card-texto">${p.texto}</p>`:''}${midiaHtml}<div class="post-card-footer"><div class="max-h-32 overflow-y-auto mb-3">${comentsHtml}</div><div class="flex gap-2"><input id="input-coment-${id}" placeholder="Escreva algo para este post..." class="flex-1 comment-box p-2 text-sm outline-none focus:border-red-600"><button onclick="salvarComentario('${id}')" class="bg-red-600 px-4 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-all">Salvar</button></div></div></div>`;
+                    if((i+1)%5===0&&anunciosAtivos.length>0){htmlCompleto+=gerarHtmlAnuncio(anunciosAtivos[idxAd%anunciosAtivos.length],slideshowsPendentes);idxAd++;}
                 });
-
-                f.innerHTML = htmlCompleto;
-
-                // Iniciar slideshows após DOM pronto
-                slideshowsPendentes.forEach(({ uid, srcs, intervalo }) => {
-                    iniciarSlideshowAd(uid, srcs, intervalo);
-                });
-
-                // Registrar vídeos dos posts
+                f.innerHTML=htmlCompleto;
+                slideshowsPendentes.forEach(({uid,srcs,intervalo})=>{iniciarSlideshowAd(uid,srcs,intervalo);});
                 f.querySelectorAll('video.video-feed').forEach(v=>{registrarVideo(v);});
-
-                // ── FIX VÍDEO DE ANÚNCIO: registrar no adVideoObserver (mobile compatível) ──
-                f.querySelectorAll('video[data-ad-video="true"]').forEach(v=>{
-                    v.muted=true;
-                    v.setAttribute('muted','');
-                    v.setAttribute('playsinline','');
-                    v.setAttribute('webkit-playsinline','');
-                    v.load();
-                    adVideoObserver.observe(v);
-                });
-
+                f.querySelectorAll('video[data-ad-video="true"]').forEach(v=>{v.muted=true;v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.load();adVideoObserver.observe(v);});
                 aplicarRankingCoracoes();
             });
         }
@@ -893,8 +766,12 @@
             const btn=document.getElementById('lok-btn'),file=document.getElementById('lok-f').files[0];
             if(!file)return alert("📸 Escolha sua foto!");if(!document.getElementById('lok-p').value)return alert("🔧 Selecione sua profissão!");
             btn.disabled=true;btn.innerText="⏳ PROCESSANDO...";
-            try{const sRef=stRef(storage,'profissionais/'+Date.now()+"_"+file.name);await uploadBytes(sRef,file);const url=await getDownloadURL(sRef);await addDoc(collection(fsdb,"usuariosPendentes"),{nome:document.getElementById('lok-n').value,cpf:document.getElementById('lok-cpf').value,tel:document.getElementById('lok-t').value,endereco:document.getElementById('lok-end').value,profissao:document.getElementById('lok-p').value,foto:url,status:"pendente",dataCadastro:new Date()});document.getElementById('formulario-lok').classList.add('hidden');document.getElementById('sucesso-lok').classList.remove('hidden');}
-            catch(e){alert("❌ Erro: "+e.message);btn.disabled=false;btn.innerText="TENTAR NOVAMENTE";}
+            try{
+                await signInAnonymously(auth);
+                const sRef=stRef(storage,'profissionais/'+Date.now()+"_"+file.name);await uploadBytes(sRef,file);const url=await getDownloadURL(sRef);
+                await addDoc(collection(fsdb,"usuariosPendentes"),{nome:document.getElementById('lok-n').value,cpf:document.getElementById('lok-cpf').value,tel:document.getElementById('lok-t').value,endereco:document.getElementById('lok-end').value,profissao:document.getElementById('lok-p').value,foto:url,status:"pendente",dataCadastro:new Date()});
+                document.getElementById('formulario-lok').classList.add('hidden');document.getElementById('sucesso-lok').classList.remove('hidden');
+            }catch(e){alert("❌ Erro: "+e.message);btn.disabled=false;btn.innerText="TENTAR NOVAMENTE";}
         };
         function lokCarregarProfissionais(){
             const listaEl=document.getElementById('lok-listaAprovados'),totalEl=document.getElementById('lok-totalAprovados');
@@ -915,35 +792,35 @@
     <script>
     (function() {
         function gerarIcone(cb) {
-            var c = document.createElement('canvas'); c.width = 512; c.height = 512;
-            var ctx = c.getContext('2d');
-            ctx.fillStyle = '#050a14'; ctx.beginPath(); ctx.roundRect(0, 0, 512, 512, 80); ctx.fill();
-            ctx.strokeStyle = '#ff0000'; ctx.lineWidth = 18; ctx.beginPath(); ctx.roundRect(9, 9, 494, 494, 74); ctx.stroke();
-            ctx.fillStyle = '#ff0000'; ctx.font = 'bold 320px Arial Black, Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('S', 145, 270);
-            ctx.fillStyle = '#ffffff'; ctx.fillText('X', 368, 270); cb(c.toDataURL('image/png'));
+            var c=document.createElement('canvas');c.width=512;c.height=512;
+            var ctx=c.getContext('2d');
+            ctx.fillStyle='#050a14';ctx.beginPath();ctx.roundRect(0,0,512,512,80);ctx.fill();
+            ctx.strokeStyle='#ff0000';ctx.lineWidth=18;ctx.beginPath();ctx.roundRect(9,9,494,494,74);ctx.stroke();
+            ctx.fillStyle='#ff0000';ctx.font='bold 320px Arial Black, Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('S',145,270);
+            ctx.fillStyle='#ffffff';ctx.fillText('X',368,270);cb(c.toDataURL('image/png'));
         }
-        gerarIcone(function(ICON) {
-            document.getElementById('apple-touch-icon').href = ICON;
-            var manifest = { name:"SX Network",short_name:"SX",description:"SX - Network Social",start_url:"./",display:"standalone",background_color:"#050a14",theme_color:"#ff0000",orientation:"portrait",icons:[{src:ICON,sizes:"192x192",type:"image/png",purpose:"any maskable"},{src:ICON,sizes:"512x512",type:"image/png",purpose:"any maskable"}] };
-            var manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-            document.getElementById('pwa-manifest').href = URL.createObjectURL(manifestBlob);
-            if ('serviceWorker' in navigator) {
-                var sw = ['self.addEventListener("install",function(e){self.skipWaiting();});','self.addEventListener("activate",function(e){e.waitUntil(clients.claim());});','self.addEventListener("fetch",function(e){});'].join('');
+        gerarIcone(function(ICON){
+            document.getElementById('apple-touch-icon').href=ICON;
+            var manifest={name:"SX Network",short_name:"SX",description:"SX - Network Social",start_url:"./",display:"standalone",background_color:"#050a14",theme_color:"#ff0000",orientation:"portrait",icons:[{src:ICON,sizes:"192x192",type:"image/png",purpose:"any maskable"},{src:ICON,sizes:"512x512",type:"image/png",purpose:"any maskable"}]};
+            var manifestBlob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+            document.getElementById('pwa-manifest').href=URL.createObjectURL(manifestBlob);
+            if('serviceWorker' in navigator){
+                var sw=['self.addEventListener("install",function(e){self.skipWaiting();});','self.addEventListener("activate",function(e){e.waitUntil(clients.claim());});','self.addEventListener("fetch",function(e){});'].join('');
                 navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'})),{scope:'./'}).catch(function(){});
             }
-            var dp = null; var jaInstalou = localStorage.getItem('sx_pwa_instalado'); if (jaInstalou) return;
-            var style = document.createElement('style'); style.textContent = '@keyframes sxp{0%,100%{box-shadow:0 4px 20px rgba(255,0,0,.5)}50%{box-shadow:0 6px 35px rgba(255,0,0,.9)}}'; document.head.appendChild(style);
-            var miniCanvas = document.createElement('canvas'); miniCanvas.width = 36; miniCanvas.height = 36;
-            var mctx = miniCanvas.getContext('2d'); mctx.fillStyle = '#050a14'; mctx.beginPath(); mctx.roundRect(0,0,36,36,6); mctx.fill(); mctx.strokeStyle='#ff0000'; mctx.lineWidth=2; mctx.beginPath(); mctx.roundRect(1,1,34,34,5); mctx.stroke();
-            mctx.font='bold 20px Arial Black,Arial'; mctx.textAlign='center'; mctx.textBaseline='middle'; mctx.fillStyle='#ff0000'; mctx.fillText('S',10,19); mctx.fillStyle='#ffffff'; mctx.fillText('X',26,19);
-            var miniIcon = miniCanvas.toDataURL('image/png');
-            var b = document.createElement('button'); b.id = 'btn-pwa-sx';
-            b.innerHTML = '<img src="'+miniIcon+'" style="width:28px;height:28px;border-radius:5px;vertical-align:middle;margin-right:8px;">INSTALAR APP SX';
-            b.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#000000;color:#fff;font-size:14px;font-weight:900;padding:12px 24px;border-radius:50px;box-shadow:0 4px 20px rgba(255,0,0,.5);cursor:pointer;z-index:9999;border:2px solid rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;animation:sxp 2s infinite;display:flex;align-items:center;';
-            b.onclick = function() { if (dp) { dp.prompt(); dp.userChoice.then(function(r){if(r.outcome==='accepted'){localStorage.setItem('sx_pwa_instalado','1');b.remove();}dp=null;}); } else { alert('Para instalar:\n\nAndroid: toque nos 3 pontinhos do Chrome → "Adicionar à tela inicial"\n\niOS Safari: toque em Compartilhar → "Adicionar à Tela de Início"'); } };
+            var dp=null;var jaInstalou=localStorage.getItem('sx_pwa_instalado');if(jaInstalou)return;
+            var style=document.createElement('style');style.textContent='@keyframes sxp{0%,100%{box-shadow:0 4px 20px rgba(255,0,0,.5)}50%{box-shadow:0 6px 35px rgba(255,0,0,.9)}}';document.head.appendChild(style);
+            var miniCanvas=document.createElement('canvas');miniCanvas.width=36;miniCanvas.height=36;
+            var mctx=miniCanvas.getContext('2d');mctx.fillStyle='#050a14';mctx.beginPath();mctx.roundRect(0,0,36,36,6);mctx.fill();mctx.strokeStyle='#ff0000';mctx.lineWidth=2;mctx.beginPath();mctx.roundRect(1,1,34,34,5);mctx.stroke();
+            mctx.font='bold 20px Arial Black,Arial';mctx.textAlign='center';mctx.textBaseline='middle';mctx.fillStyle='#ff0000';mctx.fillText('S',10,19);mctx.fillStyle='#ffffff';mctx.fillText('X',26,19);
+            var miniIcon=miniCanvas.toDataURL('image/png');
+            var b=document.createElement('button');b.id='btn-pwa-sx';
+            b.innerHTML='<img src="'+miniIcon+'" style="width:28px;height:28px;border-radius:5px;vertical-align:middle;margin-right:8px;">INSTALAR APP SX';
+            b.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#000000;color:#fff;font-size:14px;font-weight:900;padding:12px 24px;border-radius:50px;box-shadow:0 4px 20px rgba(255,0,0,.5);cursor:pointer;z-index:9999;border:2px solid rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;animation:sxp 2s infinite;display:flex;align-items:center;';
+            b.onclick=function(){if(dp){dp.prompt();dp.userChoice.then(function(r){if(r.outcome==='accepted'){localStorage.setItem('sx_pwa_instalado','1');b.remove();}dp=null;});}else{alert('Para instalar:\n\nAndroid: toque nos 3 pontinhos do Chrome → "Adicionar à tela inicial"\n\niOS Safari: toque em Compartilhar → "Adicionar à Tela de Início"');}};
             document.body.appendChild(b);
-            window.addEventListener('beforeinstallprompt', function(e){e.preventDefault();dp=e;});
-            window.addEventListener('appinstalled', function(){localStorage.setItem('sx_pwa_instalado','1');b.remove();});
+            window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;});
+            window.addEventListener('appinstalled',function(){localStorage.setItem('sx_pwa_instalado','1');b.remove();});
         });
     })();
     </script>
