@@ -453,7 +453,7 @@
 
         // ══════════════════════════════════════════════════════════════════
         // MOTOR DE ÁUDIO — SOM DOS ANÚNCIOS NO FEED
-        // Contexto único reutilizável, funciona em mobile e desktop
+        // Volume alto + compressor para não distorcer
         // ══════════════════════════════════════════════════════════════════
         let _audioCtx = null;
         function getAudioCtx() {
@@ -471,8 +471,18 @@
 
                 const now = ctx.currentTime;
                 const master = ctx.createGain();
-                master.gain.value = 0.75;
-                master.connect(ctx.destination);
+                // ── VOLUME MÁXIMO (era 0.75, agora 1.5) ──
+                master.gain.value = 1.5;
+
+                // ── COMPRESSOR: evita clipagem mesmo no volume alto ──
+                const compressor = ctx.createDynamicsCompressor();
+                compressor.threshold.value = -6;
+                compressor.knee.value = 3;
+                compressor.ratio.value = 4;
+                compressor.attack.value = 0.001;
+                compressor.release.value = 0.1;
+                master.connect(compressor);
+                compressor.connect(ctx.destination);
 
                 function osc(freq, type, startT, dur, vol, freqEnd) {
                     const o = ctx.createOscillator(), g = ctx.createGain();
@@ -564,7 +574,6 @@
 
         // ══════════════════════════════════════════════════════════════════
         // OBSERVER DE SOM — dispara SEMPRE que o card de anúncio entra na tela
-        // Sem limite de repetições: mesmo anúncio toca toda vez que aparecer
         // ══════════════════════════════════════════════════════════════════
         let _adSomObserver = null;
 
@@ -780,10 +789,6 @@
             });
         }
 
-        // ══════════════════════════════════════════════════════════════════
-        // gerarHtmlAnuncio
-        // ATENÇÃO: data-ad-card="true" e data-som são obrigatórios para o som
-        // ══════════════════════════════════════════════════════════════════
         function gerarHtmlAnuncio(ad, slideshowsPendentes) {
             if (!ad) return "";
             const corFundo     = ad.corFundo     || '#1a0a2e';
@@ -834,7 +839,6 @@
                 ? `<a href="${ad.link}" target="_blank" rel="noopener" style="display:block;width:100%;background:rgba(255,255,255,0.18);color:${corTexto};font-weight:900;font-size:15px;padding:13px;border-radius:10px;text-align:center;text-decoration:none;text-transform:uppercase;letter-spacing:1px;margin-top:12px;border:1px solid rgba(255,255,255,0.25);">${ad.cta||'SAIBA MAIS'}</a>`
                 : '';
 
-            // ── data-ad-card e data-som são a chave do sistema de som ──
             return `
             <div data-ad-card="true" data-som="${somId}" style="background:${corFundo};border-radius:16px;border:2px solid rgba(255,255,255,0.12);margin-bottom:24px;overflow:hidden;box-shadow:0 0 24px rgba(0,0,0,0.4);">
                 <div style="padding:8px 12px 0 12px;">
@@ -917,15 +921,12 @@
 
                 f.innerHTML = htmlCompleto;
 
-                // Iniciar slideshows após DOM pronto
                 slideshowsPendentes.forEach(({ uid, srcs, intervalo }) => {
                     iniciarSlideshowAd(uid, srcs, intervalo);
                 });
 
-                // Registrar vídeos dos posts
                 f.querySelectorAll('video.video-feed').forEach(v=>{registrarVideo(v);});
 
-                // Registrar vídeos de anúncio
                 f.querySelectorAll('video[data-ad-video="true"]').forEach(v=>{
                     v.muted=true;
                     v.setAttribute('muted','');
@@ -935,8 +936,6 @@
                     adVideoObserver.observe(v);
                 });
 
-                // ── REGISTRAR OBSERVER DE SOM DOS ANÚNCIOS ──
-                // Toca o som toda vez que o card entra na tela, sem limite de repetições
                 registrarObserverSomAnuncios();
 
                 aplicarRankingCoracoes();
