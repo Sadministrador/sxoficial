@@ -453,7 +453,6 @@
 
         // ══════════════════════════════════════════════════════════════════
         // MOTOR DE ÁUDIO — SOM DOS ANÚNCIOS NO FEED
-        // Volume alto + compressor para não distorcer
         // ══════════════════════════════════════════════════════════════════
         let _audioCtx = null;
         function getAudioCtx() {
@@ -468,34 +467,22 @@
             try {
                 const ctx = getAudioCtx();
                 if (ctx.state === 'suspended') await ctx.resume();
-
                 const now = ctx.currentTime;
                 const master = ctx.createGain();
-                // ── VOLUME MÁXIMO (era 0.75, agora 1.5) ──
                 master.gain.value = 1.5;
-
-                // ── COMPRESSOR: evita clipagem mesmo no volume alto ──
                 const compressor = ctx.createDynamicsCompressor();
-                compressor.threshold.value = -6;
-                compressor.knee.value = 3;
-                compressor.ratio.value = 4;
-                compressor.attack.value = 0.001;
-                compressor.release.value = 0.1;
-                master.connect(compressor);
-                compressor.connect(ctx.destination);
-
+                compressor.threshold.value = -6; compressor.knee.value = 3;
+                compressor.ratio.value = 4; compressor.attack.value = 0.001; compressor.release.value = 0.1;
+                master.connect(compressor); compressor.connect(ctx.destination);
                 function osc(freq, type, startT, dur, vol, freqEnd) {
                     const o = ctx.createOscillator(), g = ctx.createGain();
-                    o.connect(g); g.connect(master);
-                    o.type = type || 'sine';
+                    o.connect(g); g.connect(master); o.type = type || 'sine';
                     o.frequency.setValueAtTime(freq, startT);
                     if (freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd, startT + dur);
-                    g.gain.setValueAtTime(0, startT);
-                    g.gain.linearRampToValueAtTime(vol, startT + 0.02);
+                    g.gain.setValueAtTime(0, startT); g.gain.linearRampToValueAtTime(vol, startT + 0.02);
                     g.gain.exponentialRampToValueAtTime(0.001, startT + dur);
                     o.start(startT); o.stop(startT + dur + 0.05);
                 }
-
                 function noise(startT, dur, freq, q, vol, freqEnd) {
                     const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * dur), ctx.sampleRate);
                     const data = buf.getChannelData(0);
@@ -505,94 +492,40 @@
                     filt.frequency.setValueAtTime(freq, startT);
                     if (freqEnd) filt.frequency.exponentialRampToValueAtTime(freqEnd, startT + dur);
                     filt.Q.value = q || 1;
-                    g.gain.setValueAtTime(0, startT);
-                    g.gain.linearRampToValueAtTime(vol, startT + 0.03);
+                    g.gain.setValueAtTime(0, startT); g.gain.linearRampToValueAtTime(vol, startT + 0.03);
                     g.gain.exponentialRampToValueAtTime(0.001, startT + dur);
                     src.connect(filt); filt.connect(g); g.connect(master);
                     src.start(startT); src.stop(startT + dur + 0.05);
                 }
-
                 const plays = {
-                    crystal: () => {
-                        [523,1047,1568,2093,2637].forEach((f,i) => osc(f,'sine',now+i*0.08,2.0-i*0.2,0.4-i*0.06));
-                        [3136,4186].forEach((f,i) => osc(f,'sine',now+i*0.05,1.2,0.12));
-                    },
-                    fanfarra: () => {
-                        const mel=[392,523,659,784,659,784,1047], ts=[0,0.12,0.24,0.36,0.52,0.62,0.74], ds=[0.2,0.2,0.2,0.28,0.18,0.18,0.9];
-                        mel.forEach((f,i) => { osc(f,'sawtooth',now+ts[i],ds[i],0.35); osc(f*1.5,'sine',now+ts[i],ds[i],0.12); });
-                        osc(80,'sine',now,0.3,0.6,30); noise(now,0.15,2000,0.5,0.25);
-                    },
-                    cash: () => {
-                        const cf=[1800,2200,1600,2000,2400,1900,2100], ct=[0,0.07,0.14,0.21,0.3,0.38,0.47];
-                        cf.forEach((f,i) => { osc(f,'square',now+ct[i],0.25,0.28); osc(f*0.5,'sine',now+ct[i],0.3,0.15); });
-                        osc(2637,'sine',now+0.58,1.0,0.4); osc(3136,'sine',now+0.58,0.8,0.2);
-                    },
-                    magic: () => {
-                        osc(300,'sine',now,0.8,0.5,2400); osc(600,'sine',now+0.1,0.7,0.3,1800);
-                        for(let i=0;i<8;i++) osc(1000+Math.random()*3000,'sine',now+Math.random()*0.7,0.3,0.15);
-                        osc(2637,'sine',now+0.8,1.2,0.45); osc(3136,'sine',now+0.85,1.0,0.25);
-                    },
-                    arcade: () => {
-                        const notes=[262,330,392,523,784,659,784,1047], ts=[0,0.08,0.16,0.24,0.32,0.44,0.52,0.60];
-                        notes.forEach((f,i) => { osc(f,'square',now+ts[i],0.12,0.3); osc(f*2,'square',now+ts[i],0.1,0.08); });
-                        [523,659,784].forEach(f => osc(f,'square',now+0.75,0.5,0.2));
-                    },
-                    notification: () => {
-                        osc(880,'sine',now,0.18,0.5); osc(1320,'sine',now,0.18,0.25);
-                        osc(1047,'sine',now+0.22,0.28,0.55); osc(1568,'sine',now+0.22,0.28,0.3);
-                        osc(1047,'sine',now+0.55,0.8,0.2); osc(1568,'sine',now+0.55,0.7,0.1);
-                    },
-                    harp: () => {
-                        [261,329,392,523,659,784,1047,1318].forEach((f,i) => osc(f,'sine',now+i*0.09,2.2-i*0.15,0.38-i*0.03));
-                    },
-                    tribal: () => {
-                        [0,0.25,0.5,0.75].forEach(t => { osc(80,'sine',now+t,0.22,0.6,35); noise(now+t,0.15,150,0.5,0.3); });
-                        [0.125,0.375,0.625].forEach(t => { noise(now+t,0.1,3000,0.3,0.4); osc(200,'triangle',now+t,0.1,0.3); });
-                        [0,0.0625,0.125,0.1875,0.25,0.3125,0.375,0.4375,0.5,0.5625,0.625,0.6875,0.75,0.8125].forEach(t => noise(now+t,0.05,8000,0.5,0.15));
-                    },
-                    woosh_up: () => {
-                        noise(now,1.2,200,0.3,0.5,6000); osc(100,'sawtooth',now,1.0,0.4,1200); osc(150,'sine',now+0.2,0.8,0.3,800);
-                        [523,659,784,1047].forEach((f,i) => osc(f,'triangle',now+1.0+i*0.08,0.6,0.35));
-                    },
-                    piano_jingle: () => {
-                        [261,329,392].forEach(f => osc(f,'triangle',now,0.5,0.35));
-                        [392,494,587].forEach(f => osc(f,'triangle',now+0.5,0.5,0.35));
-                        [440,523,659].forEach(f => osc(f,'triangle',now+1.0,0.5,0.35));
-                        [523,659,784].forEach(f => osc(f,'triangle',now+1.5,1.0,0.3));
-                    },
-                    synth_chord: () => {
-                        [196,247,294,392,494].forEach((f,i) => { osc(f,'sawtooth',now+i*0.04,1.5,0.28); osc(f*2,'sine',now+i*0.04,1.3,0.1); });
-                        const lfo=ctx.createOscillator(), lg=ctx.createGain();
-                        lfo.frequency.value=6; lg.gain.value=0.15;
-                        lfo.connect(lg); lg.connect(master.gain);
-                        lfo.start(now); lfo.stop(now+1.5);
-                    },
+                    crystal: () => { [523,1047,1568,2093,2637].forEach((f,i) => osc(f,'sine',now+i*0.08,2.0-i*0.2,0.4-i*0.06)); [3136,4186].forEach((f,i) => osc(f,'sine',now+i*0.05,1.2,0.12)); },
+                    fanfarra: () => { const mel=[392,523,659,784,659,784,1047],ts=[0,0.12,0.24,0.36,0.52,0.62,0.74],ds=[0.2,0.2,0.2,0.28,0.18,0.18,0.9]; mel.forEach((f,i) => { osc(f,'sawtooth',now+ts[i],ds[i],0.35); osc(f*1.5,'sine',now+ts[i],ds[i],0.12); }); osc(80,'sine',now,0.3,0.6,30); noise(now,0.15,2000,0.5,0.25); },
+                    cash: () => { const cf=[1800,2200,1600,2000,2400,1900,2100],ct=[0,0.07,0.14,0.21,0.3,0.38,0.47]; cf.forEach((f,i) => { osc(f,'square',now+ct[i],0.25,0.28); osc(f*0.5,'sine',now+ct[i],0.3,0.15); }); osc(2637,'sine',now+0.58,1.0,0.4); osc(3136,'sine',now+0.58,0.8,0.2); },
+                    magic: () => { osc(300,'sine',now,0.8,0.5,2400); osc(600,'sine',now+0.1,0.7,0.3,1800); for(let i=0;i<8;i++) osc(1000+Math.random()*3000,'sine',now+Math.random()*0.7,0.3,0.15); osc(2637,'sine',now+0.8,1.2,0.45); osc(3136,'sine',now+0.85,1.0,0.25); },
+                    arcade: () => { const notes=[262,330,392,523,784,659,784,1047],ts=[0,0.08,0.16,0.24,0.32,0.44,0.52,0.60]; notes.forEach((f,i) => { osc(f,'square',now+ts[i],0.12,0.3); osc(f*2,'square',now+ts[i],0.1,0.08); }); [523,659,784].forEach(f => osc(f,'square',now+0.75,0.5,0.2)); },
+                    notification: () => { osc(880,'sine',now,0.18,0.5); osc(1320,'sine',now,0.18,0.25); osc(1047,'sine',now+0.22,0.28,0.55); osc(1568,'sine',now+0.22,0.28,0.3); osc(1047,'sine',now+0.55,0.8,0.2); osc(1568,'sine',now+0.55,0.7,0.1); },
+                    harp: () => { [261,329,392,523,659,784,1047,1318].forEach((f,i) => osc(f,'sine',now+i*0.09,2.2-i*0.15,0.38-i*0.03)); },
+                    tribal: () => { [0,0.25,0.5,0.75].forEach(t => { osc(80,'sine',now+t,0.22,0.6,35); noise(now+t,0.15,150,0.5,0.3); }); [0.125,0.375,0.625].forEach(t => { noise(now+t,0.1,3000,0.3,0.4); osc(200,'triangle',now+t,0.1,0.3); }); [0,0.0625,0.125,0.1875,0.25,0.3125,0.375,0.4375,0.5,0.5625,0.625,0.6875,0.75,0.8125].forEach(t => noise(now+t,0.05,8000,0.5,0.15)); },
+                    woosh_up: () => { noise(now,1.2,200,0.3,0.5,6000); osc(100,'sawtooth',now,1.0,0.4,1200); osc(150,'sine',now+0.2,0.8,0.3,800); [523,659,784,1047].forEach((f,i) => osc(f,'triangle',now+1.0+i*0.08,0.6,0.35)); },
+                    piano_jingle: () => { [261,329,392].forEach(f => osc(f,'triangle',now,0.5,0.35)); [392,494,587].forEach(f => osc(f,'triangle',now+0.5,0.5,0.35)); [440,523,659].forEach(f => osc(f,'triangle',now+1.0,0.5,0.35)); [523,659,784].forEach(f => osc(f,'triangle',now+1.5,1.0,0.3)); },
+                    synth_chord: () => { [196,247,294,392,494].forEach((f,i) => { osc(f,'sawtooth',now+i*0.04,1.5,0.28); osc(f*2,'sine',now+i*0.04,1.3,0.1); }); const lfo=ctx.createOscillator(),lg=ctx.createGain(); lfo.frequency.value=6; lg.gain.value=0.15; lfo.connect(lg); lg.connect(master.gain); lfo.start(now); lfo.stop(now+1.5); },
                 };
                 (plays[id] || (() => {}))();
             } catch(e) { /* silencia erros de áudio no mobile */ }
         }
 
-        // ══════════════════════════════════════════════════════════════════
-        // OBSERVER DE SOM — dispara SEMPRE que o card de anúncio entra na tela
-        // ══════════════════════════════════════════════════════════════════
         let _adSomObserver = null;
-
         function registrarObserverSomAnuncios() {
             if (_adSomObserver) _adSomObserver.disconnect();
             _adSomObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const somId = entry.target.getAttribute('data-som');
-                        if (somId && somId !== 'nenhum') {
-                            tocarSomAnuncio(somId);
-                        }
+                        if (somId && somId !== 'nenhum') tocarSomAnuncio(somId);
                     }
                 });
             }, { threshold: 0.4 });
-
-            document.querySelectorAll('[data-ad-card="true"]').forEach(card => {
-                _adSomObserver.observe(card);
-            });
+            document.querySelectorAll('[data-ad-card="true"]').forEach(card => _adSomObserver.observe(card));
         }
 
         function setCookie(name, value, days) { try { const d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000)); document.cookie = name+'='+encodeURIComponent(value)+';expires='+d.toUTCString()+';path=/;SameSite=Lax'; } catch(e) {} }
@@ -643,18 +576,11 @@
             entries.forEach(entry=>{
                 const v=entry.target;
                 if(entry.isIntersecting){
-                    v.muted=true;
-                    v.playsInline=true;
+                    v.muted=true; v.playsInline=true;
                     if(v.readyState===0){v.load();}
-                    const tentarPlay=()=>{
-                        const p=v.play();
-                        if(p!==undefined){p.catch(()=>{v.muted=true;v.play().catch(()=>{});});}
-                    };
-                    if(v.readyState>=2){tentarPlay();}
-                    else{v.addEventListener('canplay',tentarPlay,{once:true});}
-                } else {
-                    v.pause();
-                }
+                    const tentarPlay=()=>{const p=v.play();if(p!==undefined){p.catch(()=>{v.muted=true;v.play().catch(()=>{});});}};
+                    if(v.readyState>=2){tentarPlay();}else{v.addEventListener('canplay',tentarPlay,{once:true});}
+                } else { v.pause(); }
             });
         },{threshold:0.2,rootMargin:'100px 0px'});
 
@@ -731,7 +657,10 @@
             try{
                 const [snapExiste,fotoComprimida]=await Promise.all([getDocs(query(collection(fsdb,"usuariosAprovados"),where("email","==",email))),comprimirFoto(file)]);
                 if(!snapExiste.empty){mostrarErroEmail();btn.disabled=false;btn.innerText="CADASTRAR";return;}
-                const sRef=stRef(storage,'perfis/'+Date.now()+'.jpg');await uploadBytes(sRef,fotoComprimida);const url=await getDownloadURL(sRef);
+                // ✅ CORRIGIDO: salva com extensão .jpg e contentType correto
+                const sRef=stRef(storage,'perfis/'+Date.now()+'.jpg');
+                await uploadBytes(sRef,fotoComprimida,{contentType:'image/jpeg'});
+                const url=await getDownloadURL(sRef);
                 const docRef=await addDoc(collection(fsdb,"usuariosAprovados"),{nome,email,tel,foto:url,status:"aprovado"});
                 salvarEmailLocal(email);idLogado=docRef.id;userLogado={nome,email,tel,foto:url,status:"aprovado"};entrarNaPlataforma();
             }catch(e){alert("Erro ao enviar cadastro.");btn.disabled=false;btn.innerText="CADASTRAR";}
@@ -820,9 +749,7 @@
                     ${navs}
                     <div class="ad-slide-dots" id="addots-${uid}">${dots}</div>
                 </div>`;
-                if (slideshowsPendentes) {
-                    slideshowsPendentes.push({ uid, srcs: imagensSlide, intervalo });
-                }
+                if (slideshowsPendentes) slideshowsPendentes.push({ uid, srcs: imagensSlide, intervalo });
             } else if (tipoMidia === 'slide' && imagensSlide && imagensSlide.length === 1) {
                 bannerHtml = `<img src="${imagensSlide[0]}" style="width:100%;height:320px;object-fit:cover;display:block;" alt="">`;
             } else if (isVideo && bannerUrl) {
@@ -834,7 +761,6 @@
             const descHtml = ad.descricao
                 ? `<div style="font-size:15px;font-weight:700;color:${corDescTexto};background:${corDescFundo};line-height:1.5;border-radius:6px;padding:${corDescFundo==='transparent'?'0':'8px 10px'};margin-top:6px;">${ad.descricao}</div>`
                 : '';
-
             const linkHtml = ad.link
                 ? `<a href="${ad.link}" target="_blank" rel="noopener" style="display:block;width:100%;background:rgba(255,255,255,0.18);color:${corTexto};font-weight:900;font-size:15px;padding:13px;border-radius:10px;text-align:center;text-decoration:none;text-transform:uppercase;letter-spacing:1px;margin-top:12px;border:1px solid rgba(255,255,255,0.25);">${ad.cta||'SAIBA MAIS'}</a>`
                 : '';
@@ -920,24 +846,12 @@
                 });
 
                 f.innerHTML = htmlCompleto;
-
-                slideshowsPendentes.forEach(({ uid, srcs, intervalo }) => {
-                    iniciarSlideshowAd(uid, srcs, intervalo);
-                });
-
+                slideshowsPendentes.forEach(({ uid, srcs, intervalo }) => iniciarSlideshowAd(uid, srcs, intervalo));
                 f.querySelectorAll('video.video-feed').forEach(v=>{registrarVideo(v);});
-
                 f.querySelectorAll('video[data-ad-video="true"]').forEach(v=>{
-                    v.muted=true;
-                    v.setAttribute('muted','');
-                    v.setAttribute('playsinline','');
-                    v.setAttribute('webkit-playsinline','');
-                    v.load();
-                    adVideoObserver.observe(v);
+                    v.muted=true;v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.load();adVideoObserver.observe(v);
                 });
-
                 registrarObserverSomAnuncios();
-
                 aplicarRankingCoracoes();
             });
         }
@@ -960,14 +874,38 @@
             }
         };
 
-        window.previaCapa=(input)=>{const file=input.files[0];if(!file)return;arquivoCapaPendente=file;const reader=new FileReader();reader.onload=e=>{document.getElementById('img-capa-view').src=e.target.result;document.getElementById('btn-confirmar-capa').classList.remove('hidden');};reader.readAsDataURL(file);};
-        window.confirmarUploadCapa=async()=>{const btn=document.getElementById('btn-confirmar-capa');btn.innerText="SALVANDO...";try{const sr=stRef(storage,'capas/'+idLogado);await uploadBytes(sr,arquivoCapaPendente);const url=await getDownloadURL(sr);await updateDoc(doc(fsdb,"usuariosAprovados",idLogado),{capa:url});alert("SUCESSO! SUA CAPA AGORA É VISÍVEL PARA TODOS.");btn.classList.add('hidden');btn.innerText="✅ SALVAR PARA TODOS";}catch(err){alert("Erro ao salvar.");}};
+        window.previaCapa=(input)=>{
+            const file=input.files[0];if(!file)return;arquivoCapaPendente=file;
+            const reader=new FileReader();reader.onload=e=>{document.getElementById('img-capa-view').src=e.target.result;document.getElementById('btn-confirmar-capa').classList.remove('hidden');};reader.readAsDataURL(file);
+        };
 
+        // ✅ CORRIGIDO: capa salva com extensão e contentType correto
+        window.confirmarUploadCapa=async()=>{
+            const btn=document.getElementById('btn-confirmar-capa');btn.innerText="SALVANDO...";
+            try{
+                const ext=arquivoCapaPendente.name.split('.').pop()||'jpg';
+                const sr=stRef(storage,'capas/'+idLogado+'.'+ext);
+                const meta={contentType:arquivoCapaPendente.type||'image/jpeg'};
+                await uploadBytes(sr,arquivoCapaPendente,meta);
+                const url=await getDownloadURL(sr);
+                await updateDoc(doc(fsdb,"usuariosAprovados",idLogado),{capa:url});
+                alert("SUCESSO! SUA CAPA AGORA É VISÍVEL PARA TODOS.");btn.classList.add('hidden');btn.innerText="✅ SALVAR PARA TODOS";
+            }catch(err){alert("Erro ao salvar.");}
+        };
+
+        // ✅ CORRIGIDO: posts salvos com extensão e contentType correto
         window.postar=async()=>{
             const txt=document.getElementById('txt').value,file=document.getElementById('midia').files[0],btn=document.getElementById('btn-post');
             if(!txt&&!file)return;btn.disabled=true;btn.innerText="POSTANDO...";
             let url="",tipo="";
-            if(file){const sr=stRef(storage,'posts/'+Date.now());await uploadBytes(sr,file);url=await getDownloadURL(sr);tipo=file.type.includes('video')?'video':'foto';}
+            if(file){
+                const ext=file.name.split('.').pop();
+                const sr=stRef(storage,'posts/'+Date.now()+'.'+ext);
+                const meta={contentType:file.type};
+                await uploadBytes(sr,file,meta);
+                url=await getDownloadURL(sr);
+                tipo=file.type.includes('video')?'video':'foto';
+            }
             await addDoc(collection(fsdb,"posts"),{nome:userLogado.nome,foto:userLogado.foto,texto:txt,midia:url,tipo:tipo,data:new Date(),curtidas:0,comentarios:[]});
             document.getElementById('txt').value="";document.getElementById('midia').value="";document.getElementById('file-name').innerText="✨ ADICIONAR MÍDIA INCRÍVEL";btn.disabled=false;btn.innerText="Publicar";
         };
@@ -1010,25 +948,51 @@
         document.getElementById('cls-midia').addEventListener('change',e=>{const novos=Array.from(e.target.files);if(clsArquivos.length+novos.length>6)return alert('Máximo 6 arquivos!');clsArquivos=[...clsArquivos,...novos];clsShowPreview();document.getElementById('cls-contador').textContent=clsArquivos.length+'/6 arquivos';document.getElementById('cls-btnPublicar').disabled=false;e.target.value='';});
         function clsShowPreview(){const preview=document.getElementById('cls-preview');preview.innerHTML='';clsArquivos.forEach((file,i)=>{const reader=new FileReader();reader.onload=e=>{const isVideo=file.type.startsWith('video/');preview.innerHTML+=`<div style="position:relative;">${isVideo?`<video src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;"></video>`:`<img src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;">`}<button onclick="clsRemoverArquivo(${i})" style="position:absolute;top:-5px;right:-5px;background:red;color:white;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:12px;">×</button></div>`;};reader.readAsDataURL(file);});}
         window.clsRemoverArquivo=index=>{clsArquivos.splice(index,1);clsShowPreview();document.getElementById('cls-contador').textContent=clsArquivos.length+'/6 arquivos';document.getElementById('cls-btnPublicar').disabled=clsArquivos.length===0;};
+
+        // ✅ CORRIGIDO: anúncios de veículos salvos com extensão e contentType correto
         window.clsAnunciar=async()=>{
             if(clsIsSubmitting)return;clsIsSubmitting=true;const btn=document.getElementById('cls-btnPublicar');btn.textContent='⏳ Enviando...';btn.disabled=true;
             const dados={categoria:document.getElementById('cls-categoria').value,nome:document.getElementById('cls-nome').value.trim(),ano:document.getElementById('cls-ano').value,bairro:document.getElementById('cls-bairro').value.trim(),estado:document.getElementById('cls-estado').value.trim(),preco:document.getElementById('cls-preco').value,whatsapp:document.getElementById('cls-whatsapp').value.trim(),descricao:document.getElementById('cls-descricao').value.trim()};
             if(!dados.categoria||!dados.nome||clsArquivos.length===0){alert('❌ Preencha categoria, nome e adicione pelo menos 1 foto!');clsIsSubmitting=false;btn.textContent='🚀 PUBLICAR ANÚNCIO';btn.disabled=false;return;}
-            try{const urls=[];for(let i=0;i<clsArquivos.length;i++){const file=clsArquivos[i];const sr=stRef(storage,`anuncios/${Date.now()}_${i}_${file.name}`);await uploadBytes(sr,file);urls.push(await getDownloadURL(sr));}await addDoc(collection(fsdb,'posts'),{...dados,midia:urls,tipo:'classificado',publicado:false,data:serverTimestamp()});alert('✅ ANÚNCIO ENVIADO! Aguarde aprovação.');clsFecharForm();}
-            catch(e){alert('❌ Erro: '+e.message);}finally{clsIsSubmitting=false;btn.textContent='🚀 PUBLICAR ANÚNCIO';btn.disabled=false;}
+            try{
+                const urls=[];
+                for(let i=0;i<clsArquivos.length;i++){
+                    const file=clsArquivos[i];
+                    const ext=file.name.split('.').pop();
+                    const sr=stRef(storage,`anuncios/${Date.now()}_${i}.${ext}`);
+                    const meta={contentType:file.type};
+                    await uploadBytes(sr,file,meta);
+                    urls.push(await getDownloadURL(sr));
+                }
+                await addDoc(collection(fsdb,'posts'),{...dados,midia:urls,tipo:'classificado',publicado:false,data:serverTimestamp()});
+                alert('✅ ANÚNCIO ENVIADO! Aguarde aprovação.');clsFecharForm();
+            }
+            catch(e){alert('❌ Erro: '+e.message);}
+            finally{clsIsSubmitting=false;btn.textContent='🚀 PUBLICAR ANÚNCIO';btn.disabled=false;}
         };
         function clsFecharForm(){document.getElementById('cls-formulario').style.display='none';['cls-nome','cls-ano','cls-bairro','cls-estado','cls-preco','cls-whatsapp','cls-descricao'].forEach(id=>document.getElementById(id).value='');document.getElementById('cls-categoria').value='';clsArquivos=[];document.getElementById('cls-preview').innerHTML='';document.getElementById('cls-contador').textContent='0/6 arquivos';document.getElementById('cls-btnPublicar').disabled=true;clsIsSubmitting=false;}
 
         window.mascaraCPF=(i)=>{let v=i.value;if(isNaN(v[v.length-1])){i.value=v.substring(0,v.length-1);return;}i.setAttribute("maxlength","14");if(v.length==3||v.length==7)i.value+=".";if(v.length==11)i.value+="-";};
         window.toggleCadastroLok=()=>{const caixa=document.getElementById('caixa-cadastro-lok');caixa.classList.toggle('hidden');if(!caixa.classList.contains('hidden'))caixa.scrollIntoView({behavior:'smooth'});};
         window.fecharSucessoLok=()=>{document.getElementById('sucesso-lok').classList.add('hidden');document.getElementById('formulario-lok').classList.remove('hidden');document.getElementById('caixa-cadastro-lok').classList.add('hidden');};
+
+        // ✅ CORRIGIDO: foto de profissional salva com extensão e contentType correto
         window.cadastrarLok=async()=>{
             const btn=document.getElementById('lok-btn'),file=document.getElementById('lok-f').files[0];
             if(!file)return alert("📸 Escolha sua foto!");if(!document.getElementById('lok-p').value)return alert("🔧 Selecione sua profissão!");
             btn.disabled=true;btn.innerText="⏳ PROCESSANDO...";
-            try{const sRef=stRef(storage,'profissionais/'+Date.now()+"_"+file.name);await uploadBytes(sRef,file);const url=await getDownloadURL(sRef);await addDoc(collection(fsdb,"usuariosPendentes"),{nome:document.getElementById('lok-n').value,cpf:document.getElementById('lok-cpf').value,tel:document.getElementById('lok-t').value,endereco:document.getElementById('lok-end').value,profissao:document.getElementById('lok-p').value,foto:url,status:"pendente",dataCadastro:new Date()});document.getElementById('formulario-lok').classList.add('hidden');document.getElementById('sucesso-lok').classList.remove('hidden');}
+            try{
+                const ext=file.name.split('.').pop();
+                const sRef=stRef(storage,'profissionais/'+Date.now()+'.'+ext);
+                const meta={contentType:file.type};
+                await uploadBytes(sRef,file,meta);
+                const url=await getDownloadURL(sRef);
+                await addDoc(collection(fsdb,"usuariosPendentes"),{nome:document.getElementById('lok-n').value,cpf:document.getElementById('lok-cpf').value,tel:document.getElementById('lok-t').value,endereco:document.getElementById('lok-end').value,profissao:document.getElementById('lok-p').value,foto:url,status:"pendente",dataCadastro:new Date()});
+                document.getElementById('formulario-lok').classList.add('hidden');document.getElementById('sucesso-lok').classList.remove('hidden');
+            }
             catch(e){alert("❌ Erro: "+e.message);btn.disabled=false;btn.innerText="TENTAR NOVAMENTE";}
         };
+
         function lokCarregarProfissionais(){
             const listaEl=document.getElementById('lok-listaAprovados'),totalEl=document.getElementById('lok-totalAprovados');
             onSnapshot(collection(fsdb,"usuariosAprovados"),(snapshot)=>{
