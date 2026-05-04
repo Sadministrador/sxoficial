@@ -137,6 +137,10 @@
         @media screen and (orientation: landscape) { #btn-fechar-tvsx.show { top: 12px; right: 12px; bottom: auto; left: auto; } }
         @media screen and (orientation: portrait) { #btn-fechar-tvsx.show { bottom: 12px; right: 12px; top: auto; left: auto; } }
 
+        /* ── PROGRESS BAR UPLOAD ── */
+        .upload-progress-bar { width: 100%; height: 6px; background: #1d2d50; border-radius: 3px; overflow: hidden; margin-top: 8px; display: none; }
+        .upload-progress-fill { height: 100%; background: linear-gradient(90deg, #ff0000, #ff6600); border-radius: 3px; transition: width 0.3s; width: 0%; }
+
         /* ── SLIDESHOW DO ANÚNCIO NO FEED ── */
         .ad-slideshow { position: relative; width: 100%; overflow: hidden; }
         .ad-slideshow-track { display: flex; transition: transform 0.5s ease; }
@@ -210,6 +214,10 @@
                     <span id="label-foto-nome" style="color:#9ca3af;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Nenhum arquivo selecionado</span>
                     <input type="file" id="f" accept="image/*" class="hidden" onchange="document.getElementById('label-foto-nome').innerText=this.files[0]?this.files[0].name:'Nenhum arquivo selecionado'">
                 </label>
+                <!-- Progress bar cadastro -->
+                <div class="upload-progress-bar" id="progress-cadastro">
+                    <div class="upload-progress-fill" id="progress-cadastro-fill"></div>
+                </div>
                 <button onclick="cadastrar()" id="btn-cadastrar" class="w-full p-3 rounded font-bold transition" style="background:#ff0000;">CADASTRAR</button>
             </div>
         </div>
@@ -259,6 +267,10 @@
                         <span id="file-name" class="flex items-center gap-2">✨ ADICIONAR MÍDIA INCRÍVEL</span>
                         <input type="file" id="midia" accept="image/*,video/*" class="hidden" onchange="document.getElementById('file-name').innerText = '✓ ' + this.files[0].name">
                     </label>
+                    <!-- Progress bar post -->
+                    <div class="upload-progress-bar" id="progress-post">
+                        <div class="upload-progress-fill" id="progress-post-fill"></div>
+                    </div>
                     <button onclick="postar()" id="btn-post" class="w-full btn-vermelho py-3 rounded-xl font-black uppercase">Publicar</button>
                 </div>
             </div>
@@ -285,6 +297,10 @@
                     <label for="cls-midia" class="upload-btn-cls">📤 ESCOLHER FOTOS/VÍDEOS</label>
                     <div class="preview-cls" id="cls-preview"></div>
                     <div id="cls-contador" style="color:#ddd;">0/6 arquivos</div>
+                    <!-- Progress bar veiculos -->
+                    <div class="upload-progress-bar" id="progress-cls" style="margin-top:10px;">
+                        <div class="upload-progress-fill" id="progress-cls-fill"></div>
+                    </div>
                     <button onclick="clsAnunciar()" id="cls-btnPublicar" class="cls-btn" disabled style="margin-top:12px;">🚀 PUBLICAR ANÚNCIO</button>
                 </div>
                 <div id="cls-listaAnuncios"></div>
@@ -378,6 +394,60 @@
     <button id="btn-flutuante-admin" onclick="abrirMonitorAnuncios()">📢 Anúncios</button>
 
     <script>
+        // ══════════════════════════════════════════════════
+        // CLOUDINARY CONFIG — upload de imagens e vídeos
+        // ══════════════════════════════════════════════════
+        const CLD_CLOUD = "dxqobkits";
+        const CLD_PRESET = "sx_videos"; // unsigned upload preset
+
+        /**
+         * Faz upload de um arquivo para o Cloudinary com progresso.
+         * @param {File} file - arquivo a enviar
+         * @param {string} folder - pasta no Cloudinary
+         * @param {Function} [onProgress] - callback(percent 0-100)
+         * @returns {Promise<string>} URL segura do arquivo
+         */
+        function uploadCloudinary(file, folder, onProgress) {
+            return new Promise((resolve, reject) => {
+                const isVideo = file.type.startsWith("video/");
+                const endpoint = `https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${isVideo ? "video" : "image"}/upload`;
+
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", CLD_PRESET);
+                if (folder) formData.append("folder", folder);
+
+                const xhr = new XMLHttpRequest();
+
+                xhr.upload.addEventListener("progress", (e) => {
+                    if (e.lengthComputable && onProgress) {
+                        const pct = Math.round((e.loaded / e.total) * 100);
+                        onProgress(pct);
+                    }
+                });
+
+                xhr.addEventListener("load", () => {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        if (data.secure_url) {
+                            resolve(data.secure_url);
+                        } else {
+                            reject(new Error(data.error?.message || "Erro no upload Cloudinary"));
+                        }
+                    } catch(e) {
+                        reject(new Error("Resposta inválida do Cloudinary"));
+                    }
+                });
+
+                xhr.addEventListener("error", () => reject(new Error("Falha na conexão com Cloudinary")));
+                xhr.addEventListener("abort", () => reject(new Error("Upload cancelado")));
+
+                xhr.open("POST", endpoint);
+                xhr.send(formData);
+            });
+        }
+
+        // ── CALCULADORA ──
         let calcValorAtual = "", calcTotal = 0, calcItens = [];
         function calcDigitar(n) { calcValorAtual += n; calcAtualizar(); }
         function calcApagarUltimo() { calcValorAtual = calcValorAtual.slice(0, -1); calcAtualizar(); }
@@ -400,7 +470,6 @@
 
         // ── SLIDESHOW DOS ANÚNCIOS NO FEED ──
         const _adSlides = {};
-
         window._adGoSlide = function(uid, i) {
             const s = _adSlides[uid]; if (!s) return;
             s.idx = i;
@@ -411,13 +480,21 @@
         };
         window._adPrev = function(uid) { const s = _adSlides[uid]; if (!s) return; _adGoSlide(uid, (s.idx - 1 + s.srcs.length) % s.srcs.length); };
         window._adNext = function(uid) { const s = _adSlides[uid]; if (!s) return; _adGoSlide(uid, (s.idx + 1) % s.srcs.length); };
-
         function iniciarSlideshowAd(uid, srcs, intervalo) {
             if (_adSlides[uid] && _adSlides[uid].timer) clearInterval(_adSlides[uid].timer);
             if (!document.getElementById('adtrack-' + uid)) return;
             const timer = setInterval(() => _adNext(uid), intervalo || 3000);
             _adSlides[uid] = { idx: 0, srcs, timer };
             _adGoSlide(uid, 0);
+        }
+
+        // ── HELPERS PROGRESSO ──
+        function setProgress(barId, fillId, pct, show) {
+            const bar = document.getElementById(barId);
+            const fill = document.getElementById(fillId);
+            if (!bar || !fill) return;
+            bar.style.display = show ? 'block' : 'none';
+            fill.style.width = pct + '%';
         }
     </script>
 
@@ -427,8 +504,6 @@
         import { getFirestore, collection, query, where, getDocs, addDoc, onSnapshot,
                  orderBy, doc, updateDoc, getDoc, arrayUnion, serverTimestamp }
                  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getStorage, ref as stRef, uploadBytes, getDownloadURL }
-                 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCXTQ932v0Amnbtha01BzFsUfUZKnwYQIA",
@@ -440,7 +515,6 @@
         };
         const app = initializeApp(firebaseConfig);
         const fsdb = getFirestore(app, "cadastro");
-        const storage = getStorage(app);
         const auth = getAuth(app);
 
         let userLogado=null, idLogado=null, unsubFeed=null, arquivoCapaPendente=null;
@@ -635,43 +709,59 @@
             });
         }
 
-        function comprimirFoto(file){
-            return new Promise((resolve)=>{
-                const reader=new FileReader();
-                reader.onload=(e)=>{
-                    const img=new Image();
-                    img.onload=()=>{
-                        const canvas=document.createElement('canvas');const MAX=600;let w=img.width,h=img.height;
-                        if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}
-                        canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);
-                        canvas.toBlob((blob)=>resolve(blob),'image/jpeg',0.7);
-                    };img.src=e.target.result;
-                };reader.readAsDataURL(file);
-            });
-        }
-
+        // ═══════════════════════════════════════════════════════════
+        // CADASTRO — foto de perfil agora vai para o Cloudinary
+        // ═══════════════════════════════════════════════════════════
         window.cadastrar=async()=>{
-            const nome=document.getElementById('n').value.trim(),email=document.getElementById('e').value.trim().toLowerCase(),tel=document.getElementById('t').value.trim(),file=document.getElementById('f').files[0],btn=document.getElementById('btn-cadastrar');
-            if(!nome)return alert("Digite seu nome completo!");if(!email)return alert("Digite seu e-mail!");if(!tel)return alert("Digite seu telefone!");if(!file)return alert("Por favor, suba sua foto de perfil!");
-            btn.disabled=true;btn.innerText="CADASTRANDO...";
+            const nome=document.getElementById('n').value.trim();
+            const email=document.getElementById('e').value.trim().toLowerCase();
+            const tel=document.getElementById('t').value.trim();
+            const file=document.getElementById('f').files[0];
+            const btn=document.getElementById('btn-cadastrar');
+            if(!nome)return alert("Digite seu nome completo!");
+            if(!email)return alert("Digite seu e-mail!");
+            if(!tel)return alert("Digite seu telefone!");
+            if(!file)return alert("Por favor, suba sua foto de perfil!");
+
+            btn.disabled=true; btn.innerText="ENVIANDO FOTO...";
+            setProgress('progress-cadastro','progress-cadastro-fill',0,true);
+
             try{
-                const [snapExiste,fotoComprimida]=await Promise.all([getDocs(query(collection(fsdb,"usuariosAprovados"),where("email","==",email))),comprimirFoto(file)]);
-                if(!snapExiste.empty){mostrarErroEmail();btn.disabled=false;btn.innerText="CADASTRAR";return;}
-                // ✅ CORRIGIDO: salva com extensão .jpg e contentType correto
-                const sRef=stRef(storage,'perfis/'+Date.now()+'.jpg');
-                await uploadBytes(sRef,fotoComprimida,{contentType:'image/jpeg'});
-                const url=await getDownloadURL(sRef);
-                const docRef=await addDoc(collection(fsdb,"usuariosAprovados"),{nome,email,tel,foto:url,status:"aprovado"});
-                salvarEmailLocal(email);idLogado=docRef.id;userLogado={nome,email,tel,foto:url,status:"aprovado"};entrarNaPlataforma();
-            }catch(e){alert("Erro ao enviar cadastro.");btn.disabled=false;btn.innerText="CADASTRAR";}
+                // Verifica e-mail duplicado no Firestore
+                const snapExiste=await getDocs(query(collection(fsdb,"usuariosAprovados"),where("email","==",email)));
+                if(!snapExiste.empty){mostrarErroEmail();btn.disabled=false;btn.innerText="CADASTRAR";setProgress('progress-cadastro','progress-cadastro-fill',0,false);return;}
+
+                // Upload foto para Cloudinary
+                btn.innerText="ENVIANDO FOTO... 0%";
+                const fotoUrl = await uploadCloudinary(file, "sx_perfis", (pct) => {
+                    btn.innerText = `ENVIANDO FOTO... ${pct}%`;
+                    setProgress('progress-cadastro','progress-cadastro-fill',pct,true);
+                });
+
+                btn.innerText="SALVANDO CADASTRO...";
+                setProgress('progress-cadastro','progress-cadastro-fill',100,true);
+
+                const docRef=await addDoc(collection(fsdb,"usuariosAprovados"),{nome,email,tel,foto:fotoUrl,status:"aprovado"});
+                salvarEmailLocal(email);
+                idLogado=docRef.id;
+                userLogado={nome,email,tel,foto:fotoUrl,status:"aprovado"};
+                setProgress('progress-cadastro','progress-cadastro-fill',0,false);
+                entrarNaPlataforma();
+            }catch(e){
+                alert("Erro ao enviar cadastro: " + e.message);
+                btn.disabled=false; btn.innerText="CADASTRAR";
+                setProgress('progress-cadastro','progress-cadastro-fill',0,false);
+            }
         };
 
         function entrarNaPlataforma(){
             if(unsubAprovacao){unsubAprovacao();unsubAprovacao=null;}
             isAdmin=(userLogado.email==="admin@sx.com");
-            document.getElementById('login-box').classList.add('hidden');document.getElementById('tela-aguardando').classList.remove('show');document.getElementById('main-box').classList.remove('hidden');
+            document.getElementById('login-box').classList.add('hidden');
+            document.getElementById('tela-aguardando').classList.remove('show');
+            document.getElementById('main-box').classList.remove('hidden');
             document.getElementById('perfil-status').innerHTML=`<img src="${userLogado.foto}" class="w-10 h-10 rounded-full object-cover border-2 border-red-600">`;
-            document.getElementById('mini-foto-post').innerHTML=`<img src="${userLogado.foto}" class="w-12 h-12 rounded-full object-cover border-2 border-red-600">`;
+            document.getElementById('mini-foto-post').innerHTML=`<img src="${userLogado.foto}" class="w-12 h-12 rounded-full object-cover border-2 border-red-600 flex-shrink-0">`;
             document.getElementById('btn-me-perfil').onclick=()=>verPerfil(idLogado);
             if(isAdmin)document.getElementById('btn-flutuante-admin').style.display='flex';
             carregarUsuariosMenu();carregarAnunciosAtivos().then(()=>carregarFeed());
@@ -795,6 +885,9 @@
             });
         }
 
+        // ═══════════════════════════════════════════════════════════
+        // FEED — foto do usuário ao lado do nome corrigida
+        // ═══════════════════════════════════════════════════════════
         function carregarFeed(filtroNome=null){
             let q=query(collection(fsdb,"posts"),orderBy("data","desc"));
             if(filtroNome)q=query(collection(fsdb,"posts"),where("nome","==",filtroNome),orderBy("data","desc"));
@@ -812,17 +905,26 @@
                     const {id, dados: p} = item;
                     let midiaHtml = "";
                     if(p.midia){
-                        if(p.tipo==='video'){midiaHtml=`<div class="video-wrapper"><div class="video-skeleton"><svg width="64" height="64" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div><video src="${p.midia}" loop playsinline preload="none" class="video-feed" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:2;" oncanplay="this.previousElementSibling.style.opacity='0';setTimeout(()=>this.previousElementSibling.style.display='none',300);"></video></div>`;}
-                        else{midiaHtml=`<img src="${p.midia}" loading="lazy" style="width:100%;display:block;object-fit:cover;" class="mt-2">`;}
+                        if(p.tipo==='video'){
+                            midiaHtml=`<div class="video-wrapper"><div class="video-skeleton"><svg width="64" height="64" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div><video src="${p.midia}" loop playsinline preload="none" class="video-feed" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:2;" oncanplay="this.previousElementSibling.style.opacity='0';setTimeout(()=>this.previousElementSibling.style.display='none',300);"></video></div>`;
+                        } else {
+                            midiaHtml=`<img src="${p.midia}" loading="lazy" style="width:100%;display:block;object-fit:cover;" class="mt-2">`;
+                        }
                     }
                     const comentsHtml=(p.comentarios||[]).map(c=>`<div class="text-xs bg-black/30 p-2 rounded mb-1"><b class="text-red-500">${c.autor}:</b> ${c.texto}</div>`).join("");
+
+                    // ✅ CORRIGIDO: foto do usuário aparece ao lado do nome no feed
+                    const fotoUsuario = p.foto
+                        ? `<img src="${p.foto}" class="w-11 h-11 rounded-full object-cover border-2 border-red-600" style="flex-shrink:0;" onerror="this.style.display='none'">`
+                        : `<div style="width:44px;height:44px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex-shrink:0;">${(p.nome||'?')[0]}</div>`;
+
                     htmlCompleto += `
                     <div class="post-card">
                         <div class="post-card-header">
                             <div class="post-card-header-inner">
                                 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-                                    <img src="${p.foto}" class="w-11 h-11 rounded-full object-cover border-2 border-red-600" style="flex-shrink:0;">
-                                    <span style="font-weight:900;color:#ff0000;font-size:11px;text-transform:uppercase;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nome}</span>
+                                    ${fotoUsuario}
+                                    <span style="font-weight:900;color:#ff0000;font-size:11px;text-transform:uppercase;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nome||''}</span>
                                 </div>
                                 <div class="post-card-header-badge" id="badge-slot-${id}"></div>
                                 <div onclick="curtirPost('${id}',this,event)" class="btn-curtir" data-post-id="${id}">❤️ <span class="num-curtidas">${p.curtidas||0}</span></div>
@@ -833,7 +935,7 @@
                         <div class="post-card-footer">
                             <div class="max-h-32 overflow-y-auto mb-3">${comentsHtml}</div>
                             <div class="flex gap-2">
-                                <input id="input-coment-${id}" placeholder="Escreva algo para este post..." class="flex-1 comment-box p-2 text-sm outline-none focus:border-red-600">
+                                <input id="input-coment-${id}" placeholder="Escreva algo..." class="flex-1 comment-box p-2 text-sm outline-none focus:border-red-600">
                                 <button onclick="salvarComentario('${id}')" class="bg-red-600 px-4 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-all">Salvar</button>
                             </div>
                         </div>
@@ -859,7 +961,7 @@
         function carregarUsuariosMenu(){
             onSnapshot(collection(fsdb,"usuariosAprovados"),snap=>{
                 const lista=document.getElementById('lista-usuarios-menu');lista.innerHTML="";
-                snap.forEach(d=>{const st=d.data().status;if(st!=="aprovado"&&st!=="ativo")return;lista.innerHTML+=`<div onclick="verPerfil('${d.id}')" class="flex items-center gap-3 p-3 hover:bg-red-900 rounded-lg cursor-pointer"><img src="${d.data().foto}" class="w-10 h-10 rounded-full object-cover border-2 border-red-600"><span class="font-bold text-xs uppercase">${d.data().nome}</span></div>`;});
+                snap.forEach(d=>{const st=d.data().status;if(st!=="aprovado"&&st!=="ativo")return;lista.innerHTML+=`<div onclick="verPerfil('${d.id}')" class="flex items-center gap-3 p-3 hover:bg-red-900 rounded-lg cursor-pointer"><img src="${d.data().foto}" class="w-10 h-10 rounded-full object-cover border-2 border-red-600" onerror="this.style.opacity='0.3'"><span class="font-bold text-xs uppercase">${d.data().nome}</span></div>`;});
             });
         }
 
@@ -879,35 +981,68 @@
             const reader=new FileReader();reader.onload=e=>{document.getElementById('img-capa-view').src=e.target.result;document.getElementById('btn-confirmar-capa').classList.remove('hidden');};reader.readAsDataURL(file);
         };
 
-        // ✅ CORRIGIDO: capa salva com extensão e contentType correto
+        // ═══════════════════════════════════════════════════════════
+        // CAPA — salva no Cloudinary
+        // ═══════════════════════════════════════════════════════════
         window.confirmarUploadCapa=async()=>{
             const btn=document.getElementById('btn-confirmar-capa');btn.innerText="SALVANDO...";
             try{
-                const ext=arquivoCapaPendente.name.split('.').pop()||'jpg';
-                const sr=stRef(storage,'capas/'+idLogado+'.'+ext);
-                const meta={contentType:arquivoCapaPendente.type||'image/jpeg'};
-                await uploadBytes(sr,arquivoCapaPendente,meta);
-                const url=await getDownloadURL(sr);
+                const url = await uploadCloudinary(arquivoCapaPendente, "sx_capas");
                 await updateDoc(doc(fsdb,"usuariosAprovados",idLogado),{capa:url});
                 alert("SUCESSO! SUA CAPA AGORA É VISÍVEL PARA TODOS.");btn.classList.add('hidden');btn.innerText="✅ SALVAR PARA TODOS";
-            }catch(err){alert("Erro ao salvar.");}
+            }catch(err){alert("Erro ao salvar capa: " + err.message);}
         };
 
-        // ✅ CORRIGIDO: posts salvos com extensão e contentType correto
+        // ═══════════════════════════════════════════════════════════
+        // POSTAR — imagem e vídeo agora vão para o Cloudinary
+        // ═══════════════════════════════════════════════════════════
         window.postar=async()=>{
-            const txt=document.getElementById('txt').value,file=document.getElementById('midia').files[0],btn=document.getElementById('btn-post');
-            if(!txt&&!file)return;btn.disabled=true;btn.innerText="POSTANDO...";
-            let url="",tipo="";
-            if(file){
-                const ext=file.name.split('.').pop();
-                const sr=stRef(storage,'posts/'+Date.now()+'.'+ext);
-                const meta={contentType:file.type};
-                await uploadBytes(sr,file,meta);
-                url=await getDownloadURL(sr);
-                tipo=file.type.includes('video')?'video':'foto';
+            const txt=document.getElementById('txt').value;
+            const file=document.getElementById('midia').files[0];
+            const btn=document.getElementById('btn-post');
+            if(!txt&&!file)return alert("Escreva algo ou adicione uma mídia!");
+
+            btn.disabled=true; btn.innerText="PUBLICANDO...";
+            setProgress('progress-post','progress-post-fill',0,!!file);
+
+            let url="", tipo="";
+            try{
+                if(file){
+                    const isVideo = file.type.startsWith("video/");
+                    tipo = isVideo ? 'video' : 'foto';
+                    btn.innerText = isVideo ? "ENVIANDO VÍDEO... 0%" : "ENVIANDO IMAGEM... 0%";
+
+                    url = await uploadCloudinary(file, "sx_posts", (pct) => {
+                        btn.innerText = (isVideo ? "ENVIANDO VÍDEO... " : "ENVIANDO IMAGEM... ") + pct + "%";
+                        setProgress('progress-post','progress-post-fill',pct,true);
+                    });
+                }
+
+                btn.innerText = "SALVANDO POST...";
+
+                // ✅ Salva foto do usuário junto com o post para aparecer no feed
+                await addDoc(collection(fsdb,"posts"),{
+                    nome: userLogado.nome,
+                    foto: userLogado.foto,   // foto do perfil vai junto!
+                    texto: txt,
+                    midia: url,
+                    tipo: tipo,
+                    data: new Date(),
+                    curtidas: 0,
+                    comentarios: []
+                });
+
+                document.getElementById('txt').value="";
+                document.getElementById('midia').value="";
+                document.getElementById('file-name').innerText="✨ ADICIONAR MÍDIA INCRÍVEL";
+                setProgress('progress-post','progress-post-fill',0,false);
+                btn.disabled=false; btn.innerText="Publicar";
+
+            }catch(e){
+                alert("Erro ao publicar: " + e.message);
+                btn.disabled=false; btn.innerText="Publicar";
+                setProgress('progress-post','progress-post-fill',0,false);
             }
-            await addDoc(collection(fsdb,"posts"),{nome:userLogado.nome,foto:userLogado.foto,texto:txt,midia:url,tipo:tipo,data:new Date(),curtidas:0,comentarios:[]});
-            document.getElementById('txt').value="";document.getElementById('midia').value="";document.getElementById('file-name').innerText="✨ ADICIONAR MÍDIA INCRÍVEL";btn.disabled=false;btn.innerText="Publicar";
         };
 
         function dispararCoracoes(btn){
@@ -949,25 +1084,44 @@
         function clsShowPreview(){const preview=document.getElementById('cls-preview');preview.innerHTML='';clsArquivos.forEach((file,i)=>{const reader=new FileReader();reader.onload=e=>{const isVideo=file.type.startsWith('video/');preview.innerHTML+=`<div style="position:relative;">${isVideo?`<video src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;"></video>`:`<img src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;">`}<button onclick="clsRemoverArquivo(${i})" style="position:absolute;top:-5px;right:-5px;background:red;color:white;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:12px;">×</button></div>`;};reader.readAsDataURL(file);});}
         window.clsRemoverArquivo=index=>{clsArquivos.splice(index,1);clsShowPreview();document.getElementById('cls-contador').textContent=clsArquivos.length+'/6 arquivos';document.getElementById('cls-btnPublicar').disabled=clsArquivos.length===0;};
 
-        // ✅ CORRIGIDO: anúncios de veículos salvos com extensão e contentType correto
+        // ═══════════════════════════════════════════════════════════
+        // CLASSIFICADOS VEÍCULOS — fotos/vídeos vão para Cloudinary
+        // ═══════════════════════════════════════════════════════════
         window.clsAnunciar=async()=>{
-            if(clsIsSubmitting)return;clsIsSubmitting=true;const btn=document.getElementById('cls-btnPublicar');btn.textContent='⏳ Enviando...';btn.disabled=true;
-            const dados={categoria:document.getElementById('cls-categoria').value,nome:document.getElementById('cls-nome').value.trim(),ano:document.getElementById('cls-ano').value,bairro:document.getElementById('cls-bairro').value.trim(),estado:document.getElementById('cls-estado').value.trim(),preco:document.getElementById('cls-preco').value,whatsapp:document.getElementById('cls-whatsapp').value.trim(),descricao:document.getElementById('cls-descricao').value.trim()};
+            if(clsIsSubmitting)return;clsIsSubmitting=true;
+            const btn=document.getElementById('cls-btnPublicar');btn.textContent='⏳ Enviando...';btn.disabled=true;
+            const dados={
+                categoria:document.getElementById('cls-categoria').value,
+                nome:document.getElementById('cls-nome').value.trim(),
+                ano:document.getElementById('cls-ano').value,
+                bairro:document.getElementById('cls-bairro').value.trim(),
+                estado:document.getElementById('cls-estado').value.trim(),
+                preco:document.getElementById('cls-preco').value,
+                whatsapp:document.getElementById('cls-whatsapp').value.trim(),
+                descricao:document.getElementById('cls-descricao').value.trim()
+            };
             if(!dados.categoria||!dados.nome||clsArquivos.length===0){alert('❌ Preencha categoria, nome e adicione pelo menos 1 foto!');clsIsSubmitting=false;btn.textContent='🚀 PUBLICAR ANÚNCIO';btn.disabled=false;return;}
             try{
+                setProgress('progress-cls','progress-cls-fill',0,true);
                 const urls=[];
                 for(let i=0;i<clsArquivos.length;i++){
                     const file=clsArquivos[i];
-                    const ext=file.name.split('.').pop();
-                    const sr=stRef(storage,`anuncios/${Date.now()}_${i}.${ext}`);
-                    const meta={contentType:file.type};
-                    await uploadBytes(sr,file,meta);
-                    urls.push(await getDownloadURL(sr));
+                    const progBase = Math.round((i / clsArquivos.length) * 100);
+                    btn.textContent = `⏳ Enviando ${i+1}/${clsArquivos.length}...`;
+                    const url = await uploadCloudinary(file, "sx_veiculos", (pct) => {
+                        const progTotal = progBase + Math.round(pct / clsArquivos.length);
+                        setProgress('progress-cls','progress-cls-fill',progTotal,true);
+                        btn.textContent = `⏳ Arquivo ${i+1}/${clsArquivos.length}: ${pct}%`;
+                    });
+                    urls.push(url);
                 }
+                setProgress('progress-cls','progress-cls-fill',100,true);
+                btn.textContent='⏳ Salvando anúncio...';
                 await addDoc(collection(fsdb,'posts'),{...dados,midia:urls,tipo:'classificado',publicado:false,data:serverTimestamp()});
+                setProgress('progress-cls','progress-cls-fill',0,false);
                 alert('✅ ANÚNCIO ENVIADO! Aguarde aprovação.');clsFecharForm();
             }
-            catch(e){alert('❌ Erro: '+e.message);}
+            catch(e){alert('❌ Erro: '+e.message);setProgress('progress-cls','progress-cls-fill',0,false);}
             finally{clsIsSubmitting=false;btn.textContent='🚀 PUBLICAR ANÚNCIO';btn.disabled=false;}
         };
         function clsFecharForm(){document.getElementById('cls-formulario').style.display='none';['cls-nome','cls-ano','cls-bairro','cls-estado','cls-preco','cls-whatsapp','cls-descricao'].forEach(id=>document.getElementById(id).value='');document.getElementById('cls-categoria').value='';clsArquivos=[];document.getElementById('cls-preview').innerHTML='';document.getElementById('cls-contador').textContent='0/6 arquivos';document.getElementById('cls-btnPublicar').disabled=true;clsIsSubmitting=false;}
@@ -976,17 +1130,17 @@
         window.toggleCadastroLok=()=>{const caixa=document.getElementById('caixa-cadastro-lok');caixa.classList.toggle('hidden');if(!caixa.classList.contains('hidden'))caixa.scrollIntoView({behavior:'smooth'});};
         window.fecharSucessoLok=()=>{document.getElementById('sucesso-lok').classList.add('hidden');document.getElementById('formulario-lok').classList.remove('hidden');document.getElementById('caixa-cadastro-lok').classList.add('hidden');};
 
-        // ✅ CORRIGIDO: foto de profissional salva com extensão e contentType correto
+        // ═══════════════════════════════════════════════════════════
+        // PROFISSIONAIS — foto vai para Cloudinary
+        // ═══════════════════════════════════════════════════════════
         window.cadastrarLok=async()=>{
             const btn=document.getElementById('lok-btn'),file=document.getElementById('lok-f').files[0];
             if(!file)return alert("📸 Escolha sua foto!");if(!document.getElementById('lok-p').value)return alert("🔧 Selecione sua profissão!");
-            btn.disabled=true;btn.innerText="⏳ PROCESSANDO...";
+            btn.disabled=true;btn.innerText="⏳ ENVIANDO FOTO...";
             try{
-                const ext=file.name.split('.').pop();
-                const sRef=stRef(storage,'profissionais/'+Date.now()+'.'+ext);
-                const meta={contentType:file.type};
-                await uploadBytes(sRef,file,meta);
-                const url=await getDownloadURL(sRef);
+                const url = await uploadCloudinary(file, "sx_profissionais", (pct) => {
+                    btn.innerText = `⏳ ENVIANDO... ${pct}%`;
+                });
                 await addDoc(collection(fsdb,"usuariosPendentes"),{nome:document.getElementById('lok-n').value,cpf:document.getElementById('lok-cpf').value,tel:document.getElementById('lok-t').value,endereco:document.getElementById('lok-end').value,profissao:document.getElementById('lok-p').value,foto:url,status:"pendente",dataCadastro:new Date()});
                 document.getElementById('formulario-lok').classList.add('hidden');document.getElementById('sucesso-lok').classList.remove('hidden');
             }
