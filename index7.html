@@ -149,36 +149,16 @@
         .ad-slide-nav.prev { left: 8px; }
         .ad-slide-nav.next { right: 8px; }
 
-        /* ===== DIETA & SAÚDE — estilos do app embutido ===== */
-        #area-dieta-saude {
-            width: 100%;
-            background: #000;
-            min-height: 100vh;
-            padding-bottom: 4rem;
-            box-sizing: border-box;
-        }
-        .dieta-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 1.5rem;
-            box-sizing: border-box;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-        }
+        /* ===== DIETA & SAÚDE ===== */
+        #area-dieta-saude { width: 100%; background: #000; min-height: 100vh; padding-bottom: 4rem; box-sizing: border-box; }
+        .dieta-container { max-width: 800px; margin: 0 auto; padding: 1.5rem; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
         .dieta-container h1 { color: #fff; text-align: center; line-height: 1.2; font-size: 2rem; margin-bottom: 1.5rem; }
         .dieta-container h1 span { display: block; color: #fff; font-size: 1.4rem; font-weight: bold; margin-bottom: 0.3rem; }
         .dieta-container h2 { color: #f40000; border-bottom: 2px solid rgba(244,0,0,0.7); padding-bottom: 0.6rem; margin-top: 2.5rem; font-size: 1.4rem; }
-        .dieta-input, .dieta-select {
-            padding: 0.9rem 1rem; border-radius: 0.7rem; border: 2px solid #f40000;
-            background: #1a1a1a; color: #fff; width: 100%; box-sizing: border-box;
-            font-size: 1rem; margin-top: 0.3rem;
-        }
+        .dieta-input, .dieta-select { padding: 0.9rem 1rem; border-radius: 0.7rem; border: 2px solid #f40000; background: #1a1a1a; color: #fff; width: 100%; box-sizing: border-box; font-size: 1rem; margin-top: 0.3rem; }
         .dieta-input:focus, .dieta-select:focus { border-color: #fff; box-shadow: 0 0 8px #f40000; background: #222; outline: none; }
         .dieta-label { display: block; margin-top: 0.8rem; font-size: 1rem; font-weight: bold; color: #fff; }
-        .dieta-btn {
-            padding: 0.9rem 1rem; border-radius: 0.7rem; border: none;
-            background: #f40000; color: #fff; font-weight: 900; cursor: pointer;
-            font-size: 1rem; width: 100%; margin-top: 1rem; transition: background 0.3s;
-        }
+        .dieta-btn { padding: 0.9rem 1rem; border-radius: 0.7rem; border: none; background: #f40000; color: #fff; font-weight: 900; cursor: pointer; font-size: 1rem; width: 100%; margin-top: 1rem; transition: background 0.3s; }
         .dieta-btn:hover { background: #c40000; }
         .dieta-btn.azul { background: #1400ff; }
         .dieta-btn.azul:hover { background: #0000d4; }
@@ -189,24 +169,14 @@
         .dieta-tab { flex: 1; padding: 0.8rem; background: #111; color: #888; border: none; border-radius: 0; font-size: 1rem; font-weight: 700; cursor: pointer; margin: 0; }
         .dieta-tab.ativo { background: #f40000; color: #fff; }
         .dieta-tab:hover { background: #c40000; color: #fff; }
-        .dieta-status-badge {
-            margin-top: 1rem; padding: 0.7rem 1rem; border-radius: 0.6rem;
-            font-size: 0.9rem; text-align: center; display: none;
-        }
+        .dieta-status-badge { margin-top: 1rem; padding: 0.7rem 1rem; border-radius: 0.6rem; font-size: 0.9rem; text-align: center; display: none; }
         .dieta-status-badge.trial { background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.4); color: #FFD700; display: block; }
         .dieta-status-badge.liberado { background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.4); color: #00e676; display: block; }
         .dieta-status-badge.bloqueado { background: rgba(244,0,0,0.1); border: 1px solid rgba(244,0,0,0.4); color: #f40000; display: block; }
-        #dietaBanner {
-            padding: 0.6rem 1rem; text-align: center; font-size: 0.85rem; font-weight: 700;
-            display: none; border-radius: 8px; margin-bottom: 1rem;
-        }
+        #dietaBanner { padding: 0.6rem 1rem; text-align: center; font-size: 0.85rem; font-weight: 700; display: none; border-radius: 8px; margin-bottom: 1rem; }
         #dietaBanner.trial { background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.4); color: #FFD700; display: block; }
         #dietaBanner.liberado { background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.3); color: #00e676; display: block; }
-        #dietaExpiredOverlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.96);
-            display: none; align-items: center; justify-content: center;
-            z-index: 8888; flex-direction: column; text-align: center; padding: 3rem;
-        }
+        #dietaExpiredOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.96); display: none; align-items: center; justify-content: center; z-index: 8888; flex-direction: column; text-align: center; padding: 3rem; }
         #dietaExpiredOverlay.show { display: flex; }
         #dietaExpiredOverlay h2 { color: #f40000; font-size: 2rem; margin-bottom: 1rem; }
         #dietaExpiredOverlay p { font-size: 1rem; color: #aaa; max-width: 400px; }
@@ -221,15 +191,9 @@
         .contador-qty .qty-input::-webkit-inner-spin-button, .contador-qty .qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
         .food-name-line { font-weight: bold; text-align: left; display: block; }
         .food-cal-line { color: #aaa; font-size: 0.8em; text-align: left; display: block; }
-        #dietaLoginBox {
-            background: #0d0d0d; border: 2px solid #f40000;
-            border-radius: 1rem; padding: 2rem 1.5rem; width: 100%; max-width: 420px;
-            box-shadow: 0 0 40px rgba(244,0,0,0.15); margin: 0 auto;
-        }
+        #dietaLoginBox { background: #0d0d0d; border: 2px solid #f40000; border-radius: 1rem; padding: 2rem 1.5rem; width: 100%; max-width: 420px; box-shadow: 0 0 40px rgba(244,0,0,0.15); margin: 0 auto; }
         #dietaLoginBox h2 { border: none; margin-top: 0; text-align: center; font-size: 1.6rem; color: #fff; }
-        #dietaLoginSection {
-            padding: 2rem 1rem;
-        }
+        #dietaLoginSection { padding: 2rem 1rem; }
     </style>
 </head>
 <body>
@@ -420,17 +384,12 @@
 
         <!-- ===== ÁREA DIETA & SAÚDE ===== -->
         <div id="area-dieta-saude">
-            <!-- Overlay expirado -->
             <div id="dietaExpiredOverlay">
                 <h2>⏰ Período de Teste Encerrado</h2>
                 <p>Seu período de teste de 8 horas chegou ao fim.<br>Entre em contato com o administrador para liberar o acesso completo.</p>
             </div>
-
             <div class="dieta-container">
-                <!-- Banner de status -->
                 <div id="dietaBanner"></div>
-
-                <!-- LOGIN DA DIETA -->
                 <div id="dietaLoginSection">
                     <div id="dietaLoginBox">
                         <h2>🍎 Dieta Monitorada</h2>
@@ -438,12 +397,10 @@
                             <button class="dieta-tab ativo" id="dietaTabEntrar" onclick="dietaSwitchTab('entrar')">Entrar</button>
                             <button class="dieta-tab" id="dietaTabCadastrar" onclick="dietaSwitchTab('cadastrar')">Cadastrar</button>
                         </div>
-                        <!-- Entrar -->
                         <div id="dietaFormEntrar">
                             <input type="tel" id="dietaLoginTel" class="dieta-input" placeholder="Telefone (DDD + número)" maxlength="20">
                             <button class="dieta-btn" onclick="dietaEntrar()" style="margin-top:1rem;">Entrar</button>
                         </div>
-                        <!-- Cadastrar -->
                         <div id="dietaFormCadastrar" class="hidden">
                             <input type="text" id="dietaCadNome" class="dieta-input" placeholder="Seu nome completo" style="margin-top:0.8rem;">
                             <input type="tel" id="dietaCadTel" class="dieta-input" placeholder="Telefone (DDD + número)" maxlength="20">
@@ -456,12 +413,8 @@
                         <div class="dieta-status-badge" id="dietaLoginBadge"></div>
                     </div>
                 </div>
-
-                <!-- APP DA DIETA (após login) -->
                 <div id="dietaAppSection" class="hidden">
                     <h1>🥗 Dieta Monitorada</h1>
-
-                    <!-- Cadastro do usuário -->
                     <div id="dietaCadastroSection">
                         <h2>1️⃣ Cadastro do Usuário</h2>
                         <button class="dieta-btn cinza" id="dietaToggleBtn" onclick="dietaAbrirAnalise(true)">Fechar Análise</button>
@@ -496,8 +449,6 @@
                         </label>
                         <button class="dieta-btn" id="dietaAnalisarBtn" onclick="dietaAnalisar()">Analisar peso ideal</button>
                     </div>
-
-                    <!-- Resultado -->
                     <div id="dietaResultadoSection" class="hidden">
                         <h2>2️⃣ Resultado da Análise</h2>
                         <p>Nome: <b id="dr-nome"></b></p>
@@ -518,8 +469,6 @@
                         <p>Restante na dieta: <b id="dr-faltaDieta"></b> kcal</p>
                         <button class="dieta-btn" onclick="dietaSalvarNutri()">Salvar na lista</button>
                     </div>
-
-                    <!-- Lista do nutricionista -->
                     <div id="dietaListaSection" class="hidden">
                         <h2>3️⃣ Lista do Nutricionista</h2>
                         <div class="dieta-table-wrap">
@@ -533,8 +482,6 @@
                             </table>
                         </div>
                     </div>
-
-                    <!-- Controle de alimentos -->
                     <div id="dietaControleSection" class="hidden">
                         <h2>🍽️ Controle de Alimentos</h2>
                         <label class="dieta-label">Selecionar usuário:
@@ -674,48 +621,196 @@
         const videoCache=new Set();
         let videoAtual=null;
 
-        // ── ÁUDIO ──
+        // ══════════════════════════════════════════════════════
+        // ── ÁUDIO — 12 SONS SINCRONIZADOS COM O MONITOR ──────
+        // ══════════════════════════════════════════════════════
         let _audioCtx = null;
         function getAudioCtx() {
-            if (!_audioCtx || _audioCtx.state === 'closed') _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (!_audioCtx || _audioCtx.state === 'closed') {
+                _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
             return _audioCtx;
         }
+
         async function tocarSomAnuncio(id) {
             if (!id || id === 'nenhum') return;
             try {
                 const ctx = getAudioCtx();
                 if (ctx.state === 'suspended') await ctx.resume();
                 const now = ctx.currentTime;
-                const master = ctx.createGain(); master.gain.value = 1.5;
+                const master = ctx.createGain();
+                master.gain.value = 0.75;
                 const compressor = ctx.createDynamicsCompressor();
                 compressor.threshold.value = -6; compressor.knee.value = 3; compressor.ratio.value = 4;
                 compressor.attack.value = 0.001; compressor.release.value = 0.1;
                 master.connect(compressor); compressor.connect(ctx.destination);
+
                 function osc(freq, type, startT, dur, vol, freqEnd) {
                     const o = ctx.createOscillator(), g = ctx.createGain();
-                    o.connect(g); g.connect(master); o.type = type || 'sine';
+                    o.connect(g); g.connect(master);
+                    o.type = type || 'sine';
                     o.frequency.setValueAtTime(freq, startT);
                     if (freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd, startT + dur);
-                    g.gain.setValueAtTime(0, startT); g.gain.linearRampToValueAtTime(vol, startT + 0.02);
+                    g.gain.setValueAtTime(0, startT);
+                    g.gain.linearRampToValueAtTime(vol, startT + 0.02);
                     g.gain.exponentialRampToValueAtTime(0.001, startT + dur);
                     o.start(startT); o.stop(startT + dur + 0.05);
                 }
+
+                function noise(startT, dur, freq, q, vol, freqEnd) {
+                    const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * dur), ctx.sampleRate);
+                    const data = buf.getChannelData(0);
+                    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1);
+                    const src = ctx.createBufferSource();
+                    const filt = ctx.createBiquadFilter();
+                    const g = ctx.createGain();
+                    src.buffer = buf;
+                    filt.type = 'bandpass';
+                    filt.frequency.setValueAtTime(freq, startT);
+                    if (freqEnd) filt.frequency.exponentialRampToValueAtTime(freqEnd, startT + dur);
+                    filt.Q.value = q || 1;
+                    g.gain.setValueAtTime(0, startT);
+                    g.gain.linearRampToValueAtTime(vol, startT + 0.03);
+                    g.gain.exponentialRampToValueAtTime(0.001, startT + dur);
+                    src.connect(filt); filt.connect(g); g.connect(master);
+                    src.start(startT); src.stop(startT + dur + 0.05);
+                }
+
                 const plays = {
-                    crystal: () => { [523,1047,1568,2093,2637].forEach((f,i) => osc(f,'sine',now+i*0.08,2.0-i*0.2,0.4-i*0.06)); },
-                    notification: () => { osc(880,'sine',now,0.18,0.5); osc(1047,'sine',now+0.22,0.28,0.55); },
+                    // 1 - Cristal
+                    crystal: () => {
+                        const freqs = [523, 1047, 1568, 2093, 2637];
+                        freqs.forEach((f, i) => osc(f, 'sine', now + i * 0.08, 2.0 - i * 0.2, 0.4 - i * 0.06));
+                        [3136, 4186].forEach((f, i) => osc(f, 'sine', now + i * 0.05, 1.2, 0.12));
+                    },
+                    // 2 - Fanfarra
+                    fanfarra: () => {
+                        const melody = [392, 523, 659, 784, 659, 784, 1047];
+                        const times  = [0, 0.12, 0.24, 0.36, 0.52, 0.62, 0.74];
+                        const durs   = [0.2, 0.2, 0.2, 0.28, 0.18, 0.18, 0.9];
+                        melody.forEach((f, i) => {
+                            osc(f, 'sawtooth', now + times[i], durs[i], 0.35);
+                            osc(f * 1.5, 'sine', now + times[i], durs[i], 0.12);
+                        });
+                        osc(80, 'sine', now, 0.3, 0.6, 30);
+                        noise(now, 0.15, 2000, 0.5, 0.25);
+                    },
+                    // 3 - Caixa (cash)
+                    cash: () => {
+                        const coinFreqs = [1800, 2200, 1600, 2000, 2400, 1900, 2100];
+                        const coinTimes = [0, 0.07, 0.14, 0.21, 0.3, 0.38, 0.47];
+                        coinFreqs.forEach((f, i) => {
+                            osc(f, 'square', now + coinTimes[i], 0.25, 0.28);
+                            osc(f * 0.5, 'sine', now + coinTimes[i], 0.3, 0.15);
+                        });
+                        osc(2637, 'sine', now + 0.58, 1.0, 0.4);
+                        osc(3136, 'sine', now + 0.58, 0.8, 0.2);
+                    },
+                    // 4 - Mágico
+                    magic: () => {
+                        osc(300, 'sine', now, 0.8, 0.5, 2400);
+                        osc(600, 'sine', now + 0.1, 0.7, 0.3, 1800);
+                        for (let i = 0; i < 8; i++) {
+                            const t = now + Math.random() * 0.7;
+                            const f = 1000 + Math.random() * 3000;
+                            osc(f, 'sine', t, 0.3, 0.15);
+                        }
+                        osc(2637, 'sine', now + 0.8, 1.2, 0.45);
+                        osc(3136, 'sine', now + 0.85, 1.0, 0.25);
+                    },
+                    // 5 - Arcade
+                    arcade: () => {
+                        const notes = [262, 330, 392, 523, 784, 659, 784, 1047];
+                        const ts    = [0, 0.08, 0.16, 0.24, 0.32, 0.44, 0.52, 0.60];
+                        notes.forEach((f, i) => {
+                            osc(f, 'square', now + ts[i], 0.12, 0.3);
+                            osc(f * 2, 'square', now + ts[i], 0.1, 0.08);
+                        });
+                        [523, 659, 784].forEach(f => osc(f, 'square', now + 0.75, 0.5, 0.2));
+                    },
+                    // 6 - Notificação
+                    notification: () => {
+                        osc(880, 'sine', now,        0.18, 0.5);
+                        osc(1320,'sine', now,        0.18, 0.25);
+                        osc(1047,'sine', now + 0.22, 0.28, 0.55);
+                        osc(1568,'sine', now + 0.22, 0.28, 0.3);
+                        osc(1047,'sine', now + 0.55, 0.8,  0.2);
+                        osc(1568,'sine', now + 0.55, 0.7,  0.1);
+                    },
+                    // 7 - Harpa
+                    harp: () => {
+                        const chord = [261, 329, 392, 523, 659, 784, 1047, 1318];
+                        chord.forEach((f, i) => osc(f, 'sine', now + i * 0.09, 2.2 - i * 0.15, 0.38 - i * 0.03));
+                    },
+                    // 8 - Tribal
+                    tribal: () => {
+                        [0, 0.25, 0.5, 0.75].forEach(t => {
+                            osc(80, 'sine', now + t, 0.22, 0.6, 35);
+                            noise(now + t, 0.15, 150, 0.5, 0.3);
+                        });
+                        [0.125, 0.375, 0.625].forEach(t => {
+                            noise(now + t, 0.1, 3000, 0.3, 0.4);
+                            osc(200, 'triangle', now + t, 0.1, 0.3);
+                        });
+                        [0,0.0625,0.125,0.1875,0.25,0.3125,0.375,0.4375,
+                         0.5,0.5625,0.625,0.6875,0.75,0.8125].forEach(t => {
+                            noise(now + t, 0.05, 8000, 0.5, 0.15);
+                        });
+                    },
+                    // 9 - Foguete (woosh_up)
+                    woosh_up: () => {
+                        noise(now, 1.2, 200, 0.3, 0.5, 6000);
+                        osc(100, 'sawtooth', now, 1.0, 0.4, 1200);
+                        osc(150, 'sine', now + 0.2, 0.8, 0.3, 800);
+                        [523, 659, 784, 1047].forEach((f, i) => osc(f, 'triangle', now + 1.0 + i * 0.08, 0.6, 0.35));
+                    },
+                    // 10 - Piano
+                    piano_jingle: () => {
+                        [261, 329, 392].forEach(f => osc(f, 'triangle', now, 0.5, 0.35));
+                        [392, 494, 587].forEach(f => osc(f, 'triangle', now + 0.5, 0.5, 0.35));
+                        [440, 523, 659].forEach(f => osc(f, 'triangle', now + 1.0, 0.5, 0.35));
+                        [523, 659, 784].forEach(f => osc(f, 'triangle', now + 1.5, 1.0, 0.3));
+                    },
+                    // 11 - Synth
+                    synth_chord: () => {
+                        const chord = [196, 247, 294, 392, 494];
+                        chord.forEach((f, i) => {
+                            osc(f, 'sawtooth', now + i * 0.04, 1.5, 0.28);
+                            osc(f * 2, 'sine', now + i * 0.04, 1.3, 0.1);
+                        });
+                        const lfo = ctx.createOscillator();
+                        const lfoGain = ctx.createGain();
+                        lfo.frequency.value = 6;
+                        lfoGain.gain.value = 0.15;
+                        lfo.connect(lfoGain);
+                        lfoGain.connect(master.gain);
+                        lfo.start(now); lfo.stop(now + 1.5);
+                    },
                 };
-                (plays[id] || (() => {}))();
-            } catch(e) {}
+
+                const fn = plays[id];
+                if (fn) fn();
+            } catch(e) {
+                console.warn('Erro ao tocar som do anúncio:', e);
+            }
         }
+
+        // ── Observer de som dos anúncios ──
         let _adSomObserver = null;
         function registrarObserverSomAnuncios() {
             if (_adSomObserver) _adSomObserver.disconnect();
             _adSomObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) { const s = entry.target.getAttribute('data-som'); if (s && s !== 'nenhum') tocarSomAnuncio(s); } });
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const s = entry.target.getAttribute('data-som');
+                        if (s && s !== 'nenhum') tocarSomAnuncio(s);
+                    }
+                });
             }, { threshold: 0.4 });
             document.querySelectorAll('[data-ad-card="true"]').forEach(card => _adSomObserver.observe(card));
         }
 
+        // ── Cookies / LocalStorage ──
         function setCookie(n,v,d){try{const e=new Date();e.setTime(e.getTime()+(d*86400000));document.cookie=n+'='+encodeURIComponent(v)+';expires='+e.toUTCString()+';path=/;SameSite=Lax';}catch(e){}}
         function getCookie(n){try{const m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):null;}catch(e){return null;}}
         function deleteCookie(n){try{document.cookie=n+'=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax';}catch(e){}}
@@ -728,6 +823,7 @@
         document.addEventListener('click',desbloquearSom,{passive:true});
         document.addEventListener('touchstart',desbloquearSom,{passive:true});
 
+        // ── Observers de vídeo ──
         const videoObserver=new IntersectionObserver(entries=>{
             entries.forEach(entry=>{
                 const video=entry.target;
@@ -765,6 +861,7 @@
 
         function registrarVideo(v){v.preload='none';v.muted=false;preloadObserver.observe(v);videoObserver.observe(v);}
 
+        // ── TV SX ──
         const TVSX_URL='https://sadministrador.github.io/tvsx/index10.html';
         window.abrirTVSX=()=>{
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
@@ -1033,6 +1130,7 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
 
         window.salvarComentario=async(id)=>{const input=document.getElementById(`input-coment-${id}`),texto=input.value.trim();if(!texto)return;await updateDoc(doc(fsdb,"posts",id),{comentarios:arrayUnion({autor:userLogado.nome,texto,data:new Date().toLocaleString()})});input.value="";};
 
+        // ── CLASSIFICADOS ──
         function clsIniciar(){
             clsUpdateStatus('✅ CONECTADO! Pode anunciar.','ok');document.getElementById('btnNovo').disabled=false;
             const q=query(collection(fsdb,'posts'),where('publicado','==',true),where('tipo','==','classificado'),orderBy('data','desc'));
@@ -1080,7 +1178,6 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
 
     <!-- ===== SCRIPT DO APP DIETA & SAÚDE ===== -->
     <script>
-    // Firebase Dieta (instância separada)
     const dietaFirebaseConfig = {
         apiKey: "AIzaSyCEAFNYezHe0_qsk-0ob4ibcEglUEP_KH0",
         authDomain: "dieta-monitorada-b9500.firebaseapp.com",
@@ -1090,11 +1187,9 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
         messagingSenderId: "515092760726",
         appId: "1:515092760726:web:cf0f62f5879d2a9dc35ab7"
     };
-    // Inicializa app Firebase com nome único para não conflitar
     const dietaFbApp = firebase.initializeApp(dietaFirebaseConfig, "dietaApp");
     const dietaDb = dietaFbApp.database();
 
-    // ── Constantes ──
     const DIETA_TRIAL_HORAS = 8;
     const DIETA_CALS_POR_KG = 7700;
     const DIETA_DIAS_MES = 30;
@@ -1107,7 +1202,6 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
     let dietaStatusListener = null;
     let dietaSpeaking = false;
 
-    // ── Utilitários ──
     function dietaSanitizeKey(str){ return str.replace(/[.#$/\[\]\s]/g,'_'); }
     function dietaFormatDate(d){ if(!d)return''; try{const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}catch(e){return d;} }
     function dietaCalcFim(inicio,meses){
@@ -1133,7 +1227,6 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
         else{localStorage.removeItem(key);}
     }
 
-    // ── Login / Cadastro ──
     window.dietaSwitchTab=function(tab){
         document.getElementById('dietaTabEntrar').classList.toggle('ativo',tab==='entrar');
         document.getElementById('dietaTabCadastrar').classList.toggle('ativo',tab==='cadastrar');
@@ -1215,7 +1308,6 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
         document.getElementById('dietaControleSection').classList.remove('hidden');
     }
 
-    // ── Cálculos ──
     function dietaCalcResultados(u){
         const altM=Number(u.altura)/100,pesoN=Number(u.peso),dur=Number(u.duracaoDieta),exc=Number(u.exercicio);
         if(!altM||!pesoN||!dur||!u.idade)return{imc:0,pesoIdeal:0,kgEmagrecer:0,calDia:0,calMes:0,calTotal:0};
@@ -1231,7 +1323,6 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
         return{imc,pesoIdeal,kgEmagrecer,calDia,calMes:calDia*DIETA_DIAS_MES,calTotal:calDia*dur*DIETA_DIAS_MES};
     }
 
-    // ── Save / Load usuário ──
     async function dietaSaveUser(){
         const nome=document.getElementById('dietaNome').value.trim();if(!nome)return;
         const u={nome,idade:document.getElementById('dietaIdade').value||'',genero:document.getElementById('dietaGenero').value||'Feminino',altura:document.getElementById('dietaAltura').value||'',peso:document.getElementById('dietaPeso').value||'',dataInicio:document.getElementById('dietaDataInicio').value||'',duracaoDieta:document.getElementById('dietaDuracao').value||'6',tipoDieta:document.getElementById('dietaTipo').value||'Exata',exercicio:document.getElementById('dietaExercicio').value||'0'};
@@ -1477,10 +1568,7 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
     ];
     const dietaFoodsMap=new Map(dietaFoods.map(f=>[f.name,f]));
 
-    // Verifica sessão salva da dieta ao iniciar o app
     window.addEventListener('load',async()=>{
-        // Só verifica se a área de dieta for aberta (lazy)
-        // Mas verificamos a sessão em segundo plano
         await dietaVerificarSessao();
     });
     </script>
