@@ -112,7 +112,6 @@
         .sx-card-cadastro { background: #112240; border-radius: 15px; border: 1px solid #1d2d50; }
         #btn-flutuante-admin { display: none; position: fixed; bottom: 24px; right: 20px; background: linear-gradient(45deg, #ff0000, #8800cc); color: white; font-size: 13px; font-weight: 900; padding: 14px 18px; border-radius: 50px; box-shadow: 0 4px 20px rgba(255,0,0,0.5); cursor: pointer; z-index: 80; border: 2px solid rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
         #btn-flutuante-admin:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(255,0,0,0.7); }
-        #area-dieta-saude { display: none; }
         .prof-card { background: #112240; border-radius: 15px; border: 1px solid #1d2d50; }
         .s-red { color: #ff0000; } .x-white { color: #ffffff; }
         .alerta-email { display:none; background:#4a0000; border:1px solid #ff0000; color:#ff6060; border-radius:8px; padding:12px 16px; margin-bottom:12px; font-size:14px; font-weight:bold; text-align:center; }
@@ -148,52 +147,6 @@
         .ad-slide-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
         .ad-slide-nav.prev { left: 8px; }
         .ad-slide-nav.next { right: 8px; }
-
-        /* ===== DIETA & SAÚDE ===== */
-        #area-dieta-saude { width: 100%; background: #000; min-height: 100vh; padding-bottom: 4rem; box-sizing: border-box; }
-        .dieta-container { max-width: 800px; margin: 0 auto; padding: 1.5rem; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
-        .dieta-container h1 { color: #fff; text-align: center; line-height: 1.2; font-size: 2rem; margin-bottom: 1.5rem; }
-        .dieta-container h1 span { display: block; color: #fff; font-size: 1.4rem; font-weight: bold; margin-bottom: 0.3rem; }
-        .dieta-container h2 { color: #f40000; border-bottom: 2px solid rgba(244,0,0,0.7); padding-bottom: 0.6rem; margin-top: 2.5rem; font-size: 1.4rem; }
-        .dieta-input, .dieta-select { padding: 0.9rem 1rem; border-radius: 0.7rem; border: 2px solid #f40000; background: #1a1a1a; color: #fff; width: 100%; box-sizing: border-box; font-size: 1rem; margin-top: 0.3rem; }
-        .dieta-input:focus, .dieta-select:focus { border-color: #fff; box-shadow: 0 0 8px #f40000; background: #222; outline: none; }
-        .dieta-label { display: block; margin-top: 0.8rem; font-size: 1rem; font-weight: bold; color: #fff; }
-        .dieta-btn { padding: 0.9rem 1rem; border-radius: 0.7rem; border: none; background: #f40000; color: #fff; font-weight: 900; cursor: pointer; font-size: 1rem; width: 100%; margin-top: 1rem; transition: background 0.3s; }
-        .dieta-btn:hover { background: #c40000; }
-        .dieta-btn.azul { background: #1400ff; }
-        .dieta-btn.azul:hover { background: #0000d4; }
-        .dieta-btn.verde { background: #00aa00; }
-        .dieta-btn.verde:hover { background: #00cc00; }
-        .dieta-btn.cinza { background: #333; border: 1px solid #555; font-weight: normal; }
-        .dieta-tab-bar { display: flex; gap: 0; margin-bottom: 1.2rem; border-radius: 0.6rem; overflow: hidden; border: 2px solid #333; }
-        .dieta-tab { flex: 1; padding: 0.8rem; background: #111; color: #888; border: none; border-radius: 0; font-size: 1rem; font-weight: 700; cursor: pointer; margin: 0; }
-        .dieta-tab.ativo { background: #f40000; color: #fff; }
-        .dieta-tab:hover { background: #c40000; color: #fff; }
-        .dieta-status-badge { margin-top: 1rem; padding: 0.7rem 1rem; border-radius: 0.6rem; font-size: 0.9rem; text-align: center; display: none; }
-        .dieta-status-badge.trial { background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.4); color: #FFD700; display: block; }
-        .dieta-status-badge.liberado { background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.4); color: #00e676; display: block; }
-        .dieta-status-badge.bloqueado { background: rgba(244,0,0,0.1); border: 1px solid rgba(244,0,0,0.4); color: #f40000; display: block; }
-        #dietaBanner { padding: 0.6rem 1rem; text-align: center; font-size: 0.85rem; font-weight: 700; display: none; border-radius: 8px; margin-bottom: 1rem; }
-        #dietaBanner.trial { background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.4); color: #FFD700; display: block; }
-        #dietaBanner.liberado { background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.3); color: #00e676; display: block; }
-        #dietaExpiredOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.96); display: none; align-items: center; justify-content: center; z-index: 8888; flex-direction: column; text-align: center; padding: 3rem; }
-        #dietaExpiredOverlay.show { display: flex; }
-        #dietaExpiredOverlay h2 { color: #f40000; font-size: 2rem; margin-bottom: 1rem; }
-        #dietaExpiredOverlay p { font-size: 1rem; color: #aaa; max-width: 400px; }
-        .dieta-table { border-collapse: collapse; width: 100%; margin-top: 1rem; font-size: 0.85rem; }
-        .dieta-table th, .dieta-table td { border: 1.5px solid #f40000; padding: 0.7rem 0.5rem; text-align: center; white-space: nowrap; }
-        .dieta-table th { background: #f40000; color: #fff; }
-        .dieta-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .dieta-cal-total { margin-top: 1.5rem; font-weight: bold; padding: 1.2rem; border: 3px solid #f40000; border-radius: 0.8rem; background: #1a1a1a; font-size: 1rem; line-height: 1.8; }
-        .contador-qty { display: flex; align-items: center; justify-content: center; }
-        .contador-qty button { padding: 0.4rem; width: 34px; height: 34px; font-size: 1.4rem; line-height: 1; border-radius: 6px; border: 2px solid #f40000; background: #1a1a1a; color: #fff; cursor: pointer; margin: 0; }
-        .contador-qty .qty-input { width: 44px; padding: 0.3rem 0.1rem; text-align: center; font-size: 1rem; border-radius: 0; border-left: none; border-right: none; border-top: 2px solid #f40000; border-bottom: 2px solid #f40000; background: #1a1a1a; color: #fff; }
-        .contador-qty .qty-input::-webkit-inner-spin-button, .contador-qty .qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-        .food-name-line { font-weight: bold; text-align: left; display: block; }
-        .food-cal-line { color: #aaa; font-size: 0.8em; text-align: left; display: block; }
-        #dietaLoginBox { background: #0d0d0d; border: 2px solid #f40000; border-radius: 1rem; padding: 2rem 1.5rem; width: 100%; max-width: 420px; box-shadow: 0 0 40px rgba(244,0,0,0.15); margin: 0 auto; }
-        #dietaLoginBox h2 { border: none; margin-top: 0; text-align: center; font-size: 1.6rem; color: #fff; }
-        #dietaLoginSection { padding: 2rem 1rem; }
     </style>
 </head>
 <body>
@@ -281,7 +234,7 @@
                 <span class="tvsx-tv">TV </span><span class="tvsx-s">S</span><span class="tvsx-x">X</span>
             </button>
             <button onclick="abrirVestir()" id="btn-nav-vestir" class="btn-nav-item">Compras</button>
-            <button onclick="abrirDietaSaude()" id="btn-nav-lojas" class="btn-nav-item">DIETA FIT</button>
+            <button onclick="abrirChofer()" id="btn-nav-lojas" class="btn-nav-item">Chofer</button>
         </div>
 
         <div id="area-perfil" class="hidden w-full mb-6 relative">
@@ -381,139 +334,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- ===== ÁREA DIETA & SAÚDE ===== -->
-        <div id="area-dieta-saude">
-            <div id="dietaExpiredOverlay">
-                <h2>⏰ Período de Teste Encerrado</h2>
-                <p>Seu período de teste de 8 horas chegou ao fim.<br>Entre em contato com o administrador para liberar o acesso completo.</p>
-            </div>
-            <div class="dieta-container">
-                <div id="dietaBanner"></div>
-                <div id="dietaLoginSection">
-                    <div id="dietaLoginBox">
-                        <h2>🍎 Dieta Monitorada</h2>
-                        <div class="dieta-tab-bar">
-                            <button class="dieta-tab ativo" id="dietaTabEntrar" onclick="dietaSwitchTab('entrar')">Entrar</button>
-                            <button class="dieta-tab" id="dietaTabCadastrar" onclick="dietaSwitchTab('cadastrar')">Cadastrar</button>
-                        </div>
-                        <div id="dietaFormEntrar">
-                            <input type="tel" id="dietaLoginTel" class="dieta-input" placeholder="Telefone (DDD + número)" maxlength="20">
-                            <button class="dieta-btn" onclick="dietaEntrar()" style="margin-top:1rem;">Entrar</button>
-                        </div>
-                        <div id="dietaFormCadastrar" class="hidden">
-                            <input type="text" id="dietaCadNome" class="dieta-input" placeholder="Seu nome completo" style="margin-top:0.8rem;">
-                            <input type="tel" id="dietaCadTel" class="dieta-input" placeholder="Telefone (DDD + número)" maxlength="20">
-                            <input type="email" id="dietaCadEmail" class="dieta-input" placeholder="E-mail">
-                            <input type="file" id="dietaCadFoto" accept="image/*" style="display:none" onchange="if(this.files[0]){document.getElementById('dietaBtnFoto').textContent='✅ Foto Selecionada';document.getElementById('dietaBtnFoto').style.backgroundColor='#00e676';}">
-                            <button type="button" id="dietaBtnFoto" class="dieta-btn" onclick="document.getElementById('dietaCadFoto').click()" style="background:#f40000;margin-top:0.8rem;">Upload de Foto</button>
-                            <input type="number" id="dietaCadIdade" class="dieta-input" placeholder="Idade" min="1" max="120">
-                            <button class="dieta-btn" onclick="dietaCadastrar()" style="margin-top:1rem;">Criar conta (teste 8h)</button>
-                        </div>
-                        <div class="dieta-status-badge" id="dietaLoginBadge"></div>
-                    </div>
-                </div>
-                <div id="dietaAppSection" class="hidden">
-                    <h1>🥗 Dieta Monitorada</h1>
-                    <div id="dietaCadastroSection">
-                        <h2>1️⃣ Cadastro do Usuário</h2>
-                        <button class="dieta-btn cinza" id="dietaToggleBtn" onclick="dietaAbrirAnalise(true)">Fechar Análise</button>
-                        <label class="dieta-label">Nome: <input type="text" id="dietaNome" class="dieta-input" placeholder="Seu nome" onchange="dietaSaveUser()"></label>
-                        <label class="dieta-label">Idade: <input type="number" id="dietaIdade" class="dieta-input" placeholder="Anos" onchange="dietaSaveUser()"></label>
-                        <label class="dieta-label">Gênero:
-                            <select id="dietaGenero" class="dieta-select" onchange="dietaSaveUser()">
-                                <option value="Feminino">Feminino</option>
-                                <option value="Masculino">Masculino</option>
-                            </select>
-                        </label>
-                        <label class="dieta-label">Altura (cm): <input type="number" id="dietaAltura" class="dieta-input" placeholder="Ex: 170" onchange="dietaSaveUser()"></label>
-                        <label class="dieta-label">Peso atual (kg): <input type="number" id="dietaPeso" class="dieta-input" placeholder="Ex: 80" onchange="dietaSaveUser()"></label>
-                        <label class="dieta-label">Data de início da dieta: <input type="date" id="dietaDataInicio" class="dieta-input" onchange="dietaSaveUser()"></label>
-                        <label class="dieta-label">Duração da Dieta:
-                            <select id="dietaDuracao" class="dieta-select" onchange="dietaSaveUser()">
-                                <option value="3">3 Meses</option>
-                                <option value="6" selected>6 Meses</option>
-                            </select>
-                        </label>
-                        <label class="dieta-label">Tipo de Dieta:
-                            <select id="dietaTipo" class="dieta-select" onchange="dietaSaveUser()">
-                                <option value="Exata">Exata (foco na perda de peso)</option>
-                                <option value="Balanceada">Balanceada (+30% Calorias)</option>
-                            </select>
-                        </label>
-                        <label class="dieta-label">Pratica exercícios diários?
-                            <select id="dietaExercicio" class="dieta-select" onchange="dietaSaveUser()">
-                                <option value="0">Não</option>
-                                <option value="1">Sim</option>
-                            </select>
-                        </label>
-                        <button class="dieta-btn" id="dietaAnalisarBtn" onclick="dietaAnalisar()">Analisar peso ideal</button>
-                    </div>
-                    <div id="dietaResultadoSection" class="hidden">
-                        <h2>2️⃣ Resultado da Análise</h2>
-                        <p>Nome: <b id="dr-nome"></b></p>
-                        <p>Gênero: <b id="dr-genero"></b></p>
-                        <p>Peso atual: <b id="dr-peso"></b> kg</p>
-                        <p>Altura: <b id="dr-altura"></b> cm</p>
-                        <p>IMC atual: <b id="dr-imc"></b></p>
-                        <p>Peso ideal: <b id="dr-pesoIdeal"></b> kg</p>
-                        <p>Kg a emagrecer: <b id="dr-kgEmagrecer"></b> kg</p>
-                        <p>Data de início: <b id="dr-dataInicio"></b></p>
-                        <p>Data final: <b id="dr-dataFim"></b></p>
-                        <p>Duração: <b id="dr-duracao"></b></p>
-                        <p>Tipo de dieta: <b id="dr-tipoDieta"></b></p>
-                        <p>Calorias/dia: <b id="dr-calDia"></b> kcal</p>
-                        <p>Calorias/mês: <b id="dr-calMes"></b> kcal</p>
-                        <p>Total dieta: <b id="dr-calTotal"></b> kcal</p>
-                        <p>Restante no mês: <b id="dr-faltaMes"></b> kcal</p>
-                        <p>Restante na dieta: <b id="dr-faltaDieta"></b> kcal</p>
-                        <button class="dieta-btn" onclick="dietaSalvarNutri()">Salvar na lista</button>
-                    </div>
-                    <div id="dietaListaSection" class="hidden">
-                        <h2>3️⃣ Lista do Nutricionista</h2>
-                        <div class="dieta-table-wrap">
-                            <table class="dieta-table" id="dietaTabelaNutri">
-                                <thead><tr>
-                                    <th>Nome</th><th>Idade</th><th>Gênero</th><th>Altura</th><th>Peso</th>
-                                    <th>IMC</th><th>Peso Ideal</th><th>Kg Emagrecer</th>
-                                    <th>Cal/Dia</th><th>Cal/Mês</th><th>Total</th><th>Duração</th><th>Tipo</th><th>Exercício</th><th>Início</th><th>Fim</th>
-                                </tr></thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div id="dietaControleSection" class="hidden">
-                        <h2>🍽️ Controle de Alimentos</h2>
-                        <label class="dieta-label">Selecionar usuário:
-                            <select id="dietaUserSelect" class="dieta-select" onchange="dietaResetLoad()">
-                                <option value="">Selecione um usuário</option>
-                            </select>
-                        </label>
-                        <button class="dieta-btn azul" id="dietaLoadBtn" onclick="dietaCarregarUsuario()">Carregar Usuário</button>
-                        <label class="dieta-label">Data do consumo: <input type="date" id="dietaConsumptionDate" class="dieta-input" onchange="dietaCarregarConsumoDia()"></label>
-                        <label class="dieta-label">Limite calórico/dia: <input type="number" id="dietaCalLimit" class="dieta-input" value="0" readonly></label>
-                        <label class="dieta-label">Selecionar alimentos:
-                            <select id="dietaCategorySelect" class="dieta-select" onchange="dietaGerarTabela()">
-                                <option value="">Selecione uma categoria</option>
-                            </select>
-                        </label>
-                        <div class="dieta-table-wrap" style="margin-top:1rem;">
-                            <table class="dieta-table">
-                                <thead><tr><th>Alimento</th><th>Porções</th><th>Total</th></tr></thead>
-                                <tbody id="dietaFoodBody"><tr><td colspan="3">Selecione um usuário e categoria.</td></tr></tbody>
-                            </table>
-                        </div>
-                        <div class="dieta-cal-total">
-                            Total consumido no dia: <span id="dietaTotalCal">0</span> kcal<br>
-                            Restante no mês: <span id="dietaRemMes">0</span> kcal<br>
-                            Restante na dieta: <span id="dietaRemDieta">0</span> kcal
-                        </div>
-                        <button class="dieta-btn verde" onclick="dietaGerarRelatorio()" style="margin-top:1rem;">📄 Gerar Relatório do Dia</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ===== FIM DIETA & SAÚDE ===== -->
 
     </div>
 
@@ -677,13 +497,11 @@
                 }
 
                 const plays = {
-                    // 1 - Cristal
                     crystal: () => {
                         const freqs = [523, 1047, 1568, 2093, 2637];
                         freqs.forEach((f, i) => osc(f, 'sine', now + i * 0.08, 2.0 - i * 0.2, 0.4 - i * 0.06));
                         [3136, 4186].forEach((f, i) => osc(f, 'sine', now + i * 0.05, 1.2, 0.12));
                     },
-                    // 2 - Fanfarra
                     fanfarra: () => {
                         const melody = [392, 523, 659, 784, 659, 784, 1047];
                         const times  = [0, 0.12, 0.24, 0.36, 0.52, 0.62, 0.74];
@@ -695,7 +513,6 @@
                         osc(80, 'sine', now, 0.3, 0.6, 30);
                         noise(now, 0.15, 2000, 0.5, 0.25);
                     },
-                    // 3 - Caixa (cash)
                     cash: () => {
                         const coinFreqs = [1800, 2200, 1600, 2000, 2400, 1900, 2100];
                         const coinTimes = [0, 0.07, 0.14, 0.21, 0.3, 0.38, 0.47];
@@ -706,7 +523,6 @@
                         osc(2637, 'sine', now + 0.58, 1.0, 0.4);
                         osc(3136, 'sine', now + 0.58, 0.8, 0.2);
                     },
-                    // 4 - Mágico
                     magic: () => {
                         osc(300, 'sine', now, 0.8, 0.5, 2400);
                         osc(600, 'sine', now + 0.1, 0.7, 0.3, 1800);
@@ -718,7 +534,6 @@
                         osc(2637, 'sine', now + 0.8, 1.2, 0.45);
                         osc(3136, 'sine', now + 0.85, 1.0, 0.25);
                     },
-                    // 5 - Arcade
                     arcade: () => {
                         const notes = [262, 330, 392, 523, 784, 659, 784, 1047];
                         const ts    = [0, 0.08, 0.16, 0.24, 0.32, 0.44, 0.52, 0.60];
@@ -728,7 +543,6 @@
                         });
                         [523, 659, 784].forEach(f => osc(f, 'square', now + 0.75, 0.5, 0.2));
                     },
-                    // 6 - Notificação
                     notification: () => {
                         osc(880, 'sine', now,        0.18, 0.5);
                         osc(1320,'sine', now,        0.18, 0.25);
@@ -737,12 +551,10 @@
                         osc(1047,'sine', now + 0.55, 0.8,  0.2);
                         osc(1568,'sine', now + 0.55, 0.7,  0.1);
                     },
-                    // 7 - Harpa
                     harp: () => {
                         const chord = [261, 329, 392, 523, 659, 784, 1047, 1318];
                         chord.forEach((f, i) => osc(f, 'sine', now + i * 0.09, 2.2 - i * 0.15, 0.38 - i * 0.03));
                     },
-                    // 8 - Tribal
                     tribal: () => {
                         [0, 0.25, 0.5, 0.75].forEach(t => {
                             osc(80, 'sine', now + t, 0.22, 0.6, 35);
@@ -757,21 +569,18 @@
                             noise(now + t, 0.05, 8000, 0.5, 0.15);
                         });
                     },
-                    // 9 - Foguete (woosh_up)
                     woosh_up: () => {
                         noise(now, 1.2, 200, 0.3, 0.5, 6000);
                         osc(100, 'sawtooth', now, 1.0, 0.4, 1200);
                         osc(150, 'sine', now + 0.2, 0.8, 0.3, 800);
                         [523, 659, 784, 1047].forEach((f, i) => osc(f, 'triangle', now + 1.0 + i * 0.08, 0.6, 0.35));
                     },
-                    // 10 - Piano
                     piano_jingle: () => {
                         [261, 329, 392].forEach(f => osc(f, 'triangle', now, 0.5, 0.35));
                         [392, 494, 587].forEach(f => osc(f, 'triangle', now + 0.5, 0.5, 0.35));
                         [440, 523, 659].forEach(f => osc(f, 'triangle', now + 1.0, 0.5, 0.35));
                         [523, 659, 784].forEach(f => osc(f, 'triangle', now + 1.5, 1.0, 0.3));
                     },
-                    // 11 - Synth
                     synth_chord: () => {
                         const chord = [196, 247, 294, 392, 494];
                         chord.forEach((f, i) => {
@@ -955,7 +764,7 @@
         }
 
         function resetNav(){['btn-nav-feed','btn-nav-veiculos','btn-nav-tvsx','btn-nav-vestir','btn-nav-lojas'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.borderColor='';el.style.color='';}}); }
-        function esconderTudo(){document.getElementById('area-veiculos').style.display='none';document.getElementById('area-vestir').style.display='none';document.getElementById('area-dieta-saude').style.display='none';document.getElementById('feed').style.display='';}
+        function esconderTudo(){document.getElementById('area-veiculos').style.display='none';document.getElementById('area-vestir').style.display='none';document.getElementById('feed').style.display='';}
         window.toggleMenu=()=>{document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('active');};
         window.voltarHome=()=>{
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
@@ -965,19 +774,20 @@
         };
         window.abrirVeiculos=()=>{
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
-            document.getElementById('area-perfil').classList.add('hidden');document.getElementById('caixa-post').classList.add('hidden');document.getElementById('feed').style.display='none';document.getElementById('area-vestir').style.display='none';document.getElementById('area-dieta-saude').style.display='none';document.getElementById('area-veiculos').style.display='block';
+            document.getElementById('area-perfil').classList.add('hidden');document.getElementById('caixa-post').classList.add('hidden');document.getElementById('feed').style.display='none';document.getElementById('area-vestir').style.display='none';document.getElementById('area-veiculos').style.display='block';
             resetNav();document.getElementById('btn-nav-veiculos').style.borderColor='#ff0000';document.getElementById('btn-nav-veiculos').style.color='#ff0000';window.scrollTo({top:0,behavior:'smooth'});
         };
         window.abrirVestir=()=>{
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
-            document.getElementById('area-perfil').classList.add('hidden');document.getElementById('caixa-post').classList.add('hidden');document.getElementById('feed').style.display='none';document.getElementById('area-veiculos').style.display='none';document.getElementById('area-dieta-saude').style.display='none';document.getElementById('area-vestir').style.display='block';
+            document.getElementById('area-perfil').classList.add('hidden');document.getElementById('caixa-post').classList.add('hidden');document.getElementById('feed').style.display='none';document.getElementById('area-veiculos').style.display='none';document.getElementById('area-vestir').style.display='block';
             resetNav();document.getElementById('btn-nav-vestir').style.borderColor='#ff0000';document.getElementById('btn-nav-vestir').style.color='#ff0000';window.scrollTo({top:0,behavior:'smooth'});
         };
-        window.abrirDietaSaude=()=>{
+        window.abrirChofer=()=>{
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
-            document.getElementById('area-perfil').classList.add('hidden');document.getElementById('caixa-post').classList.add('hidden');document.getElementById('feed').style.display='none';document.getElementById('area-veiculos').style.display='none';document.getElementById('area-vestir').style.display='none';document.getElementById('area-dieta-saude').style.display='block';
-            resetNav();document.getElementById('btn-nav-lojas').style.borderColor='#ff0000';document.getElementById('btn-nav-lojas').style.color='#ff0000';
-            window.scrollTo({top:0,behavior:'smooth'});
+            window.open('https://sadministrador.github.io/chofer10203040/index10203040.html','_blank');
+            resetNav();
+            document.getElementById('btn-nav-lojas').style.borderColor='#ff0000';
+            document.getElementById('btn-nav-lojas').style.color='#ff0000';
         };
         window.abrirMonitorAnuncios=()=>{window.open(MONITOR_URL,'_blank');};
 
@@ -1047,7 +857,7 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
                     const comentsHtml=(p.comentarios||[]).map(c=>`<div class="text-xs bg-black/30 p-2 rounded mb-1"><b class="text-red-500">${c.autor}:</b> ${c.texto}</div>`).join("");
                     const fotoUsuario=p.foto?`<img src="${p.foto}" class="w-11 h-11 rounded-full object-cover border-2 border-red-600" style="flex-shrink:0;" onerror="this.style.display='none'">`:`<div style="width:44px;height:44px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex-shrink:0;">${(p.nome||'?')[0]}</div>`;
                     htmlCompleto+=`<div class="post-card"><div class="post-card-header"><div class="post-card-header-inner"><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">${fotoUsuario}<span style="font-weight:900;color:#ff0000;font-size:11px;text-transform:uppercase;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nome||''}</span></div><div class="post-card-header-badge" id="badge-slot-${id}"></div><div onclick="curtirPost('${id}',this,event)" class="btn-curtir" data-post-id="${id}">❤️ <span class="num-curtidas">${p.curtidas||0}</span></div></div></div>${p.texto?`<p class="post-card-texto">${p.texto}</p>`:''}${midiaHtml}<div class="post-card-footer"><div class="max-h-32 overflow-y-auto mb-3">${comentsHtml}</div><div class="flex gap-2"><input id="input-coment-${id}" placeholder="Escreva algo..." class="flex-1 comment-box p-2 text-sm outline-none focus:border-red-600"><button onclick="salvarComentario('${id}')" class="bg-red-600 px-4 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-all">Salvar</button></div></div></div>`;
-                    if((i+1)%5===0&&anunciosAtivos.length>0){htmlCompleto+=gerarHtmlAnuncio(anunciosAtivos[idxAd%anunciosAtivos.length],slideshowsPendentes);idxAd++;}
+                    if((i+1)%4===0&&anunciosAtivos.length>0){htmlCompleto+=gerarHtmlAnuncio(anunciosAtivos[idxAd%anunciosAtivos.length],slideshowsPendentes);idxAd++;}
                 });
                 f.innerHTML=htmlCompleto;
                 slideshowsPendentes.forEach(({uid,srcs,intervalo})=>iniciarSlideshowAd(uid,srcs,intervalo));
@@ -1174,403 +984,6 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
         function clsFecharForm(){document.getElementById('cls-formulario').style.display='none';['cls-nome','cls-ano','cls-bairro','cls-estado','cls-preco','cls-whatsapp','cls-descricao'].forEach(id=>document.getElementById(id).value='');document.getElementById('cls-categoria').value='';clsArquivos=[];document.getElementById('cls-preview').innerHTML='';document.getElementById('cls-contador').textContent='0/6 arquivos';document.getElementById('cls-btnPublicar').disabled=true;clsIsSubmitting=false;}
 
         inicializar();
-    </script>
-
-    <!-- ===== SCRIPT DO APP DIETA & SAÚDE ===== -->
-    <script>
-    const dietaFirebaseConfig = {
-        apiKey: "AIzaSyCEAFNYezHe0_qsk-0ob4ibcEglUEP_KH0",
-        authDomain: "dieta-monitorada-b9500.firebaseapp.com",
-        databaseURL: "https://dieta-monitorada-b9500-default-rtdb.firebaseio.com",
-        projectId: "dieta-monitorada-b9500",
-        storageBucket: "dieta-monitorada-b9500.firebasestorage.app",
-        messagingSenderId: "515092760726",
-        appId: "1:515092760726:web:cf0f62f5879d2a9dc35ab7"
-    };
-    const dietaFbApp = firebase.initializeApp(dietaFirebaseConfig, "dietaApp");
-    const dietaDb = dietaFbApp.database();
-
-    const DIETA_TRIAL_HORAS = 8;
-    const DIETA_CALS_POR_KG = 7700;
-    const DIETA_DIAS_MES = 30;
-    const DIETA_USER_PREFIX = "dietaUser_";
-    const DIETA_CONSUMO_PREFIX = "dietaConsumo_";
-
-    let dietaSessionUser = null;
-    let dietaCurrentUser = null;
-    let dietaDailyConsumption = {};
-    let dietaStatusListener = null;
-    let dietaSpeaking = false;
-
-    function dietaSanitizeKey(str){ return str.replace(/[.#$/\[\]\s]/g,'_'); }
-    function dietaFormatDate(d){ if(!d)return''; try{const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}catch(e){return d;} }
-    function dietaCalcFim(inicio,meses){
-        if(!inicio||!meses)return'';
-        const d=new Date(inicio+'T00:00:00');d.setMonth(d.getMonth()+Number(meses));d.setDate(d.getDate()-1);
-        return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    }
-    function dietaIsLiberado(){ return dietaSessionUser&&dietaSessionUser.status==='liberado'; }
-
-    async function dietaStorageSet(key,value){
-        const json=JSON.stringify(value);
-        if(dietaIsLiberado()){await dietaDb.ref(`userData/${dietaSanitizeKey(dietaSessionUser.id)}/${key.replace(/[.#$/\[\]]/g,'_')}`).set(json);}
-        else{localStorage.setItem(key,json);}
-    }
-    async function dietaStorageGet(key){
-        if(dietaIsLiberado()){
-            const snap=await dietaDb.ref(`userData/${dietaSanitizeKey(dietaSessionUser.id)}/${key.replace(/[.#$/\[\]]/g,'_')}`).get();
-            return snap.exists()?JSON.parse(snap.val()):null;
-        }else{const v=localStorage.getItem(key);return v?JSON.parse(v):null;}
-    }
-    async function dietaStorageRemove(key){
-        if(dietaIsLiberado()){await dietaDb.ref(`userData/${dietaSanitizeKey(dietaSessionUser.id)}/${key.replace(/[.#$/\[\]]/g,'_')}`).remove();}
-        else{localStorage.removeItem(key);}
-    }
-
-    window.dietaSwitchTab=function(tab){
-        document.getElementById('dietaTabEntrar').classList.toggle('ativo',tab==='entrar');
-        document.getElementById('dietaTabCadastrar').classList.toggle('ativo',tab==='cadastrar');
-        document.getElementById('dietaFormEntrar').classList.toggle('hidden',tab!=='entrar');
-        document.getElementById('dietaFormCadastrar').classList.toggle('hidden',tab!=='cadastrar');
-        document.getElementById('dietaLoginBadge').style.display='none';
-    };
-    function dietaShowMsg(msg,tipo){ const b=document.getElementById('dietaLoginBadge');b.textContent=msg;b.className='dieta-status-badge '+tipo; }
-
-    window.dietaEntrar=async function(){
-        const tel=document.getElementById('dietaLoginTel').value.trim().replace(/\D/g,'');
-        if(!tel){dietaShowMsg('Informe seu telefone.','trial');return;}
-        const snap=await dietaDb.ref('adminUsers/'+dietaSanitizeKey(tel)).get();
-        if(!snap.exists()){dietaShowMsg('Usuário não encontrado. Cadastre-se primeiro.','bloqueado');return;}
-        dietaIniciarSessao(snap.val());
-    };
-
-    window.dietaCadastrar=async function(){
-        const nome=document.getElementById('dietaCadNome').value.trim();
-        const tel=document.getElementById('dietaCadTel').value.trim().replace(/\D/g,'');
-        const email=document.getElementById('dietaCadEmail').value.trim();
-        const fotoFile=document.getElementById('dietaCadFoto').files[0];
-        if(!nome||!tel||!email){dietaShowMsg('Nome, telefone e e-mail são obrigatórios.','trial');return;}
-        const key=dietaSanitizeKey(tel);
-        const exist=await dietaDb.ref('adminUsers/'+key).get();
-        if(exist.exists()){dietaShowMsg('Telefone já cadastrado. Faça login.','bloqueado');return;}
-        let fotoBase64="";
-        if(fotoFile){fotoBase64=await new Promise(r=>{const rd=new FileReader();rd.onloadend=()=>r(rd.result);rd.readAsDataURL(fotoFile);});}
-        const userData={id:tel,nome,telefone:tel,email,foto:fotoBase64,status:'aguardando',pago:false,cadastradoEm:Date.now(),expiraEm:Date.now()+(DIETA_TRIAL_HORAS*3600000)};
-        await dietaDb.ref('adminUsers/'+key).set(userData);
-        dietaShowMsg('Cadastro realizado! Período de teste de 8h iniciado.','trial');
-        setTimeout(()=>dietaIniciarSessao(userData),1200);
-    };
-
-    function dietaIniciarSessao(userData){
-        if(userData.status==='bloqueado'){dietaShowMsg('🔒 Acesso bloqueado.','bloqueado');return;}
-        if(userData.status==='aguardando'&&Date.now()>userData.expiraEm){dietaShowMsg('⏰ Período de teste expirou.','bloqueado');return;}
-        dietaSessionUser=userData;
-        localStorage.setItem('_dietaSessao',JSON.stringify({id:userData.id,tel:userData.telefone}));
-        document.getElementById('dietaLoginSection').style.display='none';
-        document.getElementById('dietaAppSection').classList.remove('hidden');
-        dietaAtualizarBanner();
-        dietaIniciarListener();
-        dietaIniciarApp();
-    }
-
-    function dietaAtualizarBanner(){
-        const b=document.getElementById('dietaBanner');if(!dietaSessionUser)return;
-        if(dietaSessionUser.status==='liberado'){b.className='liberado';b.textContent='✅ Acesso Liberado — Dados salvos na nuvem.';}
-        else{const r=dietaSessionUser.expiraEm-Date.now();const h=Math.floor(r/3600000),m=Math.floor((r%3600000)/60000);b.className='trial';b.textContent=`⏳ Modo Teste — Tempo restante: ${h}h ${m}m`;}
-    }
-
-    function dietaIniciarListener(){
-        if(!dietaSessionUser)return;
-        const key=dietaSanitizeKey(dietaSessionUser.id);
-        if(dietaStatusListener)dietaDb.ref('adminUsers/'+key).off('value',dietaStatusListener);
-        dietaStatusListener=dietaDb.ref('adminUsers/'+key).on('value',(snap)=>{
-            if(!snap.exists())return;
-            const data=snap.val();dietaSessionUser=data;dietaAtualizarBanner();
-            if(data.status==='bloqueado'){document.getElementById('dietaExpiredOverlay').classList.add('show');}
-            if(data.status==='aguardando'&&Date.now()>data.expiraEm){document.getElementById('dietaExpiredOverlay').classList.add('show');}
-        });
-        setInterval(()=>{if(dietaSessionUser&&dietaSessionUser.status==='aguardando'){if(Date.now()>dietaSessionUser.expiraEm)document.getElementById('dietaExpiredOverlay').classList.add('show');else dietaAtualizarBanner();}},60000);
-    }
-
-    async function dietaVerificarSessao(){
-        const s=localStorage.getItem('_dietaSessao');if(!s)return false;
-        try{
-            const{id}=JSON.parse(s);const snap=await dietaDb.ref('adminUsers/'+dietaSanitizeKey(id)).get();
-            if(!snap.exists())return false;const data=snap.val();
-            if(data.status==='bloqueado')return false;
-            if(data.status==='aguardando'&&Date.now()>data.expiraEm)return false;
-            dietaIniciarSessao(data);return true;
-        }catch(e){return false;}
-    }
-
-    async function dietaIniciarApp(){
-        await dietaMostrarLista();
-        document.getElementById('dietaControleSection').classList.remove('hidden');
-    }
-
-    function dietaCalcResultados(u){
-        const altM=Number(u.altura)/100,pesoN=Number(u.peso),dur=Number(u.duracaoDieta),exc=Number(u.exercicio);
-        if(!altM||!pesoN||!dur||!u.idade)return{imc:0,pesoIdeal:0,kgEmagrecer:0,calDia:0,calMes:0,calTotal:0};
-        const imc=pesoN/(altM*altM);
-        let pesoIdeal=u.genero==='Masculino'?altM*100-100-((altM*100-150)/4):altM*100-100-((altM*100-150)/2);
-        const kgEmagrecer=pesoN-pesoIdeal;
-        let tmb=u.genero==='Masculino'?66+(13.7*pesoN)+(5*(altM*100))-(6.8*Number(u.idade)):655+(9.6*pesoN)+(1.8*(altM*100))-(4.7*Number(u.idade));
-        const fatorAtvd=exc===1?1.55:1.2;const calManten=tmb*fatorAtvd;
-        const corteTotal=kgEmagrecer*DIETA_CALS_POR_KG;const corteDia=corteTotal/(dur*4*7);
-        let calDia=calManten-corteDia;
-        if(u.tipoDieta==='Balanceada')calDia*=1.30;
-        if(calDia<1000)calDia=1000;
-        return{imc,pesoIdeal,kgEmagrecer,calDia,calMes:calDia*DIETA_DIAS_MES,calTotal:calDia*dur*DIETA_DIAS_MES};
-    }
-
-    async function dietaSaveUser(){
-        const nome=document.getElementById('dietaNome').value.trim();if(!nome)return;
-        const u={nome,idade:document.getElementById('dietaIdade').value||'',genero:document.getElementById('dietaGenero').value||'Feminino',altura:document.getElementById('dietaAltura').value||'',peso:document.getElementById('dietaPeso').value||'',dataInicio:document.getElementById('dietaDataInicio').value||'',duracaoDieta:document.getElementById('dietaDuracao').value||'6',tipoDieta:document.getElementById('dietaTipo').value||'Exata',exercicio:document.getElementById('dietaExercicio').value||'0'};
-        await dietaStorageSet(DIETA_USER_PREFIX+nome,u);
-        await dietaMostrarLista(nome);
-    }
-    window.dietaSaveUser=dietaSaveUser;
-
-    async function dietaLoadUser(nome){
-        if(!nome)return;
-        const u=await dietaStorageGet(DIETA_USER_PREFIX+nome)||{};
-        document.getElementById('dietaNome').value=u.nome||'';
-        document.getElementById('dietaIdade').value=u.idade||'';
-        document.getElementById('dietaGenero').value=u.genero||'Feminino';
-        document.getElementById('dietaAltura').value=u.altura||'';
-        document.getElementById('dietaPeso').value=u.peso||'';
-        document.getElementById('dietaDataInicio').value=u.dataInicio||'';
-        document.getElementById('dietaDuracao').value=u.duracaoDieta||'6';
-        document.getElementById('dietaTipo').value=u.tipoDieta||'Exata';
-        document.getElementById('dietaExercicio').value=u.exercicio||'0';
-        dietaAnalisar();
-    }
-
-    async function dietaMostrarLista(nomeSelecionar=''){
-        const tbody=document.querySelector('#dietaTabelaNutri tbody');tbody.innerHTML='';
-        const users=[];
-        if(dietaIsLiberado()){
-            const snap=await dietaDb.ref(`userData/${dietaSanitizeKey(dietaSessionUser.id)}`).get();
-            if(snap.exists()){const data=snap.val();for(const[k,v]of Object.entries(data)){if(k.startsWith(DIETA_USER_PREFIX.replace(/[.#$/\[\]]/g,'_'))){try{users.push(JSON.parse(v));}catch(e){}}}}}
-        else{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith(DIETA_USER_PREFIX)){try{users.push(JSON.parse(localStorage.getItem(k)));}catch(e){}}}}
-        users.sort((a,b)=>a.nome.localeCompare(b.nome));
-        users.forEach(u=>{
-            const{imc,pesoIdeal,kgEmagrecer,calDia,calMes,calTotal}=dietaCalcResultados(u);
-            const fim=dietaCalcFim(u.dataInicio,u.duracaoDieta);
-            const tr=document.createElement('tr');
-            tr.innerHTML=`<td>${u.nome}</td><td>${u.idade}</td><td>${u.genero}</td><td>${u.altura}</td><td>${u.peso}</td><td>${imc.toFixed(2)}</td><td>${pesoIdeal.toFixed(2)}</td><td>${kgEmagrecer.toFixed(2)}</td><td>${calDia.toFixed(0)}</td><td>${calMes.toFixed(0)}</td><td>${calTotal.toFixed(0)}</td><td>${u.duracaoDieta} meses</td><td>${u.tipoDieta}</td><td>${u.exercicio=='1'?'Sim':'Não'}</td><td>${dietaFormatDate(u.dataInicio)}</td><td>${dietaFormatDate(fim)}</td>`;
-            tr.onclick=()=>{dietaLoadUser(u.nome);window.scrollTo({top:0,behavior:'smooth'});};
-            tbody.appendChild(tr);
-        });
-        const sel=document.getElementById('dietaUserSelect');sel.innerHTML='<option value="">Selecione um usuário</option>';
-        users.forEach(u=>{const o=document.createElement('option');o.value=u.nome;o.textContent=u.nome;sel.appendChild(o);if(u.nome===nomeSelecionar)sel.value=nomeSelecionar;});
-        document.getElementById('dietaListaSection').classList.remove('hidden');
-    }
-
-    window.dietaAnalisar=async function(){
-        const nome=document.getElementById('dietaNome').value.trim();
-        const idade=document.getElementById('dietaIdade').value;
-        const altura=document.getElementById('dietaAltura').value;
-        const peso=document.getElementById('dietaPeso').value;
-        const dataInicio=document.getElementById('dietaDataInicio').value;
-        if(!nome||!idade||!altura||!peso||!dataInicio){alert('Preencha todos os campos.');return;}
-        const u={nome,idade,genero:document.getElementById('dietaGenero').value,altura,peso,dataInicio,duracaoDieta:document.getElementById('dietaDuracao').value,tipoDieta:document.getElementById('dietaTipo').value,exercicio:document.getElementById('dietaExercicio').value};
-        const{imc,pesoIdeal,kgEmagrecer,calDia,calMes,calTotal}=dietaCalcResultados(u);
-        const fim=dietaCalcFim(dataInicio,u.duracaoDieta);
-        const{consumedMes,consumedDieta}=await dietaGetConsumedTotals(nome,u);
-        document.getElementById('dr-nome').textContent=nome;
-        document.getElementById('dr-genero').textContent=u.genero;
-        document.getElementById('dr-peso').textContent=Number(peso).toFixed(1);
-        document.getElementById('dr-altura').textContent=altura;
-        document.getElementById('dr-imc').textContent=imc.toFixed(2);
-        document.getElementById('dr-pesoIdeal').textContent=pesoIdeal.toFixed(1);
-        document.getElementById('dr-kgEmagrecer').textContent=kgEmagrecer>0?kgEmagrecer.toFixed(1):'0.0';
-        document.getElementById('dr-dataInicio').textContent=dietaFormatDate(dataInicio);
-        document.getElementById('dr-dataFim').textContent=dietaFormatDate(fim);
-        document.getElementById('dr-duracao').textContent=u.duracaoDieta+' meses';
-        document.getElementById('dr-tipoDieta').textContent=u.tipoDieta;
-        document.getElementById('dr-calDia').textContent=calDia.toFixed(0);
-        document.getElementById('dr-calMes').textContent=calMes.toFixed(0);
-        document.getElementById('dr-calTotal').textContent=calTotal.toFixed(0);
-        document.getElementById('dr-faltaMes').textContent=(calMes-consumedMes).toFixed(0);
-        document.getElementById('dr-faltaDieta').textContent=(calTotal-consumedDieta).toFixed(0);
-        document.getElementById('dietaResultadoSection').classList.remove('hidden');
-        document.getElementById('dietaControleSection').classList.remove('hidden');
-        await dietaSaveUser();
-        dietaCarregarUsuarioControle(nome,calDia);
-    };
-
-    window.dietaSalvarNutri=async function(){
-        alert('Informações salvas com sucesso!');
-        await dietaMostrarLista(document.getElementById('dietaNome').value.trim());
-    };
-
-    window.dietaResetLoad=function(){
-        document.getElementById('dietaLoadBtn').textContent='Carregar Usuário';
-        document.getElementById('dietaLoadBtn').style.background='#1400ff';
-        dietaGerarTabela();
-    };
-
-    window.dietaCarregarUsuario=async function(){
-        const nome=document.getElementById('dietaUserSelect').value;
-        if(!nome){alert('Selecione um usuário.');return;}
-        const u=await dietaStorageGet(DIETA_USER_PREFIX+nome)||{};
-        if(!u.nome){alert('Cadastro não encontrado.');return;}
-        const{calDia}=dietaCalcResultados(u);
-        dietaCarregarUsuarioControle(nome,calDia);
-    };
-
-    function dietaCarregarUsuarioControle(nome,calDia){
-        dietaCurrentUser=nome;
-        const lb=document.getElementById('dietaLoadBtn');lb.textContent='Usuário: '+nome;lb.style.background='#00aa00';
-        const today=new Date().toISOString().split('T')[0];
-        document.getElementById('dietaConsumptionDate').value=today;
-        document.getElementById('dietaCalLimit').value=calDia.toFixed(0);
-        dietaCarregarConsumoDia();
-        if(document.getElementById('dietaCategorySelect').options.length<=1){
-            const cats=[...new Set(dietaFoods.map(f=>f.category))].sort();
-            const sel=document.getElementById('dietaCategorySelect');
-            cats.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
-        }
-        dietaGerarTabela();
-    }
-
-    window.dietaCarregarConsumoDia=async function(){
-        if(!dietaCurrentUser)return;
-        const date=document.getElementById('dietaConsumptionDate').value;
-        if(!date){dietaDailyConsumption={};dietaUpdateTotal();return;}
-        const loaded=await dietaStorageGet(DIETA_CONSUMO_PREFIX+dietaCurrentUser+'_'+date);
-        dietaDailyConsumption=loaded||{};
-        dietaGerarTabela();dietaUpdateTotal();
-    };
-
-    async function dietaSaveConsumo(){
-        if(!dietaCurrentUser)return;
-        const date=document.getElementById('dietaConsumptionDate').value;if(!date)return;
-        const key=DIETA_CONSUMO_PREFIX+dietaCurrentUser+'_'+date;
-        const toSave={};for(const[f,q]of Object.entries(dietaDailyConsumption)){if(q>0)toSave[f]=q;}
-        if(Object.keys(toSave).length>0)await dietaStorageSet(key,toSave);
-        else await dietaStorageRemove(key);
-        dietaUpdateTotal();
-    }
-
-    window.dietaUpdateQty=async function(foodName,delta){
-        const cur=dietaDailyConsumption[foodName]||0;
-        const newQ=Math.max(0,cur+delta);dietaDailyConsumption[foodName]=newQ;
-        const el=document.getElementById('dqty_'+foodName.replace(/[^a-zA-Z0-9]/g,''));
-        if(el)el.value=newQ;
-        await dietaSaveConsumo();dietaGerarTabela();
-    };
-
-    window.dietaManualQty=async function(foodName,value){
-        const q=Number(value);dietaDailyConsumption[foodName]=isNaN(q)||q<0?0:q;
-        await dietaSaveConsumo();dietaGerarTabela();
-    };
-
-    window.dietaGerarTabela=function(){
-        const cat=document.getElementById('dietaCategorySelect').value;
-        const tbody=document.getElementById('dietaFoodBody');tbody.innerHTML='';
-        if(!dietaCurrentUser){tbody.innerHTML='<tr><td colspan="3">Selecione um usuário.</td></tr>';return;}
-        if(!cat){tbody.innerHTML='<tr><td colspan="3">Selecione uma categoria.</td></tr>';return;}
-        const filtered=dietaFoods.filter(f=>f.category===cat);
-        if(!filtered.length){tbody.innerHTML='<tr><td colspan="3">Nenhum alimento encontrado.</td></tr>';return;}
-        filtered.forEach(food=>{
-            const tr=document.createElement('tr');
-            const qty=dietaDailyConsumption[food.name]||0;const totalCal=food.cal*qty;
-            const match=food.name.match(/^(.*?)(\s*\((.*?)\))?$/);
-            const foodName=match?match[1].trim():food.name;const portion=match&&match[3]?match[3]:food.cal+' kcal';
-            const inputId='dqty_'+food.name.replace(/[^a-zA-Z0-9]/g,'');
-            tr.innerHTML=`<td><span class="food-name-line">${foodName}</span><span class="food-cal-line">${portion} — ${food.cal} kcal</span></td><td><div class="contador-qty"><button onclick="dietaUpdateQty('${food.name.replace(/'/g,"\\'")}', -1)">-</button><input type="number" id="${inputId}" class="qty-input" value="${qty}" min="0" onchange="dietaManualQty('${food.name.replace(/'/g,"\\'")}', this.value)"><button onclick="dietaUpdateQty('${food.name.replace(/'/g,"\\'")}', 1)">+</button></div></td><td>${totalCal} kcal</td>`;
-            tbody.appendChild(tr);
-        });
-    };
-
-    async function dietaGetConsumedTotals(nome,u){
-        let consumedDieta=0,consumedMes=0;
-        const today=new Date().toISOString().split('T')[0];const currentMonth=today.substring(0,7);
-        const prefix=DIETA_CONSUMO_PREFIX+nome+'_';
-        const keys=[];
-        if(dietaIsLiberado()){
-            const snap=await dietaDb.ref(`userData/${dietaSanitizeKey(dietaSessionUser.id)}`).get();
-            if(snap.exists()){for(const k of Object.keys(snap.val())){if(k.startsWith(prefix.replace(/[.#$/\[\]]/g,'_')))keys.push(k);}}
-        }else{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith(prefix))keys.push(k);}}
-        for(const key of keys){
-            try{
-                let data=null;
-                if(dietaIsLiberado()){const s=await dietaDb.ref(`userData/${dietaSanitizeKey(dietaSessionUser.id)}/${key}`).get();if(s.exists())data=JSON.parse(s.val());}
-                else{const r=localStorage.getItem(key);if(r)data=JSON.parse(r);}
-                if(!data)continue;
-                let daily=0;for(const[fn,q]of Object.entries(data)){const f=dietaFoodsMap.get(fn);if(f)daily+=f.cal*q;}
-                consumedDieta+=daily;
-                const dateStr=key.substring(key.lastIndexOf('_')+1);
-                if(dateStr.length===10&&dateStr.substring(0,7)===currentMonth)consumedMes+=daily;
-            }catch(e){}
-        }
-        return{consumedMes,consumedDieta};
-    }
-
-    async function dietaUpdateTotal(){
-        if(!dietaCurrentUser)return;
-        let total=0;for(const[fn,qty]of Object.entries(dietaDailyConsumption)){const f=dietaFoodsMap.get(fn);if(f)total+=f.cal*qty;}
-        document.getElementById('dietaTotalCal').textContent=total.toFixed(0);
-        const u=await dietaStorageGet(DIETA_USER_PREFIX+dietaCurrentUser)||{};
-        const{calMes,calTotal}=dietaCalcResultados(u);
-        const{consumedMes,consumedDieta}=await dietaGetConsumedTotals(dietaCurrentUser,u);
-        document.getElementById('dietaRemMes').textContent=(calMes-consumedMes).toFixed(0);
-        document.getElementById('dietaRemDieta').textContent=(calTotal-consumedDieta).toFixed(0);
-        const limit=Number(document.getElementById('dietaCalLimit').value);
-        if(total>limit&&!dietaSpeaking){dietaSpeaking=true;try{const s=new SpeechSynthesisUtterance(`${dietaCurrentUser}, você já atingiu suas calorias de hoje.`);s.lang='pt-BR';s.onend=()=>{dietaSpeaking=false;};speechSynthesis.speak(s);}catch(e){dietaSpeaking=false;}}
-    }
-
-    window.dietaGerarRelatorio=async function(){
-        if(!dietaCurrentUser){alert('Selecione um usuário.');return;}
-        const date=document.getElementById('dietaConsumptionDate').value;if(!date){alert('Selecione uma data.');return;}
-        const u=await dietaStorageGet(DIETA_USER_PREFIX+dietaCurrentUser)||{};
-        const{calDia}=dietaCalcResultados(u);
-        const items=[];let total=0;
-        for(const[fn,qty]of Object.entries(dietaDailyConsumption)){if(qty>0){const f=dietaFoodsMap.get(fn);const c=f?f.cal*qty:0;items.push({fn,qty,c});total+=c;}}
-        const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Relatório Dieta</title><style>body{font-family:Arial,sans-serif;margin:0;padding:30px;background:#000;color:#fff}h1{font-size:2.5rem;color:#f40000;text-align:center;border-bottom:4px solid #f40000;padding-bottom:1rem}h2{font-size:1.8rem;color:#fff;border-bottom:2px solid #555}p{font-size:1.4rem;margin:0.8rem 0}b{color:#1400ff}.sum{font-size:2rem;color:#f40000;font-weight:bold;margin-top:2rem;padding:1.5rem;border:3px solid #f40000;text-align:center}ul{list-style:none;padding:0}ul li{font-size:1.4rem;padding:0.6rem 0;border-bottom:1px dotted #555}</style></head><body><h1>Relatório Diário de Consumo</h1><h2>👤 ${dietaCurrentUser}</h2><p>🗓️ Data: <b>${dietaFormatDate(date)}</b></p><p>🎯 Limite: <b>${calDia.toFixed(0)} kcal</b></p><h2>🍽️ Alimentos</h2><ul>${items.map(i=>`<li>${i.fn} × ${i.qty} = <b>${i.c} kcal</b></li>`).join('')}${!items.length?'<li>Nenhum alimento registrado.</li>':''}</ul><div class="sum">Total: ${total.toFixed(0)} kcal</div><p>Status: ${total>calDia?`<b style="color:#ff4d4d">Excedido em ${(total-calDia).toFixed(0)} kcal!</b>`:`<b style="color:#4dff4d">Dentro do limite. Restam ${(calDia-total).toFixed(0)} kcal.</b>`}</p></body></html>`;
-        const blob=new Blob([html],{type:'text/html'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`Relatorio_${dietaCurrentUser}_${date}.html`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
-    };
-
-    window.dietaAbrirAnalise=function(fechar){
-        const btn=document.getElementById('dietaToggleBtn');
-        if(fechar){
-            document.getElementById('dietaCadastroSection').classList.add('hidden');
-            document.getElementById('dietaResultadoSection').classList.add('hidden');
-            document.getElementById('dietaControleSection').classList.remove('hidden');
-            document.getElementById('dietaListaSection').classList.remove('hidden');
-            btn.textContent='Abrir Análise';btn.onclick=()=>dietaAbrirAnalise(false);
-        }else{
-            document.getElementById('dietaCadastroSection').classList.remove('hidden');
-            document.getElementById('dietaResultadoSection').classList.add('hidden');
-            document.getElementById('dietaControleSection').classList.add('hidden');
-            document.getElementById('dietaListaSection').classList.add('hidden');
-            btn.textContent='Fechar Análise';btn.onclick=()=>dietaAbrirAnalise(true);
-            const n=document.getElementById('dietaNome').value.trim();if(n)dietaLoadUser(n);
-        }
-    };
-
-    // ── Lista de alimentos ──
-    const dietaFoods=[
-        {category:"Grãos e cereais",name:"Arroz branco (1 colher de sopa)",cal:70},{category:"Grãos e cereais",name:"Arroz integral (1 colher de sopa)",cal:65},{category:"Grãos e cereais",name:"Feijão (1 concha média)",cal:80},{category:"Grãos e cereais",name:"Macarrão instantâneo (1 pacote pequeno)",cal:350},{category:"Grãos e cereais",name:"Macarrão normal (1 prato)",cal:180},{category:"Grãos e cereais",name:"Ervilha (100g)",cal:81},{category:"Grãos e cereais",name:"Batata comum (100g)",cal:77},{category:"Grãos e cereais",name:"Polenta ou angu (100g)",cal:100},{category:"Grãos e cereais",name:"Farinha de mandioca (1 colher de sopa)",cal:35},
-        {category:"Legumes",name:"Cenoura (100g)",cal:40},{category:"Legumes",name:"Abobrinha (100g)",cal:20},{category:"Legumes",name:"Quiabo (100g)",cal:33},{category:"Legumes",name:"Batata-doce (100g)",cal:86},{category:"Legumes",name:"Abóbora comum (100g)",cal:26},{category:"Legumes",name:"Beterraba (100g)",cal:43},{category:"Legumes",name:"Pepino (100g)",cal:16},{category:"Legumes",name:"Pimentão (100g)",cal:27},{category:"Legumes",name:"Tomate (100g)",cal:18},{category:"Legumes",name:"Chuchu (100g)",cal:19},{category:"Legumes",name:"Aspargos (100g)",cal:20},{category:"Legumes",name:"Berinjela (100g)",cal:25},{category:"Legumes",name:"Inhame (100g)",cal:118},{category:"Legumes",name:"Aipim/Mandioca (100g)",cal:130},
-        {category:"Verduras",name:"Alface (100g)",cal:15},{category:"Verduras",name:"Couve (100g)",cal:32},{category:"Verduras",name:"Couve-flor (100g)",cal:25},{category:"Verduras",name:"Espinafre (100g)",cal:23},{category:"Verduras",name:"Rúcula (100g)",cal:25},{category:"Verduras",name:"Repolho (100g)",cal:25},
-        {category:"Frutas",name:"Banana (100g)",cal:89},{category:"Frutas",name:"Maçã (100g)",cal:52},{category:"Frutas",name:"Laranja (100g)",cal:43},{category:"Frutas",name:"Manga (100g)",cal:60},{category:"Frutas",name:"Tangerina (100g)",cal:53},{category:"Frutas",name:"Abacate (100g)",cal:160},{category:"Frutas",name:"Morango (100g)",cal:32},{category:"Frutas",name:"Uva vinho (100g)",cal:69},{category:"Frutas",name:"Uva verde (100g)",cal:69},{category:"Frutas",name:"Melancia (100g)",cal:30},{category:"Frutas",name:"Melão (100g)",cal:34},{category:"Frutas",name:"Azeitona (100g)",cal:115},{category:"Frutas",name:"Limão (100g)",cal:29},{category:"Frutas",name:"Abacaxi (100g)",cal:50},{category:"Frutas",name:"Ameixa (100g)",cal:46},{category:"Frutas",name:"Amora (100g)",cal:43},{category:"Frutas",name:"Cereja (100g)",cal:50},{category:"Frutas",name:"Coco (100g)",cal:354},{category:"Frutas",name:"Figo (100g)",cal:74},{category:"Frutas",name:"Mamão (100g)",cal:43},{category:"Frutas",name:"Maracujá (100g)",cal:97},{category:"Frutas",name:"Pêra (100g)",cal:57},{category:"Frutas",name:"Pêssego (100g)",cal:39},{category:"Frutas",name:"Acerola (100g)",cal:32},{category:"Frutas",name:"Caju (100g)",cal:43},{category:"Frutas",name:"Jaca (100g)",cal:95},{category:"Frutas",name:"Goiaba (100g)",cal:68},
-        {category:"Bebidas",name:"Refrigerante (200ml)",cal:90},{category:"Bebidas",name:"Cerveja (350ml)",cal:150},{category:"Bebidas",name:"Leite Ninho achocolatado (200ml)",cal:160},{category:"Bebidas",name:"Leite Ninho puro (200ml)",cal:130},{category:"Bebidas",name:"Água com gás (200ml)",cal:0},{category:"Bebidas",name:"Vitamina (200ml)",cal:180},{category:"Bebidas",name:"Farinha Láctea com leite (200ml)",cal:160},{category:"Bebidas",name:"Suco de laranja (200ml)",cal:90},{category:"Bebidas",name:"Chá sem açúcar (200ml)",cal:2},{category:"Bebidas",name:"Café com açúcar (200ml)",cal:40},{category:"Bebidas",name:"Café sem açúcar (200ml)",cal:2},{category:"Bebidas",name:"Energético (250ml)",cal:110},{category:"Bebidas",name:"Leite de caixa integral (200ml)",cal:120},{category:"Bebidas",name:"Leite de caixa desnatado (200ml)",cal:70},{category:"Bebidas",name:"Suco de caixa (200ml)",cal:100},
-        {category:"Frios",name:"Apresuntado (30g)",cal:45},{category:"Frios",name:"Mortadela (30g)",cal:90},{category:"Frios",name:"Mussarela (30g)",cal:80},{category:"Frios",name:"Peito de peru (30g)",cal:30},{category:"Frios",name:"Presunto (30g)",cal:45},{category:"Frios",name:"Queijo Minas (30g)",cal:90},{category:"Frios",name:"Queijo prato (30g)",cal:110},{category:"Frios",name:"Salame (30g)",cal:120},{category:"Frios",name:"Salsicha (30g)",cal:90},{category:"Frios",name:"Sardinha enlatada (100g)",cal:200},{category:"Frios",name:"Atum enlatado (100g)",cal:120},
-        {category:"Carnes e ovos",name:"Frango empanado (100g)",cal:250},{category:"Carnes e ovos",name:"Filé de frango (100g)",cal:165},{category:"Carnes e ovos",name:"Bife (100g)",cal:250},{category:"Carnes e ovos",name:"Carne vermelha (100g)",cal:290},{category:"Carnes e ovos",name:"Fígado de boi (100g)",cal:135},{category:"Carnes e ovos",name:"Linguiça (100g)",cal:300},{category:"Carnes e ovos",name:"Peixe (100g)",cal:160},{category:"Carnes e ovos",name:"Carne de porco (100g)",cal:240},{category:"Carnes e ovos",name:"Torresmo (100g)",cal:550},{category:"Carnes e ovos",name:"Almôndega (100g)",cal:250},{category:"Carnes e ovos",name:"Nuggets (100g)",cal:280},
-        {category:"Doces",name:"Bolo normal (1 fatia média)",cal:250},{category:"Doces",name:"Bolo confeitado (1 fatia média)",cal:350},{category:"Doces",name:"Pudim (1 fatia média)",cal:220},{category:"Doces",name:"Brigadeiro (1 unidade)",cal:80},{category:"Doces",name:"Sorvete (100g)",cal:200},{category:"Doces",name:"Doce de leite (100g)",cal:300},{category:"Doces",name:"Gelatina (100g)",cal:60},{category:"Doces",name:"Pipoca salgada (1 porção média)",cal:120},{category:"Doces",name:"Pipoca doce (1 porção média)",cal:130},{category:"Doces",name:"Churros (1 unidade)",cal:250},{category:"Doces",name:"Pamonha (1 unidade)",cal:250},{category:"Doces",name:"Torta de maçã (1 fatia)",cal:280},
-        {category:"Chocolates",name:"Barra de chocolate ao leite (100g)",cal:535},{category:"Chocolates",name:"Bombom (1 unidade)",cal:100},{category:"Chocolates",name:"Chocolate em pó (1 colher de sopa)",cal:25},{category:"Chocolates",name:"Achocolatado em pó (1 colher de sopa)",cal:40},{category:"Chocolates",name:"Chocolate amargo (100g)",cal:600},
-        {category:"Pães e Massas",name:"Pão Francês (50g)",cal:150},{category:"Pães e Massas",name:"Pão Integral (50g)",cal:120},{category:"Pães e Massas",name:"Pão de Forma (1 fatia)",cal:70},{category:"Pães e Massas",name:"Biscoito água e sal (3 unidades)",cal:60},{category:"Pães e Massas",name:"Pizza mussarela (1 fatia)",cal:280},{category:"Pães e Massas",name:"Lasanha (1 porção média)",cal:400},{category:"Pães e Massas",name:"Pão de queijo (1 unidade média)",cal:100},{category:"Pães e Massas",name:"Tapioca (1 unidade)",cal:150},
-        {category:"Azeites e Óleos",name:"Azeite de oliva (1 colher de sopa)",cal:120},{category:"Azeites e Óleos",name:"Manteiga (1 colher de sopa)",cal:100},{category:"Azeites e Óleos",name:"Maionese (1 colher de sopa)",cal:90},{category:"Azeites e Óleos",name:"Óleo de coco (1 colher de sopa)",cal:120},{category:"Azeites e Óleos",name:"Creme de leite (1 colher de sopa)",cal:50},{category:"Azeites e Óleos",name:"Requeijão (1 colher de sopa)",cal:70},
-        {category:"Lanches Rápido",name:"Hambúrguer (simples)",cal:300},{category:"Lanches Rápido",name:"Batata frita (porção média)",cal:350},{category:"Lanches Rápido",name:"Sanduíche natural",cal:250},{category:"Lanches Rápido",name:"Salgado frito (coxinha, risole)",cal:300},{category:"Lanches Rápido",name:"Hot dog simples",cal:350},{category:"Lanches Rápido",name:"Açaí (200ml)",cal:200},{category:"Lanches Rápido",name:"Cheeseburger Completo",cal:450},{category:"Lanches Rápido",name:"X-Tudo (Hamburguer completo)",cal:650},{category:"Lanches Rápido",name:"Misto Quente",cal:220},{category:"Lanches Rápido",name:"Pastel Frito (queijo/carne)",cal:320},{category:"Lanches Rápido",name:"Sushi (6 peças)",cal:200},{category:"Lanches Rápido",name:"Temaki (salmão/atum)",cal:350},{category:"Lanches Rápido",name:"Wrap de Frango",cal:380}
-    ];
-    const dietaFoodsMap=new Map(dietaFoods.map(f=>[f.name,f]));
-
-    window.addEventListener('load',async()=>{
-        await dietaVerificarSessao();
-    });
     </script>
 
     <script>
