@@ -136,6 +136,15 @@
         #btn-fechar-tvsx.show { display: flex; }
         @media screen and (orientation: landscape) { #btn-fechar-tvsx.show { top: 12px; right: 12px; bottom: auto; left: auto; } }
         @media screen and (orientation: portrait) { #btn-fechar-tvsx.show { bottom: 12px; right: 12px; top: auto; left: auto; } }
+        #area-novela-play { display: none; position: fixed; top: 0; left: 0; z-index: 9998; background: #000; }
+        #area-novela-play.show { display: block; }
+        @media screen and (orientation: landscape) { #area-novela-play.show { width: 100vw; height: 100vh; transform: none; } }
+        @media screen and (orientation: portrait) { #area-novela-play.show { width: 100vh; height: 100vw; top: 0; left: 0; transform-origin: top left; transform: rotate(90deg) translateX(0%) translateY(-100%); } }
+        #novela-play-iframe { width: 100%; height: 100%; border: none; display: block; }
+        #btn-fechar-novela-play { display: none; position: fixed; z-index: 9999; background: rgba(0,0,0,0.85); border: 2px solid #ff0000; color: #ff0000; font-size: 17px; font-weight: 900; width: 38px; height: 38px; border-radius: 50%; align-items: center; justify-content: center; cursor: pointer; line-height: 1; }
+        #btn-fechar-novela-play.show { display: flex; }
+        @media screen and (orientation: landscape) { #btn-fechar-novela-play.show { top: 12px; right: 12px; bottom: auto; left: auto; } }
+        @media screen and (orientation: portrait) { #btn-fechar-novela-play.show { bottom: 12px; right: 12px; top: auto; left: auto; } }
         .upload-progress-bar { width: 100%; height: 6px; background: #1d2d50; border-radius: 3px; overflow: hidden; margin-top: 8px; display: none; }
         .upload-progress-fill { height: 100%; background: linear-gradient(90deg, #ff0000, #ff6600); border-radius: 3px; transition: width 0.3s; width: 0%; }
         .ad-slideshow { position: relative; width: 100%; overflow: hidden; }
@@ -168,6 +177,11 @@
         <iframe id="tvsx-iframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
     <button id="btn-fechar-tvsx" onclick="fecharTVSX()">✕</button>
+
+    <div id="area-novela-play">
+        <iframe id="novela-play-iframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <button id="btn-fechar-novela-play" onclick="fecharNovelaPlay()">✕</button>
 
     <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
@@ -229,7 +243,7 @@
 
         <div id="nav-feed-global" class="nav-rapida sticky top-[73px] z-40">
             <button onclick="voltarHome()" id="btn-nav-feed" class="btn-nav-item" style="border-color:#ff0000;color:#ff0000;">Postar</button>
-            <button onclick="abrirVeiculos()" id="btn-nav-veiculos" class="btn-nav-item">Veículos</button>
+            <button onclick="abrirVeiculos()" id="btn-nav-veiculos" class="btn-nav-item">Novelas</button>
             <button onclick="abrirTVSX()" id="btn-nav-tvsx" class="btn-nav-item">
                 <span class="tvsx-tv">TV </span><span class="tvsx-s">S</span><span class="tvsx-x">X</span>
             </button>
@@ -272,31 +286,33 @@
         </main>
 
         <div id="area-veiculos">
-            <div class="cls-header">Classificados <span style="color:red;">S</span><span style="color:white;">X</span> — Veículos</div>
+            <div class="cls-header">NOVELAS <span style="color:red;">S</span><span style="color:white;">X</span></div>
             <div class="cls-container">
-                <div id="cls-status" class="cls-status cls-status-ok">⏳ Iniciando...</div>
-                <button id="btnNovo" class="cls-btn cls-btn-novo" onclick="clsAbrirForm()" disabled>🚗 NOVO ANÚNCIO</button>
-                <div class="form-box-cls" id="cls-formulario">
-                    <label class="cls-label">📂 Categoria:</label>
-                    <select id="cls-categoria" class="cls-select"><option value="">Selecione...</option><option value="Carro">🚗 Carro</option><option value="Moto">🏍️ Moto</option></select>
-                    <label class="cls-label">🚙 Nome do Veículo:</label><input type="text" id="cls-nome" class="cls-input" placeholder="Honda Civic">
-                    <label class="cls-label">📅 Ano:</label><input type="number" id="cls-ano" class="cls-input" placeholder="2020">
-                    <label class="cls-label">📍 Bairro:</label><input type="text" id="cls-bairro" class="cls-input" placeholder="Copacabana">
-                    <label class="cls-label">🌎 Estado:</label><input type="text" id="cls-estado" class="cls-input" placeholder="RJ">
-                    <label class="cls-label">💰 Preço (R$):</label><input type="number" id="cls-preco" class="cls-input" placeholder="85000">
-                    <label class="cls-label">📱 WhatsApp (sem 55):</label><input type="text" id="cls-whatsapp" class="cls-input" placeholder="21987654321">
-                    <label class="cls-label">📝 Descrição:</label><textarea id="cls-descricao" class="cls-textarea" rows="3" placeholder="Descreva seu veículo..."></textarea>
-                    <label class="cls-label">📸 Fotos e Vídeos (1-6):</label>
-                    <input type="file" id="cls-midia" multiple accept="image/*,video/*" style="display:none;">
-                    <label for="cls-midia" class="upload-btn-cls">📤 ESCOLHER FOTOS/VÍDEOS</label>
-                    <div class="preview-cls" id="cls-preview"></div>
-                    <div id="cls-contador" style="color:#ddd;">0/6 arquivos</div>
-                    <div class="upload-progress-bar" id="progress-cls" style="margin-top:10px;">
-                        <div class="upload-progress-fill" id="progress-cls-fill"></div>
-                    </div>
-                    <button onclick="clsAnunciar()" id="cls-btnPublicar" class="cls-btn" disabled style="margin-top:12px;">🚀 PUBLICAR ANÚNCIO</button>
+                <div id="novela-bloqueado" style="max-width:420px;margin:0 auto;">
+                    <p style="color:#ddd;text-align:center;margin-bottom:14px;">🔒 Digite a senha para gerenciar o link da novela</p>
+                    <input type="password" id="novela-senha" class="cls-input" placeholder="Senha">
+                    <button onclick="novelaVerificarSenha()" class="cls-btn" style="width:100%;margin-top:10px;">🔓 ENTRAR</button>
+                    <div id="novela-senha-erro" style="display:none;color:#ff6060;font-weight:bold;text-align:center;margin-top:10px;">❌ Senha incorreta!</div>
                 </div>
-                <div id="cls-listaAnuncios"></div>
+
+                <div id="novela-painel" style="display:none;max-width:600px;margin:0 auto;">
+                    <label class="cls-label">🔗 Link da Novela:</label>
+                    <input type="text" id="novela-link-input" class="cls-input" placeholder="Cole aqui o link...">
+                    <label class="cls-label">⏱️ Ficar disponível por quantas horas?</label>
+                    <input type="number" id="novela-horas-input" class="cls-input" placeholder="Ex: 12" min="1" value="12">
+                    <button onclick="novelaSalvarLink()" class="cls-btn" style="width:100%;margin-top:10px;">💾 SALVAR LINK</button>
+                    <div id="novela-status" style="display:none;" class="cls-status cls-status-ok"></div>
+                </div>
+
+                <div id="novela-atual" style="max-width:600px;margin:24px auto 0 auto;display:none;">
+                    <div class="anuncio-cls">
+                        <span class="badge-publicado">✅ NOVELA DISPONÍVEL</span>
+                        <button onclick="abrirNovelaPlay()" class="cls-btn" style="width:100%;margin-top:10px;font-size:16px;">▶️ ASSISTIR AGORA</button>
+                        <p id="novela-expira-em" style="color:#aaa;font-size:13px;margin-top:10px;text-align:center;"></p>
+                    </div>
+                </div>
+
+                <div id="novela-vazio" style="display:none;text-align:center;color:#ccc;padding:20px;">Nenhum link salvo no momento.</div>
             </div>
         </div>
 
@@ -412,6 +428,113 @@
             bar.style.display = show ? 'block' : 'none';
             fill.style.width = pct + '%';
         }
+
+        // ══════════════════════════════════════════════════════
+        // ── NOVELAS — link com senha, expira nas horas definidas ─────
+        // ══════════════════════════════════════════════════════
+        const NOVELA_SENHA = "102030Aa";
+        const NOVELA_STORAGE_KEY = "sx_novela_link";
+        const NOVELA_STORAGE_TS_KEY = "sx_novela_link_ts";
+        const NOVELA_STORAGE_HORAS_KEY = "sx_novela_horas";
+
+        function novelaGetDuracaoMs() {
+            const horas = parseFloat(localStorage.getItem(NOVELA_STORAGE_HORAS_KEY)) || 12;
+            return horas * 60 * 60 * 1000;
+        }
+
+        function novelaFormatarRestante(ms) {
+            const totalMin = Math.max(0, Math.floor(ms / 60000));
+            const h = Math.floor(totalMin / 60), m = totalMin % 60;
+            return h > 0 ? `${h}h ${m}min restantes` : `${m}min restantes`;
+        }
+
+        function novelaAtualizarExibicao() {
+            const link = localStorage.getItem(NOVELA_STORAGE_KEY);
+            const ts = parseInt(localStorage.getItem(NOVELA_STORAGE_TS_KEY) || "0", 10);
+            const agora = Date.now();
+            const duracaoMs = novelaGetDuracaoMs();
+            const blocoAtual = document.getElementById('novela-atual');
+            const blocoBloqueado = document.getElementById('novela-bloqueado');
+            const blocoPainel = document.getElementById('novela-painel');
+            const ativo = link && ts && (agora - ts) < duracaoMs;
+
+            if (ativo) {
+                const restante = duracaoMs - (agora - ts);
+                document.getElementById('novela-expira-em').innerText = "⏳ " + novelaFormatarRestante(restante);
+                blocoAtual.style.display = 'block';
+                blocoBloqueado.style.display = 'none';
+                blocoPainel.style.display = 'none';
+            } else {
+                if (link) { localStorage.removeItem(NOVELA_STORAGE_KEY); localStorage.removeItem(NOVELA_STORAGE_TS_KEY); }
+                blocoAtual.style.display = 'none';
+                blocoPainel.style.display = 'none';
+                document.getElementById('novela-senha-erro').style.display = 'none';
+                document.getElementById('novela-senha').value = '';
+                blocoBloqueado.style.display = 'block';
+            }
+        }
+
+        window.novelaVerificarSenha = () => {
+            const senha = document.getElementById('novela-senha').value;
+            const erro = document.getElementById('novela-senha-erro');
+            if (senha === NOVELA_SENHA) {
+                erro.style.display = 'none';
+                document.getElementById('novela-bloqueado').style.display = 'none';
+                document.getElementById('novela-painel').style.display = 'block';
+                document.getElementById('novela-senha').value = '';
+            } else {
+                erro.style.display = 'block';
+            }
+        };
+
+        window.novelaSalvarLink = () => {
+            const input = document.getElementById('novela-link-input');
+            const horasInput = document.getElementById('novela-horas-input');
+            const link = input.value.trim();
+            const horas = parseFloat(horasInput.value) || 12;
+            const status = document.getElementById('novela-status');
+            if (!link) { alert("Cole um link antes de salvar!"); return; }
+            localStorage.setItem(NOVELA_STORAGE_KEY, link);
+            localStorage.setItem(NOVELA_STORAGE_TS_KEY, Date.now().toString());
+            localStorage.setItem(NOVELA_STORAGE_HORAS_KEY, horas.toString());
+            input.value = '';
+            status.style.display = 'block';
+            status.className = 'cls-status cls-status-ok';
+            status.innerText = `✅ Link salvo! Ficará disponível por ${horas}h.`;
+            novelaAtualizarExibicao();
+            setTimeout(() => { status.style.display = 'none'; }, 4000);
+        };
+
+        window.abrirNovelaPlay = () => {
+            const link = localStorage.getItem(NOVELA_STORAGE_KEY);
+            if (!link) { alert("Nenhum link disponível no momento."); return; }
+            const area = document.getElementById('area-novela-play');
+            const iframe = document.getElementById('novela-play-iframe');
+            const btnFechar = document.getElementById('btn-fechar-novela-play');
+            iframe.src = link;
+            area.classList.add('show');
+            btnFechar.classList.add('show');
+            if (area.requestFullscreen) { area.requestFullscreen().catch(() => {}); }
+            else if (area.webkitRequestFullscreen) { area.webkitRequestFullscreen(); }
+            if (screen.orientation && screen.orientation.lock) { screen.orientation.lock('landscape').catch(() => {}); }
+        };
+
+        window.fecharNovelaPlay = () => {
+            const area = document.getElementById('area-novela-play');
+            const iframe = document.getElementById('novela-play-iframe');
+            iframe.src = '';
+            area.classList.remove('show');
+            document.getElementById('btn-fechar-novela-play').classList.remove('show');
+            if (document.fullscreenElement) { document.exitFullscreen().catch(() => {}); }
+            if (screen.orientation && screen.orientation.unlock) { try { screen.orientation.unlock(); } catch(e) {} }
+        };
+
+        let _novelaIntervalo = null;
+        function novelaIniciar() {
+            novelaAtualizarExibicao();
+            if (_novelaIntervalo) clearInterval(_novelaIntervalo);
+            _novelaIntervalo = setInterval(novelaAtualizarExibicao, 60000);
+        }
     </script>
 
     <script type="module">
@@ -435,7 +558,6 @@
 
         let userLogado=null, idLogado=null, unsubFeed=null, arquivoCapaPendente=null;
         let curtidasNestaSessao=new Set();
-        let clsArquivos=[], clsIsSubmitting=false;
         let isAdmin=false, anunciosAtivos=[];
         let unsubAprovacao=null;
         const videoCache=new Set();
@@ -755,7 +877,8 @@
             document.getElementById('btn-me-perfil').onclick=()=>verPerfil(idLogado);
             if(isAdmin)document.getElementById('btn-flutuante-admin').style.display='flex';
             carregarUsuariosMenu();carregarAnunciosAtivos().then(()=>carregarFeed());
-            try{signInAnonymously(auth);}catch(e){}clsIniciar();
+            try{signInAnonymously(auth);}catch(e){}
+            if (typeof novelaIniciar === 'function') novelaIniciar();
             onSnapshot(doc(fsdb,"usuariosAprovados",idLogado),(snap)=>{
                 if(!snap.exists())return;const dados=snap.data();if(!dados)return;
                 const status=dados.status||"";
@@ -775,7 +898,11 @@
         window.abrirVeiculos=()=>{
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
             document.getElementById('area-perfil').classList.add('hidden');document.getElementById('caixa-post').classList.add('hidden');document.getElementById('feed').style.display='none';document.getElementById('area-vestir').style.display='none';document.getElementById('area-veiculos').style.display='block';
-            resetNav();document.getElementById('btn-nav-veiculos').style.borderColor='#ff0000';document.getElementById('btn-nav-veiculos').style.color='#ff0000';window.scrollTo({top:0,behavior:'smooth'});
+            resetNav();
+            document.getElementById('btn-nav-veiculos').style.borderColor='#ff0000';
+            document.getElementById('btn-nav-veiculos').style.color='#ff0000';
+            if (typeof novelaAtualizarExibicao === 'function') novelaAtualizarExibicao();
+            window.scrollTo({top:0,behavior:'smooth'});
         };
         window.abrirVestir=()=>{
             if(document.getElementById('sidebar').classList.contains('open'))toggleMenu();
@@ -845,7 +972,7 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
             unsubFeed=onSnapshot(q,snap=>{
                 const f=document.getElementById('feed');
                 const postsValidos=[];
-                snap.forEach(d=>{const p=d.data();if(p.tipo!=='classificado')postsValidos.push({id:d.id,dados:p});});
+                snap.forEach(d=>{const p=d.data();postsValidos.push({id:d.id,dados:p});});
                 let htmlCompleto='';const slideshowsPendentes=[];let idxAd=0;
                 postsValidos.forEach((item,i)=>{
                     const{id,dados:p}=item;
@@ -939,49 +1066,6 @@ ${bannerHtml}<div style="padding:16px;"><div style="display:flex;align-items:cen
         };
 
         window.salvarComentario=async(id)=>{const input=document.getElementById(`input-coment-${id}`),texto=input.value.trim();if(!texto)return;await updateDoc(doc(fsdb,"posts",id),{comentarios:arrayUnion({autor:userLogado.nome,texto,data:new Date().toLocaleString()})});input.value="";};
-
-        // ── CLASSIFICADOS ──
-        function clsIniciar(){
-            clsUpdateStatus('✅ CONECTADO! Pode anunciar.','ok');document.getElementById('btnNovo').disabled=false;
-            const q=query(collection(fsdb,'posts'),where('publicado','==',true),where('tipo','==','classificado'),orderBy('data','desc'));
-            const renderLista=(snap,lista)=>{
-                lista.innerHTML=snap.empty?'<p style="text-align:center;color:#ccc;padding:20px;">Nenhum anúncio publicado ainda...</p>':'';
-                snap.forEach(ds=>{
-                    const d=ds.data(),midias=d.midia||[];const nomeVeiculo=(d.nome||'')+(d.ano?' '+d.ano:'')+(d.categoria?' ('+d.categoria+')':'');
-                    const msgVeiculo=encodeURIComponent('Olá! Vi seu anúncio no *SX Classificados*!\n*Veículo:* '+nomeVeiculo+'\nO veículo ainda está disponível?');
-                    lista.innerHTML+=`<div class="anuncio-cls"><span class="badge-publicado">✅ PUBLICADO</span><h3>🚗 ${d.nome||''} (${d.ano||''}) — ${d.categoria||''}</h3><p>${d.descricao||''}</p><p><b>📍 ${d.bairro||''}, ${d.estado||''}</b> | <b>💰 R$ ${Number(d.preco||0).toLocaleString('pt-br')}</b></p><a href="https://wa.me/55${d.whatsapp||''}?text=${msgVeiculo}" target="_blank"><button class="cls-btn" style="background:#25D366;padding:10px 20px;margin-top:10px;">📱 WhatsApp</button></a><div class="midia-grid-cls">${midias.map(url=>{const isVid=url.includes('.mp4')||url.includes('.mov')||url.includes('.webm')||url.includes('video');return isVid?`<video src="${url}" loop playsinline preload="none" style="max-width:140px;height:110px;border-radius:8px;cursor:pointer;" onclick="this.muted=!this.muted;this.paused?this.play():this.pause()"></video>`:`<img src="${url}" loading="lazy" onclick="clsAbrirGaleria('${url}')" title="Clique para ampliar">`;}).join('')}</div></div>`;
-                });
-            };
-            onSnapshot(q,snap=>{renderLista(snap,document.getElementById('cls-listaAnuncios'));},()=>{onSnapshot(query(collection(fsdb,'posts'),where('publicado','==',true),where('tipo','==','classificado')),snap2=>{renderLista(snap2,document.getElementById('cls-listaAnuncios'));});});
-        }
-        function clsUpdateStatus(msg,type){const el=document.getElementById('cls-status');el.textContent=msg;el.className='cls-status cls-status-'+(type||'ok');}
-        window.clsAbrirGaleria=url=>{const modal=document.createElement('div');modal.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;';modal.innerHTML=`<img src="${url}" style="max-width:90%;max-height:90%;border-radius:10px;">`;modal.onclick=()=>document.body.removeChild(modal);document.body.appendChild(modal);};
-        window.clsAbrirForm=()=>{document.getElementById('cls-formulario').style.display='block';document.getElementById('cls-formulario').scrollIntoView({behavior:'smooth'});};
-        document.getElementById('cls-midia').addEventListener('change',e=>{const novos=Array.from(e.target.files);if(clsArquivos.length+novos.length>6)return alert('Máximo 6 arquivos!');clsArquivos=[...clsArquivos,...novos];clsShowPreview();document.getElementById('cls-contador').textContent=clsArquivos.length+'/6 arquivos';document.getElementById('cls-btnPublicar').disabled=false;e.target.value='';});
-        function clsShowPreview(){const preview=document.getElementById('cls-preview');preview.innerHTML='';clsArquivos.forEach((file,i)=>{const reader=new FileReader();reader.onload=e=>{const isVideo=file.type.startsWith('video/');preview.innerHTML+=`<div style="position:relative;">${isVideo?`<video src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;"></video>`:`<img src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;border-radius:8px;">`}<button onclick="clsRemoverArquivo(${i})" style="position:absolute;top:-5px;right:-5px;background:red;color:white;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:12px;">×</button></div>`;};reader.readAsDataURL(file);});}
-        window.clsRemoverArquivo=index=>{clsArquivos.splice(index,1);clsShowPreview();document.getElementById('cls-contador').textContent=clsArquivos.length+'/6 arquivos';document.getElementById('cls-btnPublicar').disabled=clsArquivos.length===0;};
-
-        window.clsAnunciar=async()=>{
-            if(clsIsSubmitting)return;clsIsSubmitting=true;
-            const btn=document.getElementById('cls-btnPublicar');btn.textContent='⏳ Enviando...';btn.disabled=true;
-            const dados={categoria:document.getElementById('cls-categoria').value,nome:document.getElementById('cls-nome').value.trim(),ano:document.getElementById('cls-ano').value,bairro:document.getElementById('cls-bairro').value.trim(),estado:document.getElementById('cls-estado').value.trim(),preco:document.getElementById('cls-preco').value,whatsapp:document.getElementById('cls-whatsapp').value.trim(),descricao:document.getElementById('cls-descricao').value.trim()};
-            if(!dados.categoria||!dados.nome||clsArquivos.length===0){alert('❌ Preencha categoria, nome e adicione pelo menos 1 foto!');clsIsSubmitting=false;btn.textContent='🚀 PUBLICAR ANÚNCIO';btn.disabled=false;return;}
-            try{
-                setProgress('progress-cls','progress-cls-fill',0,true);
-                const urls=[];
-                for(let i=0;i<clsArquivos.length;i++){
-                    const file=clsArquivos[i];const progBase=Math.round((i/clsArquivos.length)*100);btn.textContent=`⏳ Enviando ${i+1}/${clsArquivos.length}...`;
-                    const url=await uploadCloudinary(file,"sx_veiculos",(pct)=>{setProgress('progress-cls','progress-cls-fill',progBase+Math.round(pct/clsArquivos.length),true);btn.textContent=`⏳ Arquivo ${i+1}/${clsArquivos.length}: ${pct}%`;});
-                    urls.push(url);
-                }
-                setProgress('progress-cls','progress-cls-fill',100,true);btn.textContent='⏳ Salvando anúncio...';
-                await addDoc(collection(fsdb,'posts'),{...dados,midia:urls,tipo:'classificado',publicado:false,data:serverTimestamp()});
-                setProgress('progress-cls','progress-cls-fill',0,false);
-                alert('✅ ANÚNCIO ENVIADO! Aguarde aprovação.');clsFecharForm();
-            }catch(e){alert('❌ Erro: '+e.message);setProgress('progress-cls','progress-cls-fill',0,false);}
-            finally{clsIsSubmitting=false;btn.textContent='🚀 PUBLICAR ANÚNCIO';btn.disabled=false;}
-        };
-        function clsFecharForm(){document.getElementById('cls-formulario').style.display='none';['cls-nome','cls-ano','cls-bairro','cls-estado','cls-preco','cls-whatsapp','cls-descricao'].forEach(id=>document.getElementById(id).value='');document.getElementById('cls-categoria').value='';clsArquivos=[];document.getElementById('cls-preview').innerHTML='';document.getElementById('cls-contador').textContent='0/6 arquivos';document.getElementById('cls-btnPublicar').disabled=true;clsIsSubmitting=false;}
 
         inicializar();
     </script>
