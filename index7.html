@@ -288,14 +288,7 @@
         <div id="area-veiculos">
             <div class="cls-header">NOVELAS <span style="color:red;">S</span><span style="color:white;">X</span></div>
             <div class="cls-container">
-                <div id="novela-bloqueado" style="max-width:420px;margin:0 auto;">
-                    <p style="color:#ddd;text-align:center;margin-bottom:14px;">🔒 Digite a senha para gerenciar o link da novela</p>
-                    <input type="password" id="novela-senha" class="cls-input" placeholder="Senha">
-                    <button onclick="novelaVerificarSenha()" class="cls-btn" style="width:100%;margin-top:10px;">🔓 ENTRAR</button>
-                    <div id="novela-senha-erro" style="display:none;color:#ff6060;font-weight:bold;text-align:center;margin-top:10px;">❌ Senha incorreta!</div>
-                </div>
-
-                <div id="novela-painel" style="display:none;max-width:600px;margin:0 auto;">
+                <div id="novela-painel" style="max-width:600px;margin:0 auto;">
                     <label class="cls-label">🔗 Link da Novela:</label>
                     <input type="text" id="novela-link-input" class="cls-input" placeholder="Cole aqui o link...">
                     <label class="cls-label">⏱️ Ficar disponível por quantas horas?</label>
@@ -306,13 +299,9 @@
 
                 <div id="novela-atual" style="max-width:600px;margin:24px auto 0 auto;display:none;">
                     <div class="anuncio-cls">
-                        <span class="badge-publicado">✅ NOVELA DISPONÍVEL</span>
-                        <button onclick="abrirNovelaPlay()" class="cls-btn" style="width:100%;margin-top:10px;font-size:16px;">▶️ ASSISTIR AGORA</button>
-                        <p id="novela-expira-em" style="color:#aaa;font-size:13px;margin-top:10px;text-align:center;"></p>
+                        <button onclick="abrirNovelaPlay()" class="cls-btn" style="width:100%;margin-top:10px;font-size:16px;">▶️ ASSISTIR NOVELAS</button>
                     </div>
                 </div>
-
-                <div id="novela-vazio" style="display:none;text-align:center;color:#ccc;padding:20px;">Nenhum link salvo no momento.</div>
             </div>
         </div>
 
@@ -430,83 +419,89 @@
         }
 
         // ══════════════════════════════════════════════════════
-        // ── NOVELAS — link com senha, expira nas horas definidas ─────
+        // ── NOVELAS — link salvo na nuvem, disponível para todos os dispositivos ─────
         // ══════════════════════════════════════════════════════
-        const NOVELA_SENHA = "102030Aa";
-        const NOVELA_STORAGE_KEY = "sx_novela_link";
-        const NOVELA_STORAGE_TS_KEY = "sx_novela_link_ts";
-        const NOVELA_STORAGE_HORAS_KEY = "sx_novela_horas";
+    </script>
 
-        function novelaGetDuracaoMs() {
-            const horas = parseFloat(localStorage.getItem(NOVELA_STORAGE_HORAS_KEY)) || 12;
-            return horas * 60 * 60 * 1000;
-        }
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, addDoc, onSnapshot,
+                 orderBy, doc, updateDoc, getDoc, setDoc, arrayUnion, serverTimestamp }
+                 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        function novelaFormatarRestante(ms) {
-            const totalMin = Math.max(0, Math.floor(ms / 60000));
-            const h = Math.floor(totalMin / 60), m = totalMin % 60;
-            return h > 0 ? `${h}h ${m}min restantes` : `${m}min restantes`;
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXTQ932v0Amnbtha01BzFsUfUZKnwYQIA",
+            authDomain: "chofer-522be.firebaseapp.com",
+            projectId: "chofer-522be",
+            storageBucket: "chofer-522be.firebasestorage.app",
+            messagingSenderId: "81306033578",
+            appId: "1:81306033578:web:0c3688bc455a51b972dfd3"
+        };
+        const app = initializeApp(firebaseConfig);
+        const fsdb = getFirestore(app, "cadastro");
+        const auth = getAuth(app);
+
+        let userLogado=null, idLogado=null, unsubFeed=null, arquivoCapaPendente=null;
+        let curtidasNestaSessao=new Set();
+        let isAdmin=false, anunciosAtivos=[];
+        let unsubAprovacao=null;
+        const videoCache=new Set();
+        let videoAtual=null;
+
+        // ── NOVELA (compartilhada via Firestore, em tempo real para todos) ──
+        let novelaDadosAtual = null;
+        let unsubNovela = null;
+        let novelaIntervaloExibicao = null;
 
         function novelaAtualizarExibicao() {
-            const link = localStorage.getItem(NOVELA_STORAGE_KEY);
-            const ts = parseInt(localStorage.getItem(NOVELA_STORAGE_TS_KEY) || "0", 10);
-            const agora = Date.now();
-            const duracaoMs = novelaGetDuracaoMs();
             const blocoAtual = document.getElementById('novela-atual');
-            const blocoBloqueado = document.getElementById('novela-bloqueado');
-            const blocoPainel = document.getElementById('novela-painel');
-            const ativo = link && ts && (agora - ts) < duracaoMs;
-
-            if (ativo) {
-                const restante = duracaoMs - (agora - ts);
-                document.getElementById('novela-expira-em').innerText = "⏳ " + novelaFormatarRestante(restante);
-                blocoAtual.style.display = 'block';
-                blocoBloqueado.style.display = 'none';
-                blocoPainel.style.display = 'none';
-            } else {
-                if (link) { localStorage.removeItem(NOVELA_STORAGE_KEY); localStorage.removeItem(NOVELA_STORAGE_TS_KEY); }
-                blocoAtual.style.display = 'none';
-                blocoPainel.style.display = 'none';
-                document.getElementById('novela-senha-erro').style.display = 'none';
-                document.getElementById('novela-senha').value = '';
-                blocoBloqueado.style.display = 'block';
+            const painel = document.getElementById('novela-painel');
+            if (!blocoAtual || !painel) return;
+            const dados = novelaDadosAtual;
+            const agora = Date.now();
+            let ativo = false;
+            if (dados && dados.link && dados.ts) {
+                const duracaoMs = (parseFloat(dados.horas) || 12) * 60 * 60 * 1000;
+                ativo = (agora - dados.ts) < duracaoMs;
             }
+            blocoAtual.style.display = ativo ? 'block' : 'none';
+            painel.style.display = ativo ? 'none' : 'block';
         }
 
-        window.novelaVerificarSenha = () => {
-            const senha = document.getElementById('novela-senha').value;
-            const erro = document.getElementById('novela-senha-erro');
-            if (senha === NOVELA_SENHA) {
-                erro.style.display = 'none';
-                document.getElementById('novela-bloqueado').style.display = 'none';
-                document.getElementById('novela-painel').style.display = 'block';
-                document.getElementById('novela-senha').value = '';
-            } else {
-                erro.style.display = 'block';
-            }
-        };
+        function novelaIniciarListener() {
+            if (unsubNovela) return;
+            unsubNovela = onSnapshot(doc(fsdb, "config", "novela"), (snap) => {
+                novelaDadosAtual = snap.exists() ? snap.data() : null;
+                novelaAtualizarExibicao();
+            });
+            if (novelaIntervaloExibicao) clearInterval(novelaIntervaloExibicao);
+            novelaIntervaloExibicao = setInterval(novelaAtualizarExibicao, 60000);
+        }
 
-        window.novelaSalvarLink = () => {
+        window.novelaSalvarLink = async () => {
             const input = document.getElementById('novela-link-input');
             const horasInput = document.getElementById('novela-horas-input');
             const link = input.value.trim();
             const horas = parseFloat(horasInput.value) || 12;
             const status = document.getElementById('novela-status');
             if (!link) { alert("Cole um link antes de salvar!"); return; }
-            localStorage.setItem(NOVELA_STORAGE_KEY, link);
-            localStorage.setItem(NOVELA_STORAGE_TS_KEY, Date.now().toString());
-            localStorage.setItem(NOVELA_STORAGE_HORAS_KEY, horas.toString());
-            input.value = '';
-            status.style.display = 'block';
-            status.className = 'cls-status cls-status-ok';
-            status.innerText = `✅ Link salvo! Ficará disponível por ${horas}h.`;
-            novelaAtualizarExibicao();
-            setTimeout(() => { status.style.display = 'none'; }, 4000);
+            try {
+                await setDoc(doc(fsdb, "config", "novela"), { link, ts: Date.now(), horas });
+                input.value = '';
+                status.style.display = 'block';
+                status.className = 'cls-status cls-status-ok';
+                status.innerText = `✅ Link salvo! Ficará disponível para todos por ${horas}h.`;
+                setTimeout(() => { status.style.display = 'none'; }, 4000);
+            } catch (err) {
+                status.style.display = 'block';
+                status.className = 'cls-status cls-status-erro';
+                status.innerText = "❌ Erro ao salvar: " + err.message;
+            }
         };
 
         window.abrirNovelaPlay = () => {
-            const link = localStorage.getItem(NOVELA_STORAGE_KEY);
+            const link = novelaDadosAtual && novelaDadosAtual.link;
             if (!link) { alert("Nenhum link disponível no momento."); return; }
             const area = document.getElementById('area-novela-play');
             const iframe = document.getElementById('novela-play-iframe');
@@ -528,40 +523,6 @@
             if (document.fullscreenElement) { document.exitFullscreen().catch(() => {}); }
             if (screen.orientation && screen.orientation.unlock) { try { screen.orientation.unlock(); } catch(e) {} }
         };
-
-        let _novelaIntervalo = null;
-        function novelaIniciar() {
-            novelaAtualizarExibicao();
-            if (_novelaIntervalo) clearInterval(_novelaIntervalo);
-            _novelaIntervalo = setInterval(novelaAtualizarExibicao, 60000);
-        }
-    </script>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, query, where, getDocs, addDoc, onSnapshot,
-                 orderBy, doc, updateDoc, getDoc, arrayUnion, serverTimestamp }
-                 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCXTQ932v0Amnbtha01BzFsUfUZKnwYQIA",
-            authDomain: "chofer-522be.firebaseapp.com",
-            projectId: "chofer-522be",
-            storageBucket: "chofer-522be.firebasestorage.app",
-            messagingSenderId: "81306033578",
-            appId: "1:81306033578:web:0c3688bc455a51b972dfd3"
-        };
-        const app = initializeApp(firebaseConfig);
-        const fsdb = getFirestore(app, "cadastro");
-        const auth = getAuth(app);
-
-        let userLogado=null, idLogado=null, unsubFeed=null, arquivoCapaPendente=null;
-        let curtidasNestaSessao=new Set();
-        let isAdmin=false, anunciosAtivos=[];
-        let unsubAprovacao=null;
-        const videoCache=new Set();
-        let videoAtual=null;
 
         // ══════════════════════════════════════════════════════
         // ── ÁUDIO — 12 SONS SINCRONIZADOS COM O MONITOR ──────
@@ -878,7 +839,7 @@
             if(isAdmin)document.getElementById('btn-flutuante-admin').style.display='flex';
             carregarUsuariosMenu();carregarAnunciosAtivos().then(()=>carregarFeed());
             try{signInAnonymously(auth);}catch(e){}
-            if (typeof novelaIniciar === 'function') novelaIniciar();
+            novelaIniciarListener();
             onSnapshot(doc(fsdb,"usuariosAprovados",idLogado),(snap)=>{
                 if(!snap.exists())return;const dados=snap.data();if(!dados)return;
                 const status=dados.status||"";
@@ -901,7 +862,7 @@
             resetNav();
             document.getElementById('btn-nav-veiculos').style.borderColor='#ff0000';
             document.getElementById('btn-nav-veiculos').style.color='#ff0000';
-            if (typeof novelaAtualizarExibicao === 'function') novelaAtualizarExibicao();
+            novelaAtualizarExibicao();
             window.scrollTo({top:0,behavior:'smooth'});
         };
         window.abrirVestir=()=>{
